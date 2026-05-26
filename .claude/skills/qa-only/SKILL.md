@@ -1,0 +1,1 @@
+/Users/dan/Documents/_CLAUDE/Conductor/claudedit/.claude/skills/gstack/qa-only/SKILL.md
