@@ -141,3 +141,75 @@ Reviewed: [timestamp]
 
 **If APPROVED:** Hand off to render step: `npx hyperframes render`
 **If BLOCKED:** Return to author agent with failure list. Do not render.
+
+---
+
+## SECTION 10 — FRAME COMPOSITION (BLOCKING)
+
+*New section — added to catch the "tiny box in sea of black" failure mode.*
+
+- [ ] [BLOCKING] SPEAKER_LAYOUT marker was read from sequence before composing graphic
+- [ ] [BLOCKING] Graphic elements are placed in the correct zone for this layout (per FRAME-COMPOSITION.md)
+- [ ] [BLOCKING] No graphic element is placed in the DANGER ZONE for this layout
+- [ ] [BLOCKING] Speaker's face is not covered by any text, bar, or overlay element
+- [ ] [BLOCKING] Graphic fills its zone — no element is smaller than 40% of its available zone width
+- [ ] [BLOCKING] Hero stat / number is minimum 96px at 1080p
+- [ ] [BLOCKING] All body text and labels are minimum 28px at 1080p
+- [ ] [BLOCKING] Caption text is minimum 36px at 1080p
+- [ ] [WARN] Source attribution text below 20px (flag but don't block)
+
+---
+
+## SECTION 11 — DATA GRAPHIC INTEGRITY (BLOCKING)
+
+*Applies when graphic contains bars, charts, or numeric comparisons.*
+
+- [ ] [BLOCKING] Bar heights are calculated using the formula from FRAME-COMPOSITION.md — not guessed
+- [ ] [BLOCKING] The larger value has a visually larger bar — proportions are accurate
+- [ ] [BLOCKING] No pie charts used — bars only for finance comparison content
+- [ ] [BLOCKING] No 3D perspective applied to any chart
+- [ ] [BLOCKING] No gradient fills on data bars — solid color only
+- [ ] [BLOCKING] No drop shadows on chart elements
+- [ ] [BLOCKING] Every bar has a readable label directly below it (minimum 28px)
+- [ ] [BLOCKING] Data source is attributed in bottom-right corner if provided in brief
+- [ ] [WARN] Difference between compared values is not visually obvious at a glance
+
+---
+
+## SECTION 12 — ANIMATION SMOOTHNESS (BLOCKING)
+
+- [ ] [BLOCKING] Numbers count up from 0, not appear instantly
+- [ ] [BLOCKING] Bars grow from bottom using power2.out easing — not pop in
+- [ ] [BLOCKING] No bounce or elastic easing on any data element
+- [ ] [BLOCKING] No spinning or rotating numbers
+- [ ] [BLOCKING] Exit is a single simultaneous fade-out — not elements disappearing one by one
+- [ ] [BLOCKING] Hold time after full entry is minimum 2.0s (3.0s for multi-bar charts)
+- [ ] [WARN] Any animation feels too fast — entry under 0.4s for any element
+- [ ] [WARN] Any animation feels too slow — entry over 1.5s for stat/number
+
+---
+
+## SECTION 13 — DEMO CONTENT PURGE (BLOCKING)
+
+*The most important check. Catches the "HYPERFRAMES demo text showing" bug.*
+
+- [ ] [BLOCKING] Ran `grep -rni "hyperframes\|survey findings\|the opportunity\|motion graphics\|percent of you\|design simplified\|lack editing\|3 of 4\|47%"` in the graphic folder
+- [ ] [BLOCKING] The grep returned ZERO results — no demo content remains anywhere
+- [ ] [BLOCKING] Opened and checked EVERY composition file, not just one
+- [ ] [BLOCKING] Every scene either has my content or is deleted/disabled
+- [ ] [BLOCKING] Preview (`npx hyperframes dev`) shows ONLY my content — no overlapping text, no demo strings
+- [ ] [BLOCKING] No two text layers rendering on top of each other
+
+If the grep returns ANY result → STOP. Do not render. Return to STEP 3c.
+
+---
+
+## SECTION 14 — SPEAKER FACE PROTECTION (BLOCKING)
+
+*Catches stat cards landing on the speaker's face (images 2 & 3).*
+
+- [ ] [BLOCKING] Read SPEAKER_LAYOUT before composing
+- [ ] [BLOCKING] For two-person layout: graphic is in the CENTER gap or BOTTOM strip, never over either face
+- [ ] [BLOCKING] For single offset: graphic is in the negative-space side, never over the face
+- [ ] [BLOCKING] Graphic does not cover eyes, mouth, or any part of the active speaker's face
+- [ ] [WARN] Graphic is close to a face edge — review whether it reads cleanly
