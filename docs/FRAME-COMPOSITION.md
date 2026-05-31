@@ -8,6 +8,32 @@
 
 ---
 
+## RULE 0 — MEASURE THE PANEL BEFORE EVERY FFMPEG COMMAND
+
+Before generating any speaker clip with ffmpeg, read the actual CSS panel
+dimensions from the composition. Never guess or carry values from a previous
+session — the panel size changes between clips.
+
+```bash
+# Run this from the project root (e.g. graphics/swissgrid-institutions/)
+grep -A5 "short_mag_cut\|video-well\|speaker-panel\|mag.cut" index.html | grep -i "width\|height\|px"
+```
+
+The first explicit `width: Npx` and `height: Npx` values returned are the
+CSS-defined panel dimensions (W and H). Ignore `width: 100%` / `height: 100%`
+lines — those are the inner video element filling its wrapper.
+
+Use W and H to derive the ffmpeg crop:
+```
+PANEL_H_SCALED = W × (source_height / source_width)
+                 e.g. 960 × (1080 / 960) = 1080  →  no scaling needed
+                 e.g. 720 × (1080 / 960) = 810   →  scale=720:810
+```
+
+Then run ffmpeg with `crop=<source_W>:<source_H>:<x_offset>:0,scale=<W>:<PANEL_H_SCALED>`.
+
+---
+
 ## THE CORE PROBLEM THIS SOLVES
 
 The example graphic failure (TRADFI INDEX COMPANIES bar chart) had:

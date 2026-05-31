@@ -20,3 +20,4 @@ Thumbs.db
 
 # Attachments (conversation context, not repo content)
 .context/
+.gstack/
