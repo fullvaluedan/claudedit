@@ -1,0 +1,146 @@
+# exclusion_rules.yaml — Anndy Lian / Volmex podcast editorial standards
+# Learned from the May 2026 manual edit diff (58.7 min raw → 48.6 min export)
+# Add to always_cut when a tangent recurs; protect strong thesis moments.
+
+show: "Anndy Lian / Volmex — Web4 & AI podcast"
+thesis: >
+  Web4 as the next era of autonomous intelligence. Blockchain governance failures
+  (money & greed → centralization). AI as an impartial fairness mechanism.
+  Anndy's book as the unifying argument. Keep anything that advances this arc.
+
+# ── always_cut: deterministic flags ────────────────────────────────────────
+# Pattern OR topic — any match triggers a low-confidence flag for review.
+# High-confidence cuts happen automatically; ambiguous ones go to the review list.
+
+always_cut:
+
+  # 1. Lag / internet difficulty (catches the literal exchange and its aftermath)
+  - category: lag
+    patterns:
+      - "we lost you|lost you there|how's your internet|you're lagging"
+      - "can you repeat the last|it cut off|or restart that"
+      - "internet went down|internet is not (as fast|working)|cutting out"
+      - "lot of people in the building|one service provider|full monopoly"
+      - "everyone is home on the weekend.*(internet|wifi|slow)"
+    reason: "connection interruption and surrounding banter"
+    confidence: 0.95
+
+  # 2. Re-take requests / duplicated takes
+  - category: retake
+    patterns:
+      - "can you repeat the last|repeat the last \\d+ seconds"
+      - "or if you want to (just )?restart|let's start (that )?over|one more time"
+    reason: "retake request — cut the request AND the interrupted first attempt"
+    confidence: 0.90
+
+  # 3. Off-topic scheduling / collab-series talk
+  - category: tangent/collab
+    patterns:
+      - "do (it|that) every week|once a week|weekly session|have a good session every week"
+      - "find a few friends.*(trial and error|wavelength)|couldn't find (that |those )?(chaps|people)"
+      - "spot on.*series|all.?in.*podcast|come to X more often"
+      - "deal flow|hong kong friend|lovely lady"
+    reason: "collab scheduling / future series planning — never about the episode topic"
+    confidence: 0.92
+
+  # 4. Specific AI tool comparisons (off-thesis product tangents)
+  - category: tangent/ai-tools
+    patterns:
+      - "mini.?max|manus|z\\.?dot\\.?ai|zach.*ai"
+      - "qwen|gwen from alibaba|xiaomi (model|ai)|chinese model.*(cheap|spend)"
+      - "facebook took over.*stopped using|they steal.*data"
+      - "hyperframes|remotion.*(subscription|graphic)|running on a subscription"
+      - "automate my editing|AI.*(editing|effects|content generation)"
+    reason: "specific tool name-drops that aren't about the book's thesis"
+    confidence: 0.80
+    note: "check context — some AI references ARE on-thesis (AI governance, autonomous agents)"
+
+  # 5. Crypto personality anecdotes (SBF / Justin Sun / CZ biographical tangents)
+  - category: tangent/personalities
+    patterns:
+      - "SBF|sam bankman|he's off the table"
+      - "justin sun|cz.*(hideout|secret)|secret hideout.*(singapore|cz)"
+      - "naive case.*(sbf|ftx)|wouldn't be in this (situation|mess)"
+    reason: "personality gossip — doesn't advance Web4/AI governance thesis"
+    confidence: 0.78
+    note: "CZ/regulation IS on-thesis; only biographical anecdotes are off"
+
+  # 6. Specific trading instrument / leverage discussions
+  - category: tangent/trading
+    patterns:
+      - "50.?x leverage|s.*p.*500.*leverage|who's taking the other side"
+      - "hyperliquid.*(trade stocks|accessibility)|stocks on chain"
+      - "polymarket|calshi|prediction market.*(kyc|us citizen|allowed)"
+      - "kyc.*(implement|us|singapore)|outside of us.*singapore"
+    reason: "specific trading platforms and compliance details — too narrow for thesis"
+    confidence: 0.75
+
+  # 7. Content-creation / social-media meta-talk
+  - category: tangent/content-meta
+    patterns:
+      - "haven't been posting.*youtube|posting on my youtube"
+      - "x algorithm|post.*engagement|drive.*traffic.*(youtube|x)"
+      - "I'll post it in a couple of days|run it through my AI editing"
+    reason: "speaker talking about their own content creation — off-topic"
+    confidence: 0.85
+
+  # 8. Book writing backstory (how/when it was written — not the book's arguments)
+  - category: tangent/book-backstory
+    patterns:
+      - "I trace it back to 2021|gave a keynote.*(2021|2022|2023|ago)"
+      - "started writing the book|can't remember when|toyed with that idea"
+      - "content itself is.*dry|not easy to read"
+    reason: "backstory of writing the book vs the book's actual thesis"
+    confidence: 0.72
+
+  # 9. Pre/post-show chit-chat
+  - category: pre_show
+    patterns:
+      - "haven't been posting|initially when I started at par"
+      - "incentives.*lower.*valuation|token launches.*lower"
+      - "are we (still )?recording|off the recording|I'll put (it|this) to the beginning"
+      - "we kept some segments|need an intro or something"
+      - "catch you (guys )?next time|that's what it is man"
+    reason: "pre/post-recording logistics and conversation not relevant to episode"
+    confidence: 0.88
+
+# ── protect: never auto-cut these even if a detector fires ─────────────────
+protect:
+  - pattern: "trillion dollar market|multi.?trillion"
+    reason: "core thesis / key teaser moment"
+  - pattern: "can never be decentralized because of.*money.*greed"
+    reason: "core thesis — the problem statement"
+  - pattern: "(much )?fairer way|ai.*unpartial|impartial|autonomous intelligence"
+    reason: "core thesis — the AI-as-solution argument"
+  - pattern: "web.?4|age of autonomous"
+    reason: "book title / show theme"
+  - pattern: "governance|dao|consensus.*(driven|mechanism)"
+    reason: "on-thesis — blockchain governance is the core argument"
+
+# ── thresholds ──────────────────────────────────────────────────────────────
+thresholds:
+  min_cut_duration_s: 2.0         # don't flag sub-2s matches; likely in-sentence
+  auto_cut_confidence: 0.85       # below → review list, not auto-cut
+  content_flag_word_floor: 8      # fragments under 8 real words = filler, skip real-content check
+
+# ── editorial calibration notes (from diff analysis) ────────────────────────
+# The user's edit removed ~10.1 min beyond our pipeline's spec. Key patterns:
+#
+# 1. TIGHT TRIMMING throughout (~3-8s fragments): repetitive "yeah yeah", false
+#    starts, circling ("I mean, I, I think, I think..."). Our pipeline misses these
+#    because they look like real speech. The re-transcription confirmed the user
+#    tightened aggressively. Future: use Whisper word-probability scores to flag
+#    low-confidence / high-repetition windows.
+#
+# 2. AI TOOL TANGENT (src ~4-9 min): discussion of specific AI models (Mini Max,
+#    Manus, Z.AI, Chinese models, HyperFrames/Remotion) removed entirely. Not
+#    about Web4 governance — about Anndy's personal toolstack. Add to always_cut.
+#
+# 3. CRYPTO PERSONALITY GOSSIP (SBF, Justin Sun, CZ): anecdotal stories removed.
+#    Keep any regulatory/governance angle; cut the biographical color.
+#
+# 4. POST-RECORDING WRAP: "catch you next time", "let me put this at the beginning",
+#    "we kept some segments" — the outro-planning banter. Cuts confirmed.
+#
+# 5. BOOK BACKSTORY vs BOOK CONTENT: user kept Anndy's arguments but cut the
+#    story of how the book was written (2021 keynote, toyed with the idea, etc.).

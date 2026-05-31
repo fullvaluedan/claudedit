@@ -19,10 +19,46 @@ Usage:
 
 import argparse
 import json
+import math
+import subprocess
 import sys
 import time
 import os
 from pathlib import Path
+
+TICKS = 254016000000  # ticks per second (Premiere internal)
+
+
+def _jround(x: float) -> int:
+    """Round half-up to match ExtendScript Math.round (Python's round() is banker's)."""
+    return math.floor(x + 0.5)
+
+
+def detect_fps(source_path: str, default: float = 30.0) -> float:
+    """Detect the source video frame rate via ffprobe (e.g. '24/1' → 24.0).
+
+    CRITICAL: the Premiere sequence inherits the source's frame rate, so all
+    timeline tick math must use THIS fps. Snapping to the wrong grid (e.g. 30
+    when the source is 24) makes Premiere re-snap clip positions and leaves
+    1-frame gaps between clips.
+    """
+    try:
+        out = subprocess.run(
+            ["ffprobe", "-v", "error", "-select_streams", "v:0",
+             "-show_entries", "stream=r_frame_rate",
+             "-of", "default=noprint_wrappers=1:nokey=1", source_path],
+            capture_output=True, text=True, timeout=30).stdout.strip()
+        num, den = (out.split("/") + ["1"])[:2] if out else ("0", "1")
+        fps = float(num) / float(den)
+        return fps if fps > 0 else default
+    except Exception:
+        return default
+
+
+def _inject_fps(script: str, fps: float) -> str:
+    """Substitute FPS_PLACEHOLDER / TPFRAME_PLACEHOLDER for the detected fps."""
+    return (script.replace("FPS_PLACEHOLDER", "%g" % fps)
+                  .replace("TPFRAME_PLACEHOLDER", str(round(TICKS / fps))))
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from claudedit_helpers import bridge_call, verify_project, save_project
@@ -78,9 +114,9 @@ def build_clip_list(edit: dict) -> list[dict]:
 
 EXTENDSCRIPT_TEMPLATE = r"""(function() {
   var proj = app.project;
-  var FPS = 30;
+  var FPS = FPS_PLACEHOLDER;
   var TICKS = 254016000000;
-  var TPFRAME = 8467200000;
+  var TPFRAME = TPFRAME_PLACEHOLDER;
 
   function secToTicks(sec) {
     return String(Math.round(parseFloat(sec) * FPS) * TPFRAME);
@@ -141,8 +177,11 @@ EXTENDSCRIPT_TEMPLATE = r"""(function() {
     return JSON.stringify({error: "createNewSequenceFromClips returned null. Check Premiere is open with a project."});
   }
 
-  // cursor tracks current timeline end in ticks (frame-snapped)
-  var cursor = Math.round((parseFloat(clip0.media_out) - parseFloat(clip0.media_in)) * FPS) * TPFRAME;
+  // cursor tracks current timeline end in ticks (frame-snapped).
+  // Advance by the clip's ACTUAL snapped length = round(out*FPS) - round(in*FPS).
+  // Using round((out-in)*FPS) instead drifts ±1 frame (round-of-diff ≠ diff-of-rounds),
+  // leaving 1-frame gaps/overlaps between clips.
+  var cursor = (Math.round(parseFloat(clip0.media_out) * FPS) - Math.round(parseFloat(clip0.media_in) * FPS)) * TPFRAME;
 
   // ── Append remaining clips ──────────────────────────────────────────────────
   for (var c = 1; c < clips.length; c++) {
@@ -160,7 +199,7 @@ EXTENDSCRIPT_TEMPLATE = r"""(function() {
 
       srcItem.clearInPoint(4);
       srcItem.clearOutPoint(4);
-      cursor += Math.round(dur * FPS) * TPFRAME;
+      cursor += (Math.round(parseFloat(clip.media_out) * FPS) - Math.round(parseFloat(clip.media_in) * FPS)) * TPFRAME;
     } catch(e) {
       try { srcItem.clearInPoint(4); srcItem.clearOutPoint(4); } catch(e2) {}
       errs.push("clip" + c + "(" + clip.role + "): " + e.message);
@@ -192,6 +231,7 @@ EXTENDSCRIPT_TEMPLATE = r"""(function() {
 
 QA_TEMPLATE = r"""(function() {
   var TICKS = 254016000000;
+  var TPFRAME = TPFRAME_PLACEHOLDER;
   var slug = QA_SEQ_NAME;
   var expectedClips = QA_EXPECTED_CLIPS;
   var expectedDurSec = QA_EXPECTED_DUR;
@@ -256,25 +296,117 @@ QA_TEMPLATE = r"""(function() {
     }
   }
 
-  var warnings = [];
   if (keyframedClips.length > 0) {
-    warnings.push("Volume keyframes on A1 clips " + keyframedClips.join(",") + " — may cause −∞ audio. Remove via right-click > Remove Attributes.");
+    return JSON.stringify({
+      pass: false,
+      reason: "A1 clips " + keyframedClips.join(",") + " have Volume Level keyframes (causes −∞ audio). " +
+              "Delete this sequence and rebuild — the builder no longer sets keyframes."
+    });
+  }
+
+  // Report transition coverage (audio crossfades smooth the cuts)
+  var aTrans = 0, vTrans = 0;
+  try { aTrans = a1.transitions.numItems; } catch(e) {}
+  try { vTrans = v1.transitions.numItems; } catch(e) {}
+  var junctions = v1count - 1;
+  var warnings = [];
+  if (junctions > 0 && aTrans < junctions) {
+    warnings.push("Audio crossfades: " + aTrans + "/" + junctions + " junctions covered");
+  }
+
+  // Gap / overlap check on V1. With no video transitions, clips must be exactly
+  // contiguous (frame-snapped). A positive gap reveals cursor frame-accounting drift.
+  var maxGap = 0, gapAt = -1;
+  for (var gi = 0; gi < v1count - 1; gi++) {
+    var gapFr = (parseFloat(v1.clips[gi + 1].start.ticks) - parseFloat(v1.clips[gi].end.ticks)) / TPFRAME;
+    if (gapFr > maxGap) { maxGap = gapFr; gapAt = gi; }
+  }
+  if (vTrans === 0 && maxGap >= 0.5) {
+    return JSON.stringify({pass: false,
+      reason: "Gap of " + Math.round(maxGap) + " frame(s) between V1 clips " + gapAt +
+              " and " + (gapAt + 1) + " — cursor frame-accounting drift"});
   }
 
   return JSON.stringify({
     pass: true,
     sequence: slug,
+    maxV1GapFrames: Math.round(maxGap),
     v1Clips: v1count,
     a1Clips: a1count,
     durSec: Math.round(durSec * 10) / 10,
+    audioTransitions: aTrans,
+    videoTransitions: vTrans,
+    junctions: junctions,
     warnings: warnings
+  });
+})()"""
+
+ADD_TRANSITIONS_TEMPLATE = r"""(function() {
+  // Add Constant Power audio crossfades + (optionally) Cross Dissolve video
+  // transitions at every clip junction, fully via the QE DOM.
+  //
+  // The QE transition *list* (getAudioTransitionList) is empty via CEP, but
+  // getAudioTransitionByName / getVideoTransitionByName return usable objects.
+  // Clip-level addTransition(trans, addToStart=false, durStr) adds at the tail.
+  // Transitions live in a separate collection from clips, so clip indices do
+  // not shift as we add — we can iterate forward safely.
+  var proj = app.project;
+  var slug = SEQ_NAME_PLACEHOLDER;
+  var audioReq = AUDIO_REQ_PLACEHOLDER;   // duration units (~1.25x => timeline frames)
+  var videoReq = VIDEO_REQ_PLACEHOLDER;   // 0 = skip video dissolves
+
+  var seq = null;
+  for (var i = 0; i < proj.sequences.numSequences; i++) {
+    if (proj.sequences[i].name === slug) { seq = proj.sequences[i]; break; }
+  }
+  if (!seq) return JSON.stringify({error: "Sequence not found: " + slug});
+
+  app.enableQE();
+  var qeSeq = qe.project.getActiveSequence();
+  if (!qeSeq || String(qeSeq.name) !== slug) {
+    return JSON.stringify({error: "Sequence '" + slug + "' is not the active QE sequence (got '" +
+      (qeSeq ? qeSeq.name : "none") + "'). Open it in the timeline and re-run."});
+  }
+
+  var cp = qe.project.getAudioTransitionByName("Constant Power");
+  var xd = (videoReq > 0) ? qe.project.getVideoTransitionByName("Cross Dissolve") : null;
+  if (!cp) return JSON.stringify({error: "Constant Power audio transition not found via QE"});
+
+  var errs = [];
+  var aAdded = 0, vAdded = 0;
+
+  // Audio crossfades on A1 at each junction (tail of clips 0..N-2)
+  var qeA = qeSeq.getAudioTrackAt(0);
+  var aClips = seq.audioTracks[0].clips.numItems;
+  for (var ai = 0; ai < aClips - 1; ai++) {
+    try { qeA.getItemAt(ai).addTransition(cp, false, String(audioReq)); aAdded++; }
+    catch(e) { errs.push("a" + ai + ":" + String(e)); }
+  }
+
+  // Video cross dissolves on V1 at each junction (optional)
+  if (videoReq > 0 && xd) {
+    var qeV = qeSeq.getVideoTrackAt(0);
+    var vClips = seq.videoTracks[0].clips.numItems;
+    for (var vi = 0; vi < vClips - 1; vi++) {
+      try { qeV.getItemAt(vi).addTransition(xd, false, String(videoReq)); vAdded++; }
+      catch(e) { errs.push("v" + vi + ":" + String(e)); }
+    }
+  }
+
+  return JSON.stringify({
+    ok: true,
+    aAdded: aAdded,
+    vAdded: vAdded,
+    audioTransitions: seq.audioTracks[0].transitions.numItems,
+    videoTransitions: seq.videoTracks[0].transitions.numItems,
+    errs: errs.slice(0, 20)
   });
 })()"""
 
 APPEND_TEMPLATE = r"""(function() {
   var proj = app.project;
-  var FPS = 30;
-  var TPFRAME = 8467200000;
+  var FPS = FPS_PLACEHOLDER;
+  var TPFRAME = TPFRAME_PLACEHOLDER;
   function secToTicks(s) { return String(Math.round(parseFloat(s) * FPS) * TPFRAME); }
 
   var sources = {};
@@ -318,7 +450,7 @@ APPEND_TEMPLATE = r"""(function() {
 
       srcItem.clearInPoint(4);
       srcItem.clearOutPoint(4);
-      cursor += Math.round(dur * FPS) * TPFRAME;
+      cursor += (Math.round(parseFloat(clip.media_out) * FPS) - Math.round(parseFloat(clip.media_in) * FPS)) * TPFRAME;
     } catch(e) {
       try { srcItem.clearInPoint(4); srcItem.clearOutPoint(4); } catch(e2) {}
       errs.push("c" + c + ": " + e.message);
@@ -372,13 +504,10 @@ def parse_result(resp: dict) -> dict:
 # Sequence builder
 # ---------------------------------------------------------------------------
 
-TPFRAME = 8467200000
-FPS = 30
-
-
-def run_qa(sequence_name: str, expected_clips: int, expected_dur_sec: float) -> dict:
+def run_qa(sequence_name: str, expected_clips: int, expected_dur_sec: float, fps: float) -> dict:
     """Run post-build QA checks via bridge. Returns {pass, reason?, warnings?}."""
-    script = (QA_TEMPLATE
+    script = _inject_fps(QA_TEMPLATE, fps)
+    script = (script
               .replace("QA_SEQ_NAME", json.dumps(sequence_name))
               .replace("QA_EXPECTED_CLIPS", str(expected_clips))
               .replace("QA_EXPECTED_DUR", str(round(expected_dur_sec, 1))))
@@ -389,16 +518,29 @@ def run_qa(sequence_name: str, expected_clips: int, expected_dur_sec: float) -> 
     return result
 
 
-def ticks_for_clips(clips: list[dict]) -> int:
-    """Compute the total tick count for a list of clips."""
+def ticks_for_clips(clips: list[dict], fps: float) -> int:
+    """Total ticks for a list of clips, using each clip's frame-snapped length
+    (round(out*fps) - round(in*fps)) so the batch cursor never drifts a frame."""
+    tpframe = round(TICKS / fps)
     total = 0
     for c in clips:
-        dur = float(c["media_out"]) - float(c["media_in"])
-        total += round(dur * FPS) * TPFRAME
+        total += (_jround(float(c["media_out"]) * fps) - _jround(float(c["media_in"]) * fps)) * tpframe
     return total
 
 
-def build_sequence(edit: dict, sequence_name: str, dissolve_frames: int, batch_size: int) -> dict:
+def add_transitions(sequence_name: str, audio_frames: int, video_frames: int) -> dict:
+    """Add Constant Power audio crossfades + Cross Dissolve video transitions at
+    every clip junction via the QE DOM. Returns {ok, aAdded, vAdded, ...} or {error}.
+    """
+    script = (ADD_TRANSITIONS_TEMPLATE
+              .replace("SEQ_NAME_PLACEHOLDER", json.dumps(sequence_name))
+              .replace("AUDIO_REQ_PLACEHOLDER", str(int(audio_frames)))
+              .replace("VIDEO_REQ_PLACEHOLDER", str(int(video_frames))))
+    resp = send_bridge(script, timeout_sec=120)
+    return parse_result(resp)
+
+
+def build_sequence(edit: dict, sequence_name: str, fps: float, dissolve_frames: int, batch_size: int) -> dict:
     source_path = edit["source"]
     clips = build_clip_list(edit)
 
@@ -417,7 +559,7 @@ def build_sequence(edit: dict, sequence_name: str, dissolve_frames: int, batch_s
             "clips": clips,
             "dissolveFrames": dissolve_frames,
         }
-        script = EXTENDSCRIPT_TEMPLATE.replace("DATA_PLACEHOLDER", json.dumps(payload))
+        script = _inject_fps(EXTENDSCRIPT_TEMPLATE, fps).replace("DATA_PLACEHOLDER", json.dumps(payload))
         print(f"  Sending {len(clips)} clips in one bridge call...")
         resp = send_bridge(script, timeout_sec=300)
         return parse_result(resp)
@@ -431,19 +573,19 @@ def build_sequence(edit: dict, sequence_name: str, dissolve_frames: int, batch_s
         "clips": clips[:batch_size],
         "dissolveFrames": dissolve_frames,
     }
-    script = EXTENDSCRIPT_TEMPLATE.replace("DATA_PLACEHOLDER", json.dumps(first_payload))
+    script = _inject_fps(EXTENDSCRIPT_TEMPLATE, fps).replace("DATA_PLACEHOLDER", json.dumps(first_payload))
     print(f"  Batch 1: clips 0–{batch_size - 1}...")
     result = parse_result(send_bridge(script, timeout_sec=300))
     if result.get("error"):
         return result
 
-    cursor = ticks_for_clips(clips[:batch_size])
+    cursor = ticks_for_clips(clips[:batch_size], fps)
 
     for start in range(batch_size, len(clips), batch_size):
         batch = clips[start:start + batch_size]
         end_idx = min(start + batch_size, len(clips))
         print(f"  Batch {start // batch_size + 1}: clips {start}–{end_idx - 1}...")
-        script = (APPEND_TEMPLATE
+        script = (_inject_fps(APPEND_TEMPLATE, fps)
                   .replace("SEQ_NAME_PLACEHOLDER", json.dumps(sequence_name))
                   .replace("SRC_PATH_PLACEHOLDER", json.dumps(source_path))
                   .replace("CLIPS_PLACEHOLDER", json.dumps(batch))
@@ -452,7 +594,7 @@ def build_sequence(edit: dict, sequence_name: str, dissolve_frames: int, batch_s
         if result.get("error"):
             print(f"  WARNING: Batch failed: {result}")
             break
-        cursor += ticks_for_clips(batch)
+        cursor += ticks_for_clips(batch, fps)
 
     return result
 
@@ -469,9 +611,16 @@ def main():
     parser.add_argument("--sequence-name", default="Podcast Edit", help="Premiere sequence name")
     parser.add_argument("--project", help="Expected Premiere project name (for verification)")
     parser.add_argument("--dissolve-frames", type=int, default=15,
-                        help="Cross-dissolve length in frames (default 15 = 0.5s at 30fps)")
+                        help="(legacy, unused) Cross-dissolve length in frames")
+    parser.add_argument("--audio-crossfade-frames", type=int, default=4,
+                        help="Constant Power audio crossfade length at each cut (4 frames ≈ 0.17s at 24fps). 0 disables.")
+    parser.add_argument("--video-dissolve-frames", type=int, default=0,
+                        help="Cross Dissolve video transition length at each cut. Default 0 = OFF "
+                             "(hard cuts on video; audio still crossfades). Set >0 to enable.")
     parser.add_argument("--batch-size", type=int, default=80,
                         help="Max clips per bridge call (default 80)")
+    parser.add_argument("--fps", type=float, default=0.0,
+                        help="Override source frame rate. Default 0 = auto-detect via ffprobe.")
     args = parser.parse_args()
 
     with open(args.edit) as f:
@@ -479,8 +628,10 @@ def main():
 
     source = edit.get("source", "")
     duration = edit.get("duration_sec", 0)
+    fps = args.fps if args.fps > 0 else detect_fps(source)
     print(f"Source: {Path(source).name}")
     print(f"Original duration: {duration:.1f}s ({duration/60:.1f} min)")
+    print(f"Frame rate: {fps:g} fps  (timeline tick grid = {round(TICKS/fps)} ticks/frame)")
     print(f"Sequence name: '{args.sequence_name}'")
     print()
     print("  ⚠ The source file must be imported into the Premiere project bin before running.")
@@ -492,7 +643,7 @@ def main():
             print(f"  WARNING: Expected project '{args.project}', "
                   f"found '{info.get('project_name')}'. Proceeding anyway.")
 
-    result = build_sequence(edit, args.sequence_name, args.dissolve_frames, args.batch_size)
+    result = build_sequence(edit, args.sequence_name, fps, args.dissolve_frames, args.batch_size)
 
     if result.get("error"):
         print(f"\n✗ BUILD FAILED: {result['error']}")
@@ -504,11 +655,29 @@ def main():
         for e in build_errs:
             print(f"    - {e}")
 
+    # Add transitions (audio crossfades + optional video dissolves) at every junction
+    if args.audio_crossfade_frames > 0 or args.video_dissolve_frames > 0:
+        print("\nAdding transitions at clip junctions...")
+        tr = add_transitions(args.sequence_name,
+                             args.audio_crossfade_frames,
+                             args.video_dissolve_frames)
+        if tr.get("error"):
+            print(f"  ⚠ Transitions not added: {tr['error']}")
+            print(f"    (Sequence still built; cuts are hard cuts in silence.)")
+        else:
+            print(f"  ✓ Audio crossfades: {tr.get('aAdded', 0)} added "
+                  f"({tr.get('audioTransitions', 0)} on A1)")
+            if args.video_dissolve_frames > 0:
+                print(f"  ✓ Video dissolves:  {tr.get('vAdded', 0)} added "
+                      f"({tr.get('videoTransitions', 0)} on V1)")
+            for e in tr.get("errs", []):
+                print(f"    - {e}")
+
     # QA gate — runs before declaring success
     clips = build_clip_list(edit)
     expected_dur = sum(c["media_out"] - c["media_in"] for c in clips)
     print("\nRunning QA checks...")
-    qa = run_qa(args.sequence_name, len(clips), expected_dur)
+    qa = run_qa(args.sequence_name, len(clips), expected_dur, fps)
 
     if not qa.get("pass"):
         print(f"✗ QA FAILED: {qa.get('reason', 'unknown')}")
@@ -524,6 +693,9 @@ def main():
     print(f"  Duration:  {dur_sec:.1f}s ({dur_sec/60:.1f} min)  ←  trimmed from {duration/60:.1f} min")
     print(f"  V1 clips:  {qa.get('v1Clips', result.get('v1Clips'))}")
     print(f"  A1 clips:  {qa.get('a1Clips', result.get('a1Clips'))}")
+    if "audioTransitions" in qa:
+        print(f"  Crossfades: {qa.get('audioTransitions', 0)} audio / "
+              f"{qa.get('videoTransitions', 0)} video  (at {qa.get('junctions', 0)} junctions)")
 
     teasers = [c for c in clips if c["role"] == "teaser"]
     intro   = [c for c in clips if c["role"] == "intro"]
@@ -539,8 +711,8 @@ Sequence structure:
 Next steps in Premiere:
   1. Open sequence '{args.sequence_name}'
   2. Check Audio Clip Mixer — A1 fader should be at 0 dB
-  3. Scrub edit points — all should be in silence (flat waveform at cuts)
-  4. Add Constant Power transitions: Cmd+Shift+D at any cut that needs smoothing
+  3. Scrub edit points — audio crossfades applied; video is hard cuts (no dissolves)
+  4. Add music, color, and export
 """)
 
 

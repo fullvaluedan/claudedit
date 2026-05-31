@@ -21,3 +21,8 @@ Thumbs.db
 # Attachments (conversation context, not repo content)
 .context/
 .gstack/
+
+# large source/export videos (do not commit)
+"/Anndy Lian Web4 Edit.mp4"
+"/Anndy Lian Web4 Edit_first5.mp4"
+*.mp4

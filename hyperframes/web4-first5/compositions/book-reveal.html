@@ -1,0 +1,116 @@
+<template id="book-reveal-tpl">
+  <div data-composition-id="book-reveal" data-width="1920" data-height="1080">
+    <div class="br-bg" id="br-bg"></div>
+    <div class="br-glow" id="br-glow"></div>
+
+    <!-- LEFT: 3D book -->
+    <div class="br-book-wrap" id="br-book-wrap">
+      <img class="br-book" id="br-book" src="../book-cover.png" crossorigin="anonymous" alt="" />
+      <div class="br-sweep" id="br-sweep"></div>
+    </div>
+
+    <!-- LEFT-CENTER: title block -->
+    <div class="br-title">
+      <div class="br-eyebrow" id="br-eyebrow">ANNDY LIAN</div>
+      <div class="br-web4" id="br-web4">WEB4</div>
+      <div class="br-sub" id="br-sub">The Age of Autonomous Intelligence</div>
+      <div class="br-rule" id="br-rule"></div>
+      <div class="br-stats">
+        <div class="br-stat" id="br-stat1"><span class="br-num">#1</span><span class="br-lbl">New&nbsp;Release</span></div>
+        <div class="br-stat" id="br-stat2"><span class="br-num">#11</span><span class="br-lbl">Bestseller</span></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: live video of Anndy (animate the WRAPPER, never the video) -->
+    <div class="br-live-wrap" id="br-live-wrap">
+      <video class="clip" id="br-live" src="../video.mp4" muted playsinline crossorigin="anonymous"
+             data-start="0" data-duration="23" data-media-start="23" data-track-index="1"></video>
+      <div class="br-live-border"></div>
+    </div>
+
+    <style>
+      [data-composition-id="book-reveal"] { position: absolute; inset: 0; background: transparent;
+        font-family: 'Inter', system-ui, sans-serif; }
+      /* scrim is dark across the left+center (subdues the duplicate center-Anndy behind
+         the title) but stays a gradient (not flat) and clears at the far-right edge so a
+         hint of live footage remains; the framed panel is the clear live shot of him */
+      [data-composition-id="book-reveal"] .br-bg { position: absolute; inset: 0;
+        background: linear-gradient(100deg, rgba(12,13,18,0.97) 0%, rgba(12,13,18,0.93) 60%, rgba(12,13,18,0.8) 74%, rgba(12,13,18,0.12) 88%, rgba(12,13,18,0) 96%); }
+      [data-composition-id="book-reveal"] .br-glow { position: absolute; left: 120px; top: 250px; width: 560px; height: 600px;
+        background: radial-gradient(50% 50% at 50% 50%, rgba(31,227,198,0.28), rgba(31,227,198,0)); filter: blur(8px); }
+
+      [data-composition-id="book-reveal"] .br-book-wrap { position: absolute; left: 150px; top: 280px;
+        width: 320px; height: 480px; perspective: 1700px; }
+      [data-composition-id="book-reveal"] .br-book { position: absolute; inset: 0; width: 320px; height: 480px;
+        transform-origin: left center; box-shadow: 0 40px 80px rgba(0,0,0,0.55), 0 0 60px rgba(31,227,198,0.18); }
+      [data-composition-id="book-reveal"] .br-sweep { position: absolute; inset: 0; overflow: hidden; mix-blend-mode: screen;
+        background: linear-gradient(105deg, rgba(255,255,255,0) 38%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 62%);
+        background-size: 280% 100%; }
+
+      [data-composition-id="book-reveal"] .br-title { position: absolute; left: 540px; top: 300px; width: 560px; }
+      [data-composition-id="book-reveal"] .br-eyebrow { font-size: 28px; font-weight: 600; letter-spacing: 0.2em;
+        text-transform: uppercase; color: #1FE3C6; }
+      [data-composition-id="book-reveal"] .br-web4 { font-size: 176px; font-weight: 900; line-height: 0.92; color: #EEF1F4;
+        letter-spacing: -0.03em; margin-top: 6px; text-shadow: 0 0 50px rgba(31,227,198,0.25); }
+      [data-composition-id="book-reveal"] .br-sub { font-size: 36px; font-weight: 500; color: #C7CBD1; margin-top: 12px; }
+      [data-composition-id="book-reveal"] .br-rule { height: 3px; width: 200px; background: #1FE3C6; margin: 28px 0 26px;
+        transform-origin: left center; box-shadow: 0 0 18px rgba(31,227,198,0.6); }
+      /* stacked vertically (#11 under #1) so they never reach the video panel */
+      [data-composition-id="book-reveal"] .br-stats { display: flex; flex-direction: column; gap: 16px; }
+      [data-composition-id="book-reveal"] .br-stat { display: flex; align-items: baseline; gap: 14px; }
+      [data-composition-id="book-reveal"] .br-num { font-size: 58px; font-weight: 800; color: #1FE3C6;
+        font-variant-numeric: tabular-nums; text-shadow: 0 0 24px rgba(31,227,198,0.45); min-width: 100px; }
+      [data-composition-id="book-reveal"] .br-lbl { font-size: 24px; font-weight: 600; letter-spacing: 0.14em;
+        text-transform: uppercase; color: #969CA6; }
+
+      [data-composition-id="book-reveal"] .br-live-wrap { position: absolute; left: 1190px; top: 230px;
+        width: 600px; height: 620px; border-radius: 14px; overflow: hidden;
+        box-shadow: 0 40px 90px rgba(0,0,0,0.6), 0 0 50px rgba(31,227,198,0.12); }
+      [data-composition-id="book-reveal"] #br-live { width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; }
+      [data-composition-id="book-reveal"] .br-live-border { position: absolute; inset: 0; border-radius: 14px;
+        border: 1px solid rgba(31,227,198,0.35); pointer-events: none; }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // rest-state
+      tl.set("#br-bg", { opacity: 0 }, 0);
+      tl.set("#br-glow", { opacity: 0, scale: 0.85 }, 0);
+      tl.set("#br-book", { opacity: 0, rotationY: -26, scale: 0.92 }, 0);
+      tl.set("#br-sweep", { backgroundPosition: "180% 0%", opacity: 0 }, 0);
+      tl.set("#br-eyebrow", { opacity: 0, y: 16 }, 0);
+      tl.set("#br-web4", { opacity: 0, y: 30, clipPath: "inset(0 0 100% 0)" }, 0);
+      tl.set("#br-sub", { opacity: 0, y: 16 }, 0);
+      tl.set("#br-rule", { scaleX: 0 }, 0);
+      tl.set(["#br-stat1", "#br-stat2"], { opacity: 0, y: 18 }, 0);
+      tl.set("#br-live-wrap", { opacity: 0, x: 40, scale: 0.96 }, 0);
+
+      // reveal
+      tl.to("#br-bg", { opacity: 1, duration: 0.7, ease: "power2.out" }, 0.4);
+      tl.to("#br-glow", { opacity: 1, scale: 1, duration: 1.0, ease: "power3.out" }, 0.7);
+      tl.to("#br-book", { opacity: 1, rotationY: -6, scale: 1, duration: 1.1, ease: "expo.out" }, 0.9);
+      tl.to("#br-sweep", { opacity: 1, duration: 0.1 }, 1.4);
+      tl.to("#br-sweep", { backgroundPosition: "-80% 0%", duration: 1.0, ease: "power2.inOut" }, 1.4);
+      tl.to("#br-sweep", { opacity: 0, duration: 0.3 }, 2.3);
+      tl.to("#br-live-wrap", { opacity: 1, x: 0, scale: 1, duration: 1.0, ease: "expo.out" }, 1.0);
+      tl.to("#br-eyebrow", { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 1.5);
+      tl.to("#br-web4", { opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)", duration: 0.8, ease: "expo.out" }, 1.9);
+      tl.to("#br-sub", { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 2.6);
+      tl.to("#br-rule", { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 3.0);
+
+      // stats appear AS HE SAYS THEM: "#1 new release" abs 35 (rel 12), "#11 bestseller" abs 38 (rel 15)
+      tl.to("#br-stat1", { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 12.0);
+      tl.to("#br-stat2", { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 15.0);
+      // (Web3 -> Web4 + AI moved to its own beat at ~0:48, when he says it)
+
+      // exit: content + live panel FIRST, scrim LAST (text never floats on the face)
+      tl.to([".br-title", "#br-book-wrap", "#br-glow", "#br-live-wrap"], { opacity: 0, y: -14, duration: 0.5, ease: "power2.in" }, 21.3);
+      tl.to(".br-bg", { opacity: 0, duration: 0.55, ease: "power2.in" }, 22.0);
+
+      window.__timelines["book-reveal"] = tl;
+    </script>
+  </div>
+</template>

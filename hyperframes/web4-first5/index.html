@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #bgvideo { width: 1920px; height: 1080px; object-fit: cover; }
+      /* Overlay sub-comps sit above the video via z-index (track-index does NOT layer) */
+      [data-composition-src] { position: absolute; inset: 0; z-index: 10; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="68"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- BASE VIDEO (muted) — track 0. DO NOT change this element. -->
+      <video
+        id="bgvideo"
+        class="clip"
+        data-start="0"
+        data-duration="68"
+        data-track-index="0"
+        src="video.mp4"
+        muted
+        playsinline
+        crossorigin="anonymous"
+      ></video>
+
+      <!-- AUDIO from the same file — separate element. DO NOT change this element. -->
+      <audio
+        id="bgaudio"
+        class="clip"
+        data-start="0"
+        data-duration="68"
+        data-track-index="9"
+        src="video.mp4"
+        data-volume="1"
+        crossorigin="anonymous"
+      ></audio>
+
+      <!-- OVERLAY SUB-COMPOSITIONS (transparent bg; video shows through) -->
+      <div class="clip" data-composition-id="hook"
+           data-composition-src="compositions/hook.html"
+           data-start="0" data-duration="14" data-track-index="1"></div>
+
+      <div class="clip" data-composition-id="notebooklm-card"
+           data-composition-src="compositions/notebooklm-card.html"
+           data-start="14.6" data-duration="8.4" data-track-index="2"></div>
+
+      <div class="clip" data-composition-id="book-reveal"
+           data-composition-src="compositions/book-reveal.html"
+           data-start="23" data-duration="23" data-track-index="1"></div>
+
+      <div class="clip" data-composition-id="web-evolution"
+           data-composition-src="compositions/web-evolution.html"
+           data-start="45.8" data-duration="3.8" data-track-index="2"></div>
+
+      <div class="clip" data-composition-id="keypoints-list"
+           data-composition-src="compositions/keypoints-list.html"
+           data-start="57" data-duration="11" data-track-index="3"></div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      // Root has no tweens of its own; sub-comp timelines auto-nest by the framework.
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

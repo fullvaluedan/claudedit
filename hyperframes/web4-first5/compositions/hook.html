@@ -1,0 +1,75 @@
+<template id="hook-tpl">
+  <div data-composition-id="hook" data-width="1920" data-height="1080">
+    <div class="hk-scrim" id="hk-scrim"></div>
+
+    <!-- count-up stat -->
+    <div class="hk-money" id="hk-money">
+      <div class="hk-eyebrow" id="hk-eyebrow">POTENTIAL MARKET CAP</div>
+      <div class="hk-numwrap"><span class="hk-num" id="hk-num">$0T</span><span class="hk-plus" id="hk-plus">+</span></div>
+    </div>
+
+    <!-- kinetic slam words (one at a time) -->
+    <div class="hk-slam">
+      <div class="hk-word" id="hk-w1">REGULATION</div>
+      <div class="hk-word" id="hk-w2">DECENTRALIZED</div>
+      <div class="hk-word cy" id="hk-w3">MONEY &amp; GREED</div>
+      <div class="hk-word cy" id="hk-w4">AI&nbsp;STEPS&nbsp;IN</div>
+    </div>
+
+    <style>
+      [data-composition-id="hook"] { position: absolute; inset: 0; background: transparent;
+        font-family: 'Inter', system-ui, sans-serif; }
+      [data-composition-id="hook"] .hk-scrim { position: absolute; inset: 0;
+        background: linear-gradient(100deg, rgba(10,11,14,0.92) 0%, rgba(10,11,14,0.74) 34%, rgba(10,11,14,0.25) 60%, rgba(10,11,14,0) 80%); }
+      [data-composition-id="hook"] .hk-money { position: absolute; left: 140px; top: 300px; }
+      [data-composition-id="hook"] .hk-eyebrow { font-size: 30px; font-weight: 600; letter-spacing: 0.2em;
+        text-transform: uppercase; color: #1FE3C6; }
+      [data-composition-id="hook"] .hk-numwrap { display: flex; align-items: flex-start; margin-top: 8px; }
+      [data-composition-id="hook"] .hk-num { font-size: 220px; font-weight: 900; line-height: 0.9; color: #EEF1F4;
+        letter-spacing: -0.04em; font-variant-numeric: tabular-nums; text-shadow: 0 0 60px rgba(31,227,198,0.4); }
+      [data-composition-id="hook"] .hk-plus { font-size: 150px; font-weight: 900; line-height: 0.9; color: #1FE3C6;
+        display: inline-block; transform-origin: center bottom; margin-left: 8px;
+        text-shadow: 0 0 50px rgba(31,227,198,0.55); }
+      [data-composition-id="hook"] .hk-slam { position: absolute; left: 140px; top: 540px; width: 1100px; }
+      [data-composition-id="hook"] .hk-word { position: absolute; left: 0; top: 0; font-size: 132px; font-weight: 900;
+        line-height: 0.95; letter-spacing: -0.03em; color: #EEF1F4; white-space: nowrap; }
+      [data-composition-id="hook"] .hk-word.cy { color: #1FE3C6; text-shadow: 0 0 50px rgba(31,227,198,0.45); }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      var numEl = document.getElementById("hk-num");
+
+      // ---- count-up "$3T+" landing on the word "trillion" (1.30s) ----
+      tl.set("#hk-scrim", { opacity: 0 }, 0);
+      tl.set("#hk-money", { opacity: 0, y: 26 }, 0);
+      tl.set("#hk-plus", { opacity: 0, scale: 1.5, y: 10 }, 0);
+      tl.set(["#hk-w1", "#hk-w2", "#hk-w3", "#hk-w4"], { opacity: 0, scale: 1.16, y: 22 }, 0);
+
+      tl.to("#hk-scrim", { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.1);
+      tl.to("#hk-money", { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.3);
+      var counter = { v: 0 };
+      tl.to(counter, { v: 3, duration: 1.0, ease: "power2.out",
+        onUpdate: function () { numEl.textContent = "$" + Math.round(counter.v) + "T"; } }, 0.35);
+      // animate the "+" in (like the rest), landing just after the number settles
+      tl.to("#hk-plus", { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: "expo.out" }, 1.45);
+      tl.to("#hk-money", { opacity: 0, y: -18, duration: 0.4, ease: "power2.in" }, 4.4);
+
+      // ---- kinetic slam words, one at a time (in -> hold -> out) ----
+      function slam(sel, tin) {
+        tl.to(sel, { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: "expo.out" }, tin);
+        tl.to(sel, { opacity: 0, y: -16, duration: 0.4, ease: "power2.in" }, tin + 1.5);
+      }
+      slam("#hk-w1", 5.3);   // REGULATION (5.48)
+      slam("#hk-w2", 7.4);   // DECENTRALIZED (7.56)
+      slam("#hk-w3", 9.0);   // MONEY & GREED (9.12)
+      // AI steps in holds a touch longer, then the scrim clears
+      tl.to("#hk-w4", { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: "expo.out" }, 11.3);
+      tl.to(["#hk-w4", "#hk-scrim"], { opacity: 0, y: -14, duration: 0.6, ease: "power2.in" }, 13.6);
+
+      window.__timelines["hook"] = tl;
+    </script>
+  </div>
+</template>

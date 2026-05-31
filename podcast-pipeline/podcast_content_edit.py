@@ -304,6 +304,124 @@ def parse_and_validate_claude_response(
 
 
 # ---------------------------------------------------------------------------
+# Rich content detection (lag, retake, intro, teasers) — used by the pipeline
+# ---------------------------------------------------------------------------
+
+DETECTION_PROMPT = """You are editing a single-camera podcast for publication. Above is the full timestamped transcript. Return ONLY a JSON object (no prose, no markdown fences) with this exact shape:
+
+{
+  "cuts": [
+    {"start": <float_sec>, "end": <float_sec>, "type": "<category>", "confidence": <0.0-1.0>, "reason": "<short>"}
+  ],
+  "intro": {"start": <float_sec>, "end": <float_sec>, "confidence": <0.0-1.0>},
+  "teaser_clips": [
+    {"start": <float_sec>, "end": <float_sec>, "quote": "<verbatim words>", "score": <0.0-1.0>, "reason": "<short>"}
+  ]
+}
+
+CUTS — regions to DELETE. Categories:
+- "lag": internet/connection trouble and ALL the talk around it — "we lost you", "how's your internet", "you're lagging", "can you repeat the last 30 seconds", "it cut off", "or restart that". Include the ENTIRE exchange end-to-end, not just one sentence.
+- "retake": when a point is interrupted (often by lag) and then RE-EXPLAINED later. Cut the interrupted/incomplete FIRST attempt AND the surrounding banter; KEEP the clean re-done version. Name the duplicated point in the reason.
+- "false_start": abandoned sentences or mid-thought restarts ("let me... no, actually...") that lead nowhere.
+- "pre_show": chit-chat before the episode topic actually begins (greetings, "how are you", small talk, "haven't posted in a while").
+- "post_show": wind-down after the conversation concludes (sign-offs, "that was great", "are we still recording", logistics).
+- "tangent": clearly off-topic detours unrelated to the episode subject.
+
+Rules for cuts:
+- Times must be valid floats within the transcript's range.
+- Boundaries must fall between sentences at natural pauses, FULLY containing the unwanted content (do not leave half of a lag exchange behind).
+- Do NOT cut normal back-channeling ("yeah", "right", "exactly") — that is natural conversation.
+- Do NOT cut the intro or any teaser_clip you select.
+- If unsure whether something is real content, give it LOW confidence (< 0.5).
+
+INTRO — the formal self-introduction of the show/episode/guest. IMPORTANT: it is often recorded AFTER the main conversation, so it may appear near the END of the transcript. If there is no clear intro, return {"start":0,"end":0,"confidence":0}.
+
+TEASER_CLIPS — pick the 3 most compelling, self-contained quotes from the MAIN content (never from pre/post-show) for a cold open. Each must stand alone and hook a viewer; spread them across the episode. "quote" must be verbatim.
+
+Return ONLY the JSON object."""
+
+
+def detect_edits_with_claude(formatted_transcript: str) -> tuple[str, dict]:
+    """Single Claude call (prompt-cached) returning the raw JSON detection string."""
+    client = anthropic.Anthropic()
+    print("  Calling Claude for content detection (lag / retake / intro / teasers)...")
+    response = client.messages.create(
+        model="claude-sonnet-4-6",
+        max_tokens=4096,
+        system="You are a meticulous professional podcast editor. You remove connection problems, "
+               "re-taken segments, and off-topic chatter while preserving the real conversation. "
+               "Return ONLY valid JSON matching the requested schema.",
+        messages=[{
+            "role": "user",
+            "content": [
+                {"type": "text", "text": formatted_transcript, "cache_control": {"type": "ephemeral"}},
+                {"type": "text", "text": DETECTION_PROMPT},
+            ],
+        }],
+        extra_headers={"anthropic-beta": "prompt-caching-2024-07-31"},
+    )
+    usage = response.usage
+    print(f"  Tokens: {usage.input_tokens} in, {usage.output_tokens} out "
+          f"(cache_read={getattr(usage, 'cache_read_input_tokens', 0)})")
+    return response.content[0].text.strip(), {
+        "input": usage.input_tokens, "output": usage.output_tokens,
+        "cache_read": getattr(usage, "cache_read_input_tokens", 0),
+    }
+
+
+def validate_detection(raw: str, duration_sec: float, min_confidence: float = 0.5) -> dict:
+    """Parse Claude's detection JSON; clamp times; filter cuts by confidence.
+    Returns {cuts, intro, teaser_clips} with unsnapped float times."""
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        match = re.search(r"\{[\s\S]*\}", raw)
+        if not match:
+            raise ValueError(f"No JSON found in Claude detection response:\n{raw[:500]}")
+        data = json.loads(match.group())
+
+    def clamp(v: float) -> float:
+        return max(0.0, min(float(v), duration_sec))
+
+    cuts = []
+    for c in data.get("cuts", []):
+        try:
+            s, e = clamp(c["start"]), clamp(c["end"])
+            conf = float(c.get("confidence", 0.5))
+            if e - s >= 0.3 and conf >= min_confidence:
+                cuts.append({
+                    "start": s, "end": e,
+                    "type": c.get("type", "cut"),
+                    "confidence": round(conf, 2),
+                    "reason": c.get("reason", ""),
+                })
+        except (KeyError, TypeError, ValueError):
+            pass
+
+    intro_raw = data.get("intro", {}) or {}
+    i_s, i_e = clamp(intro_raw.get("start", 0)), clamp(intro_raw.get("end", 0))
+    i_conf = float(intro_raw.get("confidence", 0) or 0)
+    intro = ({"start": i_s, "end": i_e, "confidence": round(i_conf, 2)}
+             if i_conf >= 0.3 and i_e > i_s else {"start": 0.0, "end": 0.0, "confidence": 0.0})
+
+    teasers = []
+    for t in data.get("teaser_clips", []):
+        try:
+            s, e = clamp(t["start"]), clamp(t["end"])
+            if e - s >= 1.0:
+                teasers.append({
+                    "start": s, "end": e,
+                    "quote": t.get("quote", ""),
+                    "score": round(float(t.get("score", 0.5)), 2),
+                    "reason": t.get("reason", ""),
+                })
+        except (KeyError, TypeError, ValueError):
+            pass
+
+    return {"cuts": cuts, "intro": intro, "teaser_clips": teasers}
+
+
+# ---------------------------------------------------------------------------
 # Cut / segment construction
 # ---------------------------------------------------------------------------
 

@@ -1,0 +1,77 @@
+<template id="keypoints-list-tpl">
+  <div data-composition-id="keypoints-list" data-width="1920" data-height="1080"
+       data-composition-variables='[
+         {"id":"eyebrow","type":"string","label":"Eyebrow","default":"THE AI MARKET"},
+         {"id":"b1","type":"string","label":"Bullet 1","default":"A much bigger market than crypto"},
+         {"id":"b2","type":"string","label":"Bullet 2","default":"Everyone is chasing AI — him included"},
+         {"id":"b3","type":"string","label":"Bullet 3","default":"Endless to research and build on"}
+       ]'>
+    <div class="kl-bg" id="kl-bg"></div>
+    <div class="kl-wrap">
+      <div class="kl-eyebrow" id="kl-eyebrow">THE AI MARKET</div>
+      <div class="kl-rule" id="kl-rule"></div>
+      <div class="kl-item" id="kl-i1"><span class="kl-bar"></span><span class="kl-txt" id="kl-t1"></span></div>
+      <div class="kl-item" id="kl-i2"><span class="kl-bar"></span><span class="kl-txt" id="kl-t2"></span></div>
+      <div class="kl-item" id="kl-i3"><span class="kl-bar"></span><span class="kl-txt" id="kl-t3"></span></div>
+    </div>
+
+    <!-- live PiP of Anndy on the right (like the reference templates) -->
+    <div class="kl-live-wrap" id="kl-live-wrap">
+      <video class="clip" id="kl-live" src="../video.mp4" muted playsinline crossorigin="anonymous"
+             data-start="0" data-duration="11" data-media-start="57" data-track-index="1"></video>
+      <div class="kl-live-border"></div>
+    </div>
+
+    <style>
+      [data-composition-id="keypoints-list"] { position: absolute; inset: 0; background: transparent;
+        font-family: 'Inter', system-ui, sans-serif; }
+      [data-composition-id="keypoints-list"] .kl-bg { position: absolute; inset: 0;
+        background: linear-gradient(100deg, rgba(12,13,18,0.95) 0%, rgba(12,13,18,0.9) 56%, rgba(12,13,18,0.78) 70%, rgba(12,13,18,0.1) 86%, rgba(12,13,18,0) 95%); }
+      [data-composition-id="keypoints-list"] .kl-wrap { position: absolute; left: 130px; top: 300px; width: 980px; }
+      [data-composition-id="keypoints-list"] .kl-eyebrow { font-size: 28px; font-weight: 600; letter-spacing: 0.2em;
+        text-transform: uppercase; color: #969CA6; }
+      [data-composition-id="keypoints-list"] .kl-rule { height: 2px; width: 100%; background: rgba(255,255,255,0.12);
+        margin: 18px 0 36px; transform-origin: left center; }
+      [data-composition-id="keypoints-list"] .kl-item { display: flex; align-items: flex-start; gap: 22px; margin-bottom: 30px; }
+      [data-composition-id="keypoints-list"] .kl-bar { flex: 0 0 6px; width: 6px; height: 52px; background: #1FE3C6;
+        border-radius: 3px; margin-top: 6px; box-shadow: 0 0 16px rgba(31,227,198,0.6); }
+      [data-composition-id="keypoints-list"] .kl-txt { font-size: 48px; font-weight: 700; color: #EEF1F4; line-height: 1.18;
+        letter-spacing: -0.01em; max-width: 900px; }
+      [data-composition-id="keypoints-list"] .kl-live-wrap { position: absolute; left: 1240px; top: 300px;
+        width: 540px; height: 480px; border-radius: 14px; overflow: hidden;
+        box-shadow: 0 40px 90px rgba(0,0,0,0.6), 0 0 50px rgba(31,227,198,0.1); }
+      [data-composition-id="keypoints-list"] #kl-live { width: 100%; height: 100%; object-fit: cover; object-position: 50% 36%; }
+      [data-composition-id="keypoints-list"] .kl-live-border { position: absolute; inset: 0; border-radius: 14px;
+        border: 1px solid rgba(31,227,198,0.32); pointer-events: none; }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      var v = (window.__hyperframes && window.__hyperframes.getVariables) ? window.__hyperframes.getVariables() : {};
+      document.getElementById("kl-eyebrow").textContent = v.eyebrow || "THE AI MARKET";
+      document.getElementById("kl-t1").textContent = v.b1 || "A much bigger market than crypto";
+      document.getElementById("kl-t2").textContent = v.b2 || "Everyone is chasing AI — him included";
+      document.getElementById("kl-t3").textContent = v.b3 || "Endless to research and build on";
+
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#kl-bg", { opacity: 0 }, 0);
+      tl.set("#kl-eyebrow", { opacity: 0, y: 14 }, 0);
+      tl.set("#kl-rule", { scaleX: 0 }, 0);
+      tl.set(["#kl-i1", "#kl-i2", "#kl-i3"], { opacity: 0, x: -24 }, 0);
+      tl.set("#kl-live-wrap", { opacity: 0, x: 40, scale: 0.96 }, 0);
+
+      tl.to("#kl-bg", { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.1);
+      tl.to("#kl-live-wrap", { opacity: 1, x: 0, scale: 1, duration: 0.8, ease: "expo.out" }, 0.2);
+      tl.to("#kl-eyebrow", { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.3);
+      tl.to("#kl-rule", { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 0.4);
+      // each line reveals AS HE SAYS IT (clip starts abs 57)
+      tl.to("#kl-i1", { opacity: 1, x: 0, duration: 0.5, ease: "expo.out" }, 0.5);   // "...market is so much bigger" (57.4)
+      tl.to("#kl-i2", { opacity: 1, x: 0, duration: 0.5, ease: "expo.out" }, 1.9);   // "everyone interested... myself included" (58.8)
+      tl.to("#kl-i3", { opacity: 1, x: 0, duration: 0.5, ease: "expo.out" }, 7.3);   // "so many things happening... researching" (64.3)
+
+      tl.to(["#kl-wrap", "#kl-bg", "#kl-live-wrap"], { opacity: 0, y: 12, duration: 0.5, ease: "power2.in" }, 10.3);
+      window.__timelines["keypoints-list"] = tl;
+    </script>
+  </div>
+</template>

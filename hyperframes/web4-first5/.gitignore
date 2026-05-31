@@ -1,0 +1,7 @@
+# large media — not source
+renders/
+video.mp4
+*.mp4
+node_modules/
+.DS_Store
+.hyperframes/

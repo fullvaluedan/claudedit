@@ -132,88 +132,86 @@ def stage_analyze(source: Path, transcript: Path, work_dir: Path,
             return round(word_starts[idx], 3)
         return round(t, 3)
 
-    # Detect word gaps >= silence_s
+    # ── 1. Silence cuts (word gaps >= silence_s) ─────────────────────────────
     silence_cuts = []
     for i in range(1, len(words)):
         gap_s = words[i - 1]["end"]
         gap_e = words[i]["start"]
         if gap_e - gap_s >= silence_s:
-            silence_cuts.append({"start": gap_s, "end": gap_e, "reason": "silence"})
-    print(f"  Word gaps >= {silence_s}s: {len(silence_cuts)}")
+            silence_cuts.append({"start": gap_s, "end": gap_e, "type": "silence", "reason": ""})
+    print(f"  Silence gaps >= {silence_s}s: {len(silence_cuts)}")
 
-    # Find intro (last 20% of file — search for self-intro patterns)
-    last_20pct = duration * 0.80
-    import re
-    intro_re = re.compile(r"hi (guys|everyone|there)|hello (guys|everyone)|i'?m\s+\w+\s+\w+|welcome to", re.I)
-    intro_start = 0.0
-    intro_end   = 0.0
-    for seg in segs:
-        if seg["start"] >= last_20pct and intro_re.search(seg.get("text", "")):
-            # Found intro start — read forward up to 90s for CTA or "thank you"
-            end_re = re.compile(r"thank you|bye|see you|take a look|subscribe|check it out", re.I)
-            intro_start = seg["start"]
-            for seg2 in segs:
-                if seg2["start"] > intro_start and seg2["start"] <= intro_start + 90:
-                    if end_re.search(seg2.get("text", "")):
-                        intro_end = seg2["end"]
-                        break
-            if intro_end == 0.0:
-                # No explicit end marker — take 60s window
-                intro_end = min(intro_start + 60, duration)
-            break
+    # ── 2. Claude content detection (lag / retake / pre+post-show / intro / teasers) ──
+    intro = {"start": 0.0, "end": 0.0, "confidence": 0.0}
+    teasers: list[dict] = []
+    content_cuts: list[dict] = []
+    sys.path.insert(0, str(Path(__file__).parent))
+    try:
+        import podcast_content_edit as pce
+        formatted = pce.format_transcript_for_claude(segs, words)
+        raw, _usage = pce.detect_edits_with_claude(formatted)
+        det = pce.validate_detection(raw, duration, min_confidence=0.5)
+        content_cuts = det["cuts"]
+        intro = det["intro"]
+        teasers = det["teaser_clips"]
+        from collections import Counter
+        type_counts = dict(Counter(c["type"] for c in content_cuts))
+        print(f"  Claude: {len(content_cuts)} content cuts {type_counts}, "
+              f"{len(teasers)} teasers, intro={'yes' if intro['end'] > 0 else 'no'}")
+    except Exception as e:
+        print(f"  [warn] Claude detection failed ({e}); using silence-only cuts.")
 
-    if intro_start > 0:
-        print(f"  Intro detected: {intro_start:.1f}s – {intro_end:.1f}s ({(intro_end-intro_start):.1f}s)")
-    else:
-        print(f"  No intro detected (search last 20% for 'hi guys', 'I'm [name]')")
+    # ── 3. Snap every cut to word edges (start→word end, end→word start) ──────
+    def snap_cut(c: dict) -> dict:
+        return {**c,
+                "start": snap_to_word_end(c["start"]),
+                "end":   snap_to_word_start(c["end"])}
 
-    # Structural cuts: pre-show (first 88s heuristic) and post-recording
-    # Identify where main content ends: find "catch you next time" or "bye" before intro
-    outro_end = intro_start if intro_start > 0 else duration
-    outro_re = re.compile(r"catch you|see you next|bye bro|bye everyone|goodbye", re.I)
-    main_end = outro_end
-    for seg in segs:
-        if seg["start"] < outro_end - 60 and outro_re.search(seg.get("text", "")):
-            main_end = seg["end"]  # keep searching for latest match before intro
+    snapped = [snap_cut(c) for c in (silence_cuts + content_cuts)]
+    snapped = [c for c in snapped if c["end"] - c["start"] >= 0.2]
 
-    structural_cuts = [
-        {"start": 0.0,      "end": min(90.0, words[0]["start"] + 0.1), "reason": "pre-show"},
-        {"start": main_end, "end": duration, "reason": "post-recording"},
-    ]
-    print(f"  Main content: ~{structural_cuts[0]['end']:.0f}s – {main_end:.0f}s")
+    # ── 4. Snap intro + teasers ──────────────────────────────────────────────
+    if intro["end"] > intro["start"]:
+        intro = {**intro,
+                 "start": snap_to_word_start(intro["start"]),
+                 "end":   snap_to_word_end(intro["end"])}
+    teasers = [{**t,
+                "start": snap_to_word_start(t["start"]),
+                "end":   snap_to_word_end(t["end"])}
+               for t in teasers]
 
-    # Snapped lag cuts (empty by default — user adds manually to content_edit.json)
-    lag_cuts = []
-
-    # Merge all cuts
-    all_raw = [(c["start"], c["end"], c["reason"]) for c in silence_cuts + structural_cuts + lag_cuts]
-    all_raw.sort(key=lambda x: x[0])
-    merged_cuts = []
-    for s, e, r in all_raw:
-        if merged_cuts and s <= merged_cuts[-1]["end"] + 0.05:
-            merged_cuts[-1]["end"] = max(merged_cuts[-1]["end"], e)
+    # ── 5. Main segments = complement of (cuts ∪ intro) over [0, duration] ────
+    # Intro is excluded from the body because it's repositioned to the front.
+    cut_ivs = sorted([(c["start"], c["end"]) for c in snapped]
+                     + ([(intro["start"], intro["end"])] if intro["end"] > intro["start"] else []))
+    merged_ivs: list[list[float]] = []
+    for s, e in cut_ivs:
+        if merged_ivs and s <= merged_ivs[-1][1] + 0.05:
+            merged_ivs[-1][1] = max(merged_ivs[-1][1], e)
         else:
-            merged_cuts.append({"start": s, "end": e, "reason": r})
+            merged_ivs.append([s, e])
 
-    # Compute main segments
-    main_lo = structural_cuts[0]["end"]
-    main_hi = main_end
     main_segments = []
     cursor = 0.0
-    for c in merged_cuts:
-        if c["start"] > cursor + 0.5:
-            main_segments.append({"start": cursor, "end": c["start"]})
-        cursor = c["end"]
+    for s, e in merged_ivs:
+        if s > cursor + 0.5:
+            main_segments.append({"start": round(cursor, 3), "end": round(s, 3)})
+        cursor = e
     if duration - cursor > 0.5:
-        main_segments.append({"start": cursor, "end": duration})
-    main_segments = [s for s in main_segments
-                     if s["end"] - s["start"] >= 0.5
-                     and s["end"] > main_lo
-                     and s["start"] < main_hi]
-    for s in main_segments:
-        s["start"] = max(round(s["start"], 3), main_lo)
-        s["end"]   = min(round(s["end"],   3), main_hi)
-    main_segments = [s for s in main_segments if s["end"] - s["start"] >= 0.5]
+        main_segments.append({"start": round(cursor, 3), "end": round(duration, 3)})
+
+    # ── 6. Output cut list (deletions only; intro is NOT a deletion) ──────────
+    out_cuts = sorted(
+        [{"start": c["start"], "end": c["end"],
+          "reason": (f"{c.get('type', 'cut')}: {c.get('reason', '')}".rstrip(": ").strip())}
+         for c in snapped],
+        key=lambda x: x["start"])
+    merged_cuts: list[dict] = []
+    for c in out_cuts:
+        if merged_cuts and c["start"] <= merged_cuts[-1]["end"] + 0.05:
+            merged_cuts[-1]["end"] = max(merged_cuts[-1]["end"], c["end"])
+        else:
+            merged_cuts.append(dict(c))
 
     edit_dur = sum(s["end"] - s["start"] for s in main_segments)
     print(f"  Main segments: {len(main_segments)}, ~{edit_dur/60:.1f} min of content")
@@ -221,11 +219,10 @@ def stage_analyze(source: Path, transcript: Path, work_dir: Path,
     output = {
         "source": str(source.resolve()),
         "duration_sec": round(duration, 3),
-        "teaser_clips": [],   # populate manually or via LLM analysis
-        "intro": {"start": round(intro_start, 3), "end": round(intro_end, 3), "confidence": 0.8 if intro_start > 0 else 0.0},
+        "teaser_clips": teasers,
+        "intro": intro,
         "cuts": merged_cuts,
         "main_segments": main_segments,
-        "_note": "Add teaser_clips manually, or run with ANTHROPIC_API_KEY to auto-detect.",
     }
     content_edit.write_text(json.dumps(output, indent=2))
     print(f"  Written: {content_edit}")
@@ -314,15 +311,21 @@ def main():
         stage(2, TOTAL, "Analyzing transcript for edit decisions")
         print(f"  Skipped — using existing: {content_edit}")
 
-    # Stage 3+4: Build + QA
+    # Stage 3: Build + Premiere QA
     stage(3, TOTAL, f"Building Premiere sequence '{name}' + QA")
     print(f"\n  ⚠ Premiere must be open with {source.name} imported into the project bin.")
     success = stage_build_and_qa(content_edit, name, pipeline_dir)
     if not success:
         fail("Build or QA failed — see errors above.")
 
-    # Stage 4: Report
-    stage(4, TOTAL, "Pipeline complete")
+    # Stage 4: Content QA
+    stage(4, TOTAL, "Content QA — verifying edit decisions")
+    sys.path.insert(0, str(pipeline_dir))
+    from content_qa import run_content_qa
+    qa_passed = run_content_qa(transcript, content_edit)
+    if not qa_passed:
+        fail("Content QA failed — review flagged cuts above before publishing.")
+
     edit_data = json.loads(content_edit.read_text())
     clips_kept = len(edit_data.get("main_segments", []))
     cuts_made  = len(edit_data.get("cuts", []))
