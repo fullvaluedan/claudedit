@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Clip 4 — Halving Dead</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0A0A0A;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #clip-4-halving-dead {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    #clip-4-halving-dead video.bg-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* ── Clip wrapper (framework-managed visibility) ── */
+    #clip-4-halving-dead .lt-clip {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 1920px;
+      height: 340px;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    /* ── Lower-third panel ── */
+    #clip-4-halving-dead .lt-panel {
+      width: 1920px;
+      height: 340px;
+      background: rgba(10,10,10,0.88);
+      border-top: 3px solid rgba(0,212,255,0.35);
+      padding: 48px 96px;
+      box-sizing: border-box;
+      display: flex;
+      transform: translateY(340px);
+    }
+
+    /* ── SCENE 1 panel layout ── */
+    #clip-4-halving-dead #s1-panel {
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* ── Left column (65%) ── */
+    #clip-4-halving-dead #s1-left {
+      width: 65%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #clip-4-halving-dead #s1-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 26px;
+      color: #00D4FF;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 6px;
+      opacity: 0;
+    }
+
+    #clip-4-halving-dead #s1-headline {
+      font-size: 96px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 0.95;
+      opacity: 0;
+    }
+
+    #clip-4-halving-dead #s1-subheadline {
+      font-size: 64px;
+      font-weight: 800;
+      color: #888888;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 6px;
+      opacity: 0;
+    }
+
+    #clip-4-halving-dead .bullet {
+      font-size: 40px;
+      line-height: 1.3;
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      opacity: 0;
+    }
+    #clip-4-halving-dead .bullet-strong {
+      font-weight: 600;
+      color: #F0F0F0;
+    }
+    #clip-4-halving-dead .bullet-dim {
+      font-weight: 400;
+      color: #888888;
+    }
+    #clip-4-halving-dead .bullet-dot {
+      font-size: 32px;
+      color: #2A2A2A;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    /* ── Accent divider ── */
+    #clip-4-halving-dead #s1-divider {
+      width: 2px;
+      height: 220px;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(0,212,255,0.25) 30%,
+        rgba(0,212,255,0.25) 70%,
+        transparent
+      );
+      flex-shrink: 0;
+      margin: 0 48px;
+      opacity: 0;
+    }
+
+    /* ── Right column (35%) ── */
+    #clip-4-halving-dead #s1-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    #clip-4-halving-dead #epoch-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 400;
+      color: #888888;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0;
+    }
+
+    #clip-4-halving-dead .epoch-row {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.45;
+      opacity: 0;
+      width: 100%;
+    }
+    #clip-4-halving-dead .epoch-bright {
+      font-size: 32px;
+      font-weight: 400;
+      color: #F0F0F0;
+    }
+    #clip-4-halving-dead .epoch-mid {
+      font-size: 30px;
+      font-weight: 400;
+      color: #888888;
+    }
+    #clip-4-halving-dead .epoch-future {
+      font-size: 28px;
+      font-weight: 400;
+      font-family: 'Inter', sans-serif;
+      color: rgba(136,136,136,0.4);
+    }
+
+    /* ── Background glows ── */
+    #clip-4-halving-dead .bg-glow {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+      z-index: 2;
+    }
+    #clip-4-halving-dead #glow-l {
+      width: 800px; height: 400px;
+      bottom: 140px; left: -60px;
+      background: radial-gradient(ellipse at center, rgba(0,212,255,0.06) 0%, transparent 70%);
+    }
+    #clip-4-halving-dead #glow-r {
+      width: 500px; height: 300px;
+      bottom: 120px; right: 80px;
+      background: radial-gradient(ellipse at center, rgba(255,77,79,0.04) 0%, transparent 70%);
+    }
+  </style>
+</head>
+<body>
+  <div
+    id="clip-4-halving-dead"
+    data-composition-id="clip-4-halving-dead"
+    data-width="1920"
+    data-height="1080"
+    data-duration="100"
+    data-fps="30"
+  >
+    <video id="clip-4-halving-dead-video" class="bg-video" src="../clips/clip-4-halving-dead.mp4" muted playsinline data-start="0" data-duration="100" data-track-index="0"></video>
+    <audio id="clip-4-halving-dead-audio" src="../clips/clip-4-halving-dead.mp4" data-start="0" data-duration="100" data-track-index="2" data-volume="1"></audio>
+
+    <!-- Decorative glows -->
+    <div class="bg-glow" id="glow-l" data-layout-ignore></div>
+    <div class="bg-glow" id="glow-r" data-layout-ignore></div>
+
+    <!-- Scene 1 — 4-Year Cycle: Dead? (final scene, no exit) -->
+    <div id="s1-clip" class="lt-clip clip" data-start="8" data-duration="92" data-track-index="1">
+      <div id="s1-panel" class="lt-panel">
+        <!-- Left column: headline + bullets -->
+        <div id="s1-left">
+          <div id="s1-eyebrow">HOT TAKE · WINTERMUTE OTC DESK</div>
+          <div id="s1-headline">4-YEAR CYCLE</div>
+          <div id="s1-subheadline">DEAD?</div>
+          <div class="bullet bullet-strong" id="b1">
+            <span class="bullet-dot">·</span>
+            <span>Block rewards → negligible</span>
+          </div>
+          <div class="bullet bullet-strong" id="b2">
+            <span class="bullet-dot">·</span>
+            <span>Miner sell pressure → irrelevant</span>
+          </div>
+          <div class="bullet bullet-dim" id="b3">
+            <span class="bullet-dot">·</span>
+            <span>Narrative persists &gt; fundamentals</span>
+          </div>
+        </div>
+
+        <!-- Accent divider -->
+        <div id="s1-divider"></div>
+
+        <!-- Right column: halving epoch table -->
+        <div id="s1-right">
+          <div id="epoch-label">BLOCK REWARD (BTC)</div>
+          <div class="epoch-row epoch-bright" id="e1">2012: 25 BTC</div>
+          <div class="epoch-row epoch-bright" id="e2">2016: 12.5 BTC</div>
+          <div class="epoch-row epoch-mid"    id="e3">2020: 6.25 BTC</div>
+          <div class="epoch-row epoch-mid"    id="e4">2024: 3.125 BTC</div>
+          <div class="epoch-row epoch-future" id="e5">2028: 1.5625 BTC</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+
+      const tl = gsap.timeline({ paused: true });
+
+      // ─────────────────────────────────────────────
+      // SCENE 1  (t=8, single scene, no exit)
+      // ─────────────────────────────────────────────
+      // Panel slides up from bottom
+      tl.fromTo('#s1-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        8
+      );
+
+      // Eyebrow
+      tl.fromTo('#s1-eyebrow',
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        8.3
+      );
+
+      // Accent divider grows vertically
+      tl.fromTo('#s1-divider',
+        { opacity: 0, scaleY: 0 },
+        { opacity: 1, scaleY: 1, duration: 0.6, ease: 'power2.out', transformOrigin: 'top center' },
+        8.6
+      );
+
+      // Epoch label in right column
+      tl.fromTo('#epoch-label',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
+        9.3
+      );
+
+      // "4-YEAR CYCLE" headline — heavy, slides up
+      tl.fromTo('#s1-headline',
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' },
+        8.5
+      );
+
+      // "DEAD?" sub-headline — punches in from left
+      tl.fromTo('#s1-subheadline',
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.6, ease: 'expo.out' },
+        9.0
+      );
+
+      // Bullets (left column)
+      tl.fromTo('#b1',
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.4, ease: 'power3.out' },
+        9.5
+      );
+      tl.fromTo('#b2',
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.4, ease: 'power3.out' },
+        10.0
+      );
+      tl.fromTo('#b3',
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' },
+        10.5
+      );
+
+      // Epoch rows stagger 0.4s apart starting at t=9.5
+      tl.fromTo('#e1',
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        9.5
+      );
+      tl.fromTo('#e2',
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        9.9
+      );
+      tl.fromTo('#e3',
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        10.3
+      );
+      tl.fromTo('#e4',
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
+        10.7
+      );
+      tl.fromTo('#e5',
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
+        11.1
+      );
+
+      // ─────────────────────────────────────────────
+      // Ambient glow breathe (seekable, finite repeats)
+      // ─────────────────────────────────────────────
+      tl.fromTo('#glow-l',
+        { opacity: 0.7 },
+        { opacity: 1, duration: 2.5, ease: 'sine.inOut', yoyo: true, repeat: Math.floor(100 / 5) - 1 },
+        0
+      );
+      tl.fromTo('#glow-r',
+        { opacity: 0.6 },
+        { opacity: 0.9, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: Math.floor(100 / 6) - 1 },
+        1.2
+      );
+
+      window.__timelines['clip-4-halving-dead'] = tl;
+    })();
+  </script>
+</body>
+</html>

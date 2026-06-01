@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Clip 3 — Retail Rotation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0A0A0A;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #clip-3-retail-rotation {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    #clip-3-retail-rotation video.bg-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* ── Clip wrapper (framework-managed visibility) ── */
+    #clip-3-retail-rotation .lt-clip {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 1920px;
+      height: 340px;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    /* ── Shared lower-third panel ── */
+    #clip-3-retail-rotation .lt-panel {
+      width: 1920px;
+      height: 340px;
+      background: rgba(10,10,10,0.88);
+      border-top: 3px solid rgba(0,212,255,0.35);
+      padding: 48px 96px;
+      box-sizing: border-box;
+      display: flex;
+      transform: translateY(340px);
+    }
+
+    /* ── Shared atoms ── */
+    #clip-3-retail-rotation .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 26px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 14px;
+      opacity: 0;
+    }
+    #clip-3-retail-rotation .eyebrow-accent { color: #00D4FF; }
+    #clip-3-retail-rotation .eyebrow-muted  { color: #888888; }
+
+    /* ═══════════════════════════════════════════════
+       SCENE 1 — JP Morgan retail equity ATH
+    ═══════════════════════════════════════════════ */
+    #clip-3-retail-rotation #s1-headline {
+      font-size: 80px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      opacity: 0;
+    }
+
+    #clip-3-retail-rotation #s1-stat {
+      font-size: 96px;
+      font-weight: 800;
+      color: #00D4FF;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 8px;
+      opacity: 0;
+      transform-origin: left center;
+    }
+
+    #clip-3-retail-rotation #s1-sub {
+      font-size: 32px;
+      font-weight: 400;
+      color: #888888;
+      line-height: 1.35;
+      opacity: 0;
+    }
+
+    /* ═══════════════════════════════════════════════
+       SCENE 2 — Crypto vol vs Equity vol
+    ═══════════════════════════════════════════════ */
+    #clip-3-retail-rotation .cards-row {
+      display: flex;
+      gap: 32px;
+      align-items: stretch;
+    }
+
+    #clip-3-retail-rotation .vol-card {
+      background: rgba(20,26,34,0.8);
+      border: 1px solid #2A2A2A;
+      padding: 28px 40px;
+      border-radius: 8px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      opacity: 0;
+    }
+
+    #clip-3-retail-rotation .card-title {
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    #clip-3-retail-rotation .card-title-muted { color: #888888; }
+    #clip-3-retail-rotation .card-title-fg    { color: #F0F0F0; }
+
+    #clip-3-retail-rotation .card-arrow {
+      font-size: 72px;
+      font-weight: 400;
+      line-height: 1;
+      margin: 4px 0;
+    }
+    #clip-3-retail-rotation .card-arrow-neg { color: #FF4D4F; }
+    #clip-3-retail-rotation .card-arrow-pos { color: #16C784; }
+
+    #clip-3-retail-rotation .card-status {
+      font-size: 52px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    #clip-3-retail-rotation .card-status-neg { color: #FF4D4F; }
+    #clip-3-retail-rotation .card-status-pos { color: #16C784; }
+
+    #clip-3-retail-rotation #s2-sub {
+      font-size: 32px;
+      font-weight: 400;
+      color: #888888;
+      text-align: center;
+      line-height: 1.35;
+      opacity: 0;
+    }
+
+    /* ═══════════════════════════════════════════════
+       SCENE 3 — ETF self-fulfilling cycle
+    ═══════════════════════════════════════════════ */
+    #clip-3-retail-rotation #s3-headline {
+      font-size: 72px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 6px;
+      opacity: 0;
+    }
+
+    #clip-3-retail-rotation .bullet {
+      font-size: 40px;
+      font-weight: 600;
+      color: #F0F0F0;
+      line-height: 1.25;
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      opacity: 0;
+    }
+
+    #clip-3-retail-rotation .bullet-dot {
+      color: #00D4FF;
+      font-size: 40px;
+      flex-shrink: 0;
+    }
+
+    #clip-3-retail-rotation #s3-sub {
+      font-size: 30px;
+      font-weight: 400;
+      color: #888888;
+      line-height: 1.35;
+      margin-top: 4px;
+      opacity: 0;
+    }
+
+    /* ── Decorative background glow ── */
+    #clip-3-retail-rotation .bg-glow {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+      z-index: 2;
+    }
+    #clip-3-retail-rotation #glow-l {
+      width: 700px; height: 380px;
+      bottom: 180px; left: -80px;
+      background: radial-gradient(ellipse at center, rgba(0,212,255,0.07) 0%, transparent 70%);
+    }
+    #clip-3-retail-rotation #glow-r {
+      width: 500px; height: 280px;
+      bottom: 150px; right: 100px;
+      background: radial-gradient(ellipse at center, rgba(22,199,132,0.06) 0%, transparent 70%);
+    }
+  </style>
+</head>
+<body>
+  <div
+    id="clip-3-retail-rotation"
+    data-composition-id="clip-3-retail-rotation"
+    data-width="1920"
+    data-height="1080"
+    data-duration="150"
+    data-fps="30"
+  >
+    <video id="clip-3-retail-rotation-video" class="bg-video" src="../clips/clip-3-retail-rotation.mp4" muted playsinline data-start="0" data-duration="150" data-track-index="0"></video>
+    <audio id="clip-3-retail-rotation-audio" src="../clips/clip-3-retail-rotation.mp4" data-start="0" data-duration="150" data-track-index="2" data-volume="1"></audio>
+
+    <!-- Decorative glows -->
+    <div class="bg-glow" id="glow-l" data-layout-ignore></div>
+    <div class="bg-glow" id="glow-r" data-layout-ignore></div>
+
+    <!-- Scene 1 — JP Morgan retail equity ATH -->
+    <div id="s1-clip" class="lt-clip clip" data-start="5" data-duration="52" data-track-index="1">
+      <div id="s1-panel" class="lt-panel" style="flex-direction:column;justify-content:center;gap:6px;">
+        <div class="eyebrow eyebrow-accent" id="s1-eyebrow" style="opacity:0;">JP MORGAN PRIME BROKERAGE · MAY 2026</div>
+        <div id="s1-headline">RETAIL EQUITY ACTIVITY</div>
+        <div id="s1-stat">ALL-TIME HIGH</div>
+        <div id="s1-sub">Meaningful margin vs. prior peaks (JPM prime brokerage data)</div>
+      </div>
+    </div>
+
+    <!-- Scene 2 — Vol comparison -->
+    <div id="s2-clip" class="lt-clip clip" data-start="58" data-duration="62" data-track-index="1">
+      <div id="s2-panel" class="lt-panel" style="flex-direction:column;justify-content:center;gap:18px;">
+        <div class="eyebrow eyebrow-muted" id="s2-eyebrow" style="opacity:0;">WHY RETAIL LEFT CRYPTO</div>
+        <div class="cards-row">
+          <div class="vol-card" id="card-left">
+            <div class="card-title card-title-muted">CRYPTO VOL</div>
+            <div class="card-arrow card-arrow-neg">↓</div>
+            <div class="card-status card-status-neg">COMPRESSED</div>
+          </div>
+          <div class="vol-card" id="card-right">
+            <div class="card-title card-title-fg">EQUITY VOL</div>
+            <div class="card-arrow card-arrow-pos">↑</div>
+            <div class="card-status card-status-pos">RISING</div>
+          </div>
+        </div>
+        <div id="s2-sub">Retail follows the risk-on vol trade — same behavior, different venue</div>
+      </div>
+    </div>
+
+    <!-- Scene 3 — ETF self-fulfilling cycle (final, no exit) -->
+    <div id="s3-clip" class="lt-clip clip" data-start="121" data-duration="29" data-track-index="1">
+      <div id="s3-panel" class="lt-panel" style="flex-direction:column;justify-content:center;gap:12px;">
+        <div class="eyebrow eyebrow-accent" id="s3-eyebrow" style="opacity:0;">ETF FLOW DYNAMICS</div>
+        <div id="s3-headline">SELF-FULFILLING OUTFLOWS</div>
+        <div class="bullet" id="b1">
+          <span class="bullet-dot">·</span>
+          <span>Institutions: sticky — slow to exit</span>
+        </div>
+        <div class="bullet" id="b2">
+          <span class="bullet-dot">·</span>
+          <span>Retail: spiky — rotate in/out via ETF</span>
+        </div>
+        <div id="s3-sub">ETF outflows create their own selling pressure cycle</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+
+      const tl = gsap.timeline({ paused: true });
+
+      // ─────────────────────────────────────────────
+      // SCENE 1  (t=5 → t=57)
+      // ─────────────────────────────────────────────
+      tl.fromTo('#s1-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        5
+      );
+
+      tl.fromTo('#s1-eyebrow',
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        5.3
+      );
+
+      tl.fromTo('#s1-headline',
+        { opacity: 0, x: -40 },
+        { opacity: 1, x: 0, duration: 0.45, ease: 'expo.out' },
+        5.5
+      );
+
+      tl.fromTo('#s1-stat',
+        { opacity: 0, scale: 0.9 },
+        { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' },
+        5.8
+      );
+
+      tl.fromTo('#s1-sub',
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        6.2
+      );
+
+      // Exit
+      tl.to('#s1-panel', { y: 340, duration: 0.4, ease: 'power2.in' }, 56.5);
+
+      // ─────────────────────────────────────────────
+      // SCENE 2  (t=58 → t=120)
+      // ─────────────────────────────────────────────
+      tl.fromTo('#s2-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        58
+      );
+
+      tl.fromTo('#s2-eyebrow',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
+        58.3
+      );
+
+      tl.fromTo('#card-left',
+        { opacity: 0, x: -60 },
+        { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' },
+        58.5
+      );
+
+      tl.fromTo('#card-right',
+        { opacity: 0, x: 60 },
+        { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' },
+        58.7
+      );
+
+      tl.fromTo('#s2-sub',
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        59.2
+      );
+
+      // Exit
+      tl.to('#s2-panel', { y: 340, duration: 0.4, ease: 'power2.in' }, 119.5);
+
+      // ─────────────────────────────────────────────
+      // SCENE 3  (t=121, final — no exit)
+      // ─────────────────────────────────────────────
+      tl.fromTo('#s3-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        121
+      );
+
+      tl.fromTo('#s3-eyebrow',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
+        121.3
+      );
+
+      tl.fromTo('#s3-headline',
+        { opacity: 0, x: -36 },
+        { opacity: 1, x: 0, duration: 0.5, ease: 'expo.out' },
+        121.5
+      );
+
+      // Bullets stagger 80ms apart
+      tl.fromTo('#b1',
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.45, ease: 'power3.out' },
+        121.9
+      );
+      tl.fromTo('#b2',
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.45, ease: 'power3.out' },
+        121.98
+      );
+
+      tl.fromTo('#s3-sub',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        122.4
+      );
+
+      // ─────────────────────────────────────────────
+      // Ambient glow breathe (seekable, finite repeats)
+      // ─────────────────────────────────────────────
+      tl.fromTo('#glow-l',
+        { opacity: 0.7 },
+        { opacity: 1, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: Math.floor(150 / 4) - 1 },
+        0
+      );
+      tl.fromTo('#glow-r',
+        { opacity: 0.6 },
+        { opacity: 0.95, duration: 2.5, ease: 'sine.inOut', yoyo: true, repeat: Math.floor(150 / 5) - 1 },
+        0.8
+      );
+
+      window.__timelines['clip-3-retail-rotation'] = tl;
+    })();
+  </script>
+</body>
+</html>

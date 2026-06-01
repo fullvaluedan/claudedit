@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clip 5 — AI Impact on Trading Research</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0A0A0A;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #clip-5-ai-research {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    #clip-5-ai-research video.bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* ── Framework-managed clip containers (z-index + position only) ── */
+    #clip-5-ai-research .lt-clip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 1920px;
+      height: 340px;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    /* ── Inner panel wrapper — this is what slides ── */
+    #clip-5-ai-research .lt-panel {
+      width: 1920px;
+      height: 340px;
+      background: rgba(10, 10, 10, 0.88);
+      border-top: 3px solid rgba(0, 212, 255, 0.35);
+      padding: 48px 96px;
+      box-sizing: border-box;
+      display: flex;
+      transform: translateY(340px);
+    }
+
+    /* ── Shared atoms ── */
+    #clip-5-ai-research .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 26px;
+      color: #00D4FF;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    /* ── SCENE 1: The Biggest Lift ── */
+    #clip-5-ai-research #s1-panel {
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+    }
+
+    #clip-5-ai-research #s1-left {
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #clip-5-ai-research #s1-headline {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 72px;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #clip-5-ai-research .s1-item {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 42px;
+      color: #F0F0F0;
+      line-height: 1.1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    #clip-5-ai-research .s1-item .arrow-marker {
+      color: #2A2A2A;
+      font-weight: 700;
+      font-size: 42px;
+      flex-shrink: 0;
+    }
+
+    #clip-5-ai-research #s1-right {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-left: 40px;
+      position: relative;
+    }
+
+    #clip-5-ai-research #s1-ghost-ai {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 160px;
+      color: rgba(0, 212, 255, 0.08);
+      line-height: 1;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #clip-5-ai-research #s1-workflow {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 36px;
+      color: #888888;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── SCENE 2: Team Compression ── */
+    #clip-5-ai-research #s2-panel {
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+    }
+
+    #clip-5-ai-research #s2-left {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #clip-5-ai-research #s2-center {
+      width: 20%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    #clip-5-ai-research #s2-right {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #clip-5-ai-research .s2-era-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 24px;
+      color: #888888;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    #clip-5-ai-research #s2-num-before {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 96px;
+      color: #FF4D4F;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #clip-5-ai-research #s2-num-after {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 96px;
+      color: #16C784;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #clip-5-ai-research .s2-role {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 44px;
+      color: #F0F0F0;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #clip-5-ai-research .s2-sub2 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 30px;
+      color: #888888;
+      line-height: 1.2;
+    }
+
+    #clip-5-ai-research #s2-arrow {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 80px;
+      color: #2A2A2A;
+      line-height: 1;
+    }
+
+    #clip-5-ai-research #s2-arrow-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 28px;
+      color: #888888;
+      text-align: center;
+      line-height: 1.3;
+    }
+  </style>
+</head>
+<body>
+  <div
+    id="clip-5-ai-research"
+    data-composition-id="clip-5-ai-research"
+    data-start="0"
+    data-width="1920"
+    data-height="1080"
+    data-duration="137"
+    data-fps="30"
+  >
+    <video id="c5-video" class="bg-video" src="../clips/clip-5-ai-research.mp4" muted playsinline data-start="0" data-duration="137" data-track-index="0"></video>
+    <audio id="c5-audio" src="../clips/clip-5-ai-research.mp4" data-start="0" data-duration="137" data-track-index="2" data-volume="1"></audio>
+
+    <!-- Scene 1: AI's Biggest Lift (t=12 → t=43) — outer .lt-clip is framework-managed -->
+    <div
+      id="s1-clip"
+      class="lt-clip clip"
+      data-start="12"
+      data-duration="31"
+      data-track-index="1"
+    >
+      <!-- Inner panel slides in/out via GSAP -->
+      <div id="s1-panel" class="lt-panel">
+        <!-- Left column 60% -->
+        <div id="s1-left">
+          <div id="s1-eyebrow" class="eyebrow" style="opacity:0;">AI IMPACT ON TRADING RESEARCH</div>
+          <div id="s1-headline" style="opacity:0;">THE BIGGEST LIFT</div>
+          <div class="s1-item" id="s1-item1" style="opacity:0;"><span class="arrow-marker">→</span>Task management</div>
+          <div class="s1-item" id="s1-item2" style="opacity:0;"><span class="arrow-marker">→</span>Massive data processing</div>
+          <div class="s1-item" id="s1-item3" style="opacity:0;"><span class="arrow-marker">→</span>Cross-source analysis</div>
+        </div>
+        <!-- Right column 40% -->
+        <div id="s1-right">
+          <div id="s1-ghost-ai" data-layout-ignore style="opacity:0;">AI</div>
+          <div id="s1-workflow" style="opacity:0;">Collapsed into one workflow</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 2: Team Compression (t=44 → t=137) -->
+    <div
+      id="s2-clip"
+      class="lt-clip clip"
+      data-start="44"
+      data-duration="93"
+      data-track-index="1"
+    >
+      <div id="s2-panel" class="lt-panel">
+        <!-- Left: PRE-AI -->
+        <div id="s2-left">
+          <div class="s2-era-label" id="s2-label-before" style="opacity:0;">PRE-AI (2021)</div>
+          <div id="s2-num-before" style="opacity:0;">2–3</div>
+          <div class="s2-role" id="s2-role-before" style="opacity:0;">ANALYSTS</div>
+          <div class="s2-sub2" id="s2-sub2-before" style="opacity:0;">for same research output</div>
+        </div>
+        <!-- Center: arrow -->
+        <div id="s2-center">
+          <div id="s2-arrow" style="opacity:0;">→</div>
+          <div id="s2-arrow-label" style="opacity:0;">same output</div>
+        </div>
+        <!-- Right: TODAY -->
+        <div id="s2-right">
+          <div class="s2-era-label" id="s2-label-after" style="opacity:0;">TODAY</div>
+          <div id="s2-num-after" style="opacity:0;">1</div>
+          <div class="s2-role" id="s2-role-after" style="opacity:0;">TRADER + AI</div>
+          <div class="s2-sub2" id="s2-sub2-after" style="opacity:0;">Jasper De Maere, Wintermute</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+
+      const tl = gsap.timeline({ paused: true });
+
+      // ─────────────────────────────────────────────
+      // SCENE 1  (t=12s → t=43s)
+      // ─────────────────────────────────────────────
+      // Slide inner panel up (framework already shows .lt-clip at t=12)
+      tl.fromTo('#s1-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        12
+      );
+
+      // Eyebrow
+      tl.fromTo('#s1-eyebrow',
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
+        12.3
+      );
+
+      // Headline
+      tl.fromTo('#s1-headline',
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.45, ease: 'expo.out' },
+        12.5
+      );
+
+      // Ghost AI background text
+      tl.fromTo('#s1-ghost-ai',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8, ease: 'power1.out' },
+        12.4
+      );
+
+      // Staggered list items (80ms apart)
+      tl.fromTo('#s1-item1',
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' },
+        12.8
+      );
+      tl.fromTo('#s1-item2',
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' },
+        12.88
+      );
+      tl.fromTo('#s1-item3',
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' },
+        12.96
+      );
+
+      // Workflow text (right col)
+      tl.fromTo('#s1-workflow',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'sine.out' },
+        13.2
+      );
+
+      // Panel exit (slide inner panel down; framework hides .lt-clip at t=43)
+      tl.to('#s1-panel',
+        { y: 340, duration: 0.4, ease: 'power2.in' },
+        42.5
+      );
+
+      // ─────────────────────────────────────────────
+      // SCENE 2  (t=44s → end)
+      // ─────────────────────────────────────────────
+      // Slide inner panel up
+      tl.fromTo('#s2-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        44
+      );
+
+      // Left column slides in from left (stagger via array)
+      tl.fromTo(['#s2-label-before', '#s2-num-before', '#s2-role-before', '#s2-sub2-before'],
+        { opacity: 0, x: -50 },
+        { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out', stagger: 0.05 },
+        44.4
+      );
+
+      // Center arrow fades in
+      tl.fromTo(['#s2-arrow', '#s2-arrow-label'],
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power1.out', stagger: 0.1 },
+        44.8
+      );
+
+      // Right column slides in from right
+      tl.fromTo(['#s2-label-after', '#s2-num-after', '#s2-role-after', '#s2-sub2-after'],
+        { opacity: 0, x: 50 },
+        { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out', stagger: 0.05 },
+        45.0
+      );
+
+      // Register timeline
+      window.__timelines['clip-5-ai-research'] = tl;
+    })();
+  </script>
+</body>
+</html>

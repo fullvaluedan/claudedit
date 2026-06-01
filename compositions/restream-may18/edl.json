@@ -1,0 +1,673 @@
+{
+  "source": "Copy of live-with-restream,-may-18-May-28-2026-restream.mp4",
+  "transcript": ".context/episodes/restream-may18/audio.json",
+  "design": "DESIGN.md",
+  "templates": {
+    "1": "Kinetic Stat Hook",
+    "2": "Liquid Glass Card",
+    "3": "Cinematic Split",
+    "4": "Book/Product Reveal",
+    "5": "Minimal Web Evolution",
+    "6": "Full-Frame Outro"
+  },
+  "beats": [
+    {
+      "id": 1,
+      "in": "00:47",
+      "out": "01:57",
+      "in_secs": 47.0,
+      "out_secs": 117.0,
+      "spoken": "I'm one of the OTC traders here at Wintermute\u2026 spending time on the market strategy side",
+      "template": "Liquid Glass Card",
+      "template_id": 2,
+      "content": {
+        "eyebrow": "GUEST",
+        "headline": "Jasper De Maere",
+        "lines": [
+          "OTC Trader & Market Strategist",
+          "Wintermute"
+        ]
+      },
+      "notes": "Holds through full intro. Name card stays. Fade in at first spoken word."
+    },
+    {
+      "id": 2,
+      "in": "02:14",
+      "out": "03:24",
+      "in_secs": 134.0,
+      "out_secs": 204.0,
+      "spoken": "I started looking at it in like 2016, 17\u2026 in 2021 I was on the equity floor making a very hard pitch to move full time into crypto",
+      "template": "Minimal Web Evolution",
+      "template_id": 5,
+      "content": {
+        "eyebrow": "CAREER PATH",
+        "before": "Morgan Stanley \u2013 BNP\nEquity Derivatives",
+        "after": "Wintermute\nCrypto OTC 2021",
+        "pivot_label": "DeFi Summer \u2192"
+      },
+      "notes": "Timeline sweep L\u2192R. 'before' dims as 'after' slides in."
+    },
+    {
+      "id": 3,
+      "in": "03:40",
+      "out": "04:10",
+      "in_secs": 220.0,
+      "out_secs": 250.0,
+      "spoken": "In like half a decade or so, it's just going to be another career in an industry",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "HOT TAKE",
+        "quote": "In half a decade, crypto is just another career in an industry.",
+        "attribution": "Jasper De Maere \u00b7 Wintermute"
+      },
+      "notes": "Pull quote. Italic quote body per DESIGN.md rules."
+    },
+    {
+      "id": 4,
+      "in": "04:31",
+      "out": "05:45",
+      "in_secs": 271.0,
+      "out_secs": 345.0,
+      "spoken": "We do this in principal trading. The prices we offer is risk price. We warehouse that risk\u2026 incentive to minimize price impact is very much aligned",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "WINTERMUTE OTC MODEL",
+        "left_label": "AGENCY (others)",
+        "left_points": [
+          "Execute for client",
+          "No skin in game",
+          "Incentives misaligned"
+        ],
+        "right_label": "PRINCIPAL (Wintermute)",
+        "right_points": [
+          "Warehouse risk",
+          "Best-price incentive",
+          "Incentives aligned"
+        ],
+        "accent_side": "right"
+      },
+      "notes": "Two-column comparison. Right column gets #00D4FF accent border."
+    },
+    {
+      "id": 5,
+      "in": "06:57",
+      "out": "07:11",
+      "in_secs": 417.7,
+      "out_secs": 431.0,
+      "spoken": "We traded three and a half times more notional in altcoins on the option side than we did last year",
+      "template": "Kinetic Stat Hook",
+      "template_id": 1,
+      "content": {
+        "eyebrow": "WINTERMUTE OTC DESK \u00b7 2025 H1",
+        "stat": "3.5\u00d7",
+        "stat_start": "1.0\u00d7",
+        "label": "MORE ALTCOIN OPTIONS NOTIONAL",
+        "sublabel": "vs. 2024 same period"
+      },
+      "notes": "Count-up 1.0\u21923.5 over 1.4s. Slam stat on word 'three'. #00D4FF on the number."
+    },
+    {
+      "id": 6,
+      "in": "07:19",
+      "out": "07:39",
+      "in_secs": 439.0,
+      "out_secs": 459.0,
+      "spoken": "Family offices, ultra high network individuals, asset managers also increasingly dabbling into altcoin options",
+      "template": "Liquid Glass Card",
+      "template_id": 2,
+      "content": {
+        "eyebrow": "WHO'S BUYING ALTCOIN OPTIONS",
+        "lines": [
+          "Family Offices",
+          "Asset Managers",
+          "Ultra-HNW Individuals"
+        ]
+      },
+      "notes": "Three rows stagger in 80ms apart as each type is named."
+    },
+    {
+      "id": 7,
+      "in": "08:29",
+      "out": "09:04",
+      "in_secs": 509.0,
+      "out_secs": 544.0,
+      "spoken": "Rather write options like covered calls on their positions to generate yield passively. Reality is implied vol is still very high",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "THE TRADE",
+        "left": "HIGH IMPLIED VOL",
+        "center_arrow": "\u2192",
+        "right": "COVERED CALL YIELD",
+        "sublabel": "Altcoin IV still elevated \u2014 compelling passive APY"
+      },
+      "notes": "Arrow between two large labels. Simple, no clutter."
+    },
+    {
+      "id": 8,
+      "in": "11:54",
+      "out": "12:17",
+      "in_secs": 714.0,
+      "out_secs": 737.0,
+      "spoken": "Large financial institutions issuing stuff like autocallables, accelerators to their ultra high net worth individuals",
+      "template": "Liquid Glass Card",
+      "template_id": 2,
+      "content": {
+        "eyebrow": "STRUCTURED PRODUCTS IN CRYPTO",
+        "lines": [
+          "Autocallables",
+          "Accelerators",
+          "Distributed to UHNW clients via private banking"
+        ]
+      },
+      "notes": "Product names as pill tags. Institution distribution angle."
+    },
+    {
+      "id": 9,
+      "in": "13:07",
+      "out": "13:24",
+      "in_secs": 787.0,
+      "out_secs": 804.0,
+      "spoken": "Price creates narrative, narrative creates price. Once the market is back I could definitely see take rates on structured products being meaningfully higher",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "MARKET MECHANICS",
+        "cycle": [
+          "Price \u2191",
+          "Narrative Forms",
+          "Demand Grows",
+          "Take Rates \u2191"
+        ],
+        "sublabel": "Structured products: next bull cycle catalyst"
+      },
+      "notes": "4-step circular loop graphic (arrows between boxes)."
+    },
+    {
+      "id": 10,
+      "in": "14:38",
+      "out": "15:22",
+      "in_secs": 878.0,
+      "out_secs": 922.0,
+      "spoken": "It is very much on the option side. On the delta one side, a lot of it is already very well discovered",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "INSTITUTIONAL ALPHA MAP",
+        "left_label": "DELTA-1 / SPOT",
+        "left_points": [
+          "On-chain settlement visible to all",
+          "Retail tracks within hours",
+          "Edge: MINIMAL"
+        ],
+        "left_edge_color": "negative",
+        "right_label": "OPTIONS",
+        "right_points": [
+          "Greeks-based structures",
+          "Vol surface expertise",
+          "Covered call yield",
+          "Edge: SIGNIFICANT"
+        ],
+        "right_edge_color": "positive"
+      },
+      "notes": "Left edge label red (#FF4D4F), right edge label green (#16C784). Two-column comparison."
+    },
+    {
+      "id": 11,
+      "in": "16:52",
+      "out": "17:44",
+      "in_secs": 1012.5,
+      "out_secs": 1064.0,
+      "spoken": "ADL was issued\u2026 your delta completely shifts\u2026 you have a naked long delta\u2026 feedback loop of continuous pressure\u2026 alts down 60, 70, 80%",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "OCT 10 POST-MORTEM \u00b7 ADL CASCADE",
+        "flow": [
+          "Long Spot + Short Perp",
+          "Price Drops",
+          "Perp Deeply ITM",
+          "ADL Fires",
+          "Naked Long Delta",
+          "Forced Sellers \u2192 Cascade"
+        ],
+        "last_step_color": "negative"
+      },
+      "notes": "6-step flow. Each step reveals sequentially 0.3s apart. Last step in #FF4D4F."
+    },
+    {
+      "id": 12,
+      "in": "18:10",
+      "out": "18:28",
+      "in_secs": 1090.0,
+      "out_secs": 1108.0,
+      "spoken": "Leverage the spot ratio on volumes was like 20 or 25x. There was 25 times more derivatives trade than spots",
+      "template": "Kinetic Stat Hook",
+      "template_id": 1,
+      "content": {
+        "eyebrow": "MARKET STRUCTURE \u00b7 OCT 10",
+        "stat": "25\u00d7",
+        "stat_start": "1\u00d7",
+        "label": "DERIVATIVES vs. SPOT VOLUME",
+        "sublabel": "BTC $226K rally built on this leverage",
+        "footer": "Stress peak: 30\u201345 minutes"
+      },
+      "notes": "Integer count-up 1\u219225. Footer in #16C784."
+    },
+    {
+      "id": 13,
+      "in": "18:43",
+      "out": "19:01",
+      "in_secs": 1123.0,
+      "out_secs": 1141.0,
+      "spoken": "Retail pivoted very aggressively into equity \u2014 November, December, January, February",
+      "template": "Minimal Web Evolution",
+      "template_id": 5,
+      "content": {
+        "eyebrow": "CAPITAL ROTATION",
+        "before": "Crypto / Altcoins\nOct 2024",
+        "after": "Equities\nNov 2024 \u2013 May 2026",
+        "pivot_label": "Oct 10 Liquidation \u2192"
+      },
+      "notes": "Before/after sweep. 'after' in foreground color. Date label on pivot."
+    },
+    {
+      "id": 14,
+      "in": "19:14",
+      "out": "19:26",
+      "in_secs": 1154.9,
+      "out_secs": 1166.0,
+      "spoken": "JP Morgan prime brokerage desk\u2026 retail activity they see is at an all time high by a meaningful margin",
+      "template": "Kinetic Stat Hook",
+      "template_id": 1,
+      "content": {
+        "eyebrow": "JP MORGAN PRIME BROKERAGE \u00b7 MAY 2026",
+        "stat": "ALL-TIME HIGH",
+        "label": "RETAIL EQUITY ACTIVITY",
+        "sublabel": "By a meaningful margin"
+      },
+      "notes": "No count-up. 'ALL-TIME HIGH' slams in. Eyebrow is the accent (#00D4FF)."
+    },
+    {
+      "id": 15,
+      "in": "19:46",
+      "out": "19:54",
+      "in_secs": 1186.0,
+      "out_secs": 1194.0,
+      "spoken": "The marginal risk dollar went into equities, not crypto",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "WINTERMUTE WEEKLY NOTE",
+        "quote": "The marginal risk dollar went into equities, not crypto.",
+        "attribution": "Jasper De Maere \u00b7 Wintermute Weekly"
+      },
+      "notes": "8-second hold. Pull quote only. Tight layout."
+    },
+    {
+      "id": 16,
+      "in": "21:09",
+      "out": "21:38",
+      "in_secs": 1269.4,
+      "out_secs": 1298.0,
+      "spoken": "Volatility in crypto compressed to the point where volatility as a product is no longer the go-to. At the same time equity became more volatile",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "WHY RETAIL LEFT CRYPTO",
+        "left_label": "CRYPTO VOL",
+        "left_arrow": "\u2193",
+        "left_status": "COMPRESSED",
+        "left_color": "negative",
+        "right_label": "EQUITY VOL",
+        "right_arrow": "\u2191",
+        "right_status": "RISING",
+        "right_color": "positive",
+        "sublabel": "Retail follows the risk-on vol trade"
+      },
+      "notes": "Two column cards with directional arrows. Vol parity as the inflection."
+    },
+    {
+      "id": 17,
+      "in": "22:34",
+      "out": "23:21",
+      "in_secs": 1354.0,
+      "out_secs": 1401.0,
+      "spoken": "ETF flows are pretty reactive. They tend to be a catalyst for price decline \u2014 very self-propelling. Retail investors pretty spivy, rotate in and out",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "ETF FLOW DYNAMICS",
+        "headline": "SELF-FULFILLING CYCLE",
+        "cycle": [
+          "ETF Outflows",
+          "Price Falls",
+          "More Outflows",
+          "Support Breaks"
+        ],
+        "footnote": "Sticky institutions + spivy retail = amplified moves"
+      },
+      "notes": "4-step loop diagram. Arrows connecting cycle. #FF4D4F for cycle boxes."
+    },
+    {
+      "id": 18,
+      "in": "23:40",
+      "out": "24:27",
+      "in_secs": 1420.0,
+      "out_secs": 1467.0,
+      "spoken": "The ultimate driver \u2014 Bitcoin halving \u2014 is becoming increasingly meaningless as block rewards half to a point where it doesn't even matter",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "HOT TAKE",
+        "headline": "4-YEAR CYCLE",
+        "sub_headline": "DEAD?",
+        "bullets": [
+          "Block rewards \u2192 negligible",
+          "Miner sell pressure \u2192 irrelevant",
+          "Narrative persists > fundamentals"
+        ],
+        "right_panel": {
+          "label": "BLOCK REWARD (BTC)",
+          "rows": [
+            "2012: 25 BTC",
+            "2016: 12.5 BTC",
+            "2020: 6.25 BTC",
+            "2024: 3.125 BTC",
+            "2028: 1.56 BTC"
+          ]
+        }
+      },
+      "notes": "Right panel epoch table in JetBrains Mono, decaying opacity per row."
+    },
+    {
+      "id": 19,
+      "in": "25:17",
+      "out": "26:07",
+      "in_secs": 1517.0,
+      "out_secs": 1567.0,
+      "spoken": "We always exit bear markets in an interesting fashion \u2014 ordinals, DeFi Summer, AI agents. I'm very curious what comes next",
+      "template": "Minimal Web Evolution",
+      "template_id": 5,
+      "content": {
+        "eyebrow": "BEAR MARKET NARRATIVE CYCLE",
+        "timeline": [
+          {
+            "year": "2020",
+            "label": "DeFi Summer"
+          },
+          {
+            "year": "2022",
+            "label": "Inscriptions / Ordinals"
+          },
+          {
+            "year": "2023",
+            "label": "AI Agents"
+          },
+          {
+            "year": "2025",
+            "label": "???"
+          }
+        ]
+      },
+      "notes": "Horizontal timeline. Each label reveals sequentially. '???' in muted color."
+    },
+    {
+      "id": 20,
+      "in": "26:19",
+      "out": "26:37",
+      "in_secs": 1579.0,
+      "out_secs": 1597.0,
+      "spoken": "Privacy and AI \u2014 top of mind for many. The front runners in terms of what we might see",
+      "template": "Liquid Glass Card",
+      "template_id": 2,
+      "content": {
+        "eyebrow": "NEXT NARRATIVE CANDIDATES",
+        "lines": [
+          "Privacy",
+          "AI"
+        ],
+        "sublabel": "Jasper De Maere \u00b7 Wintermute"
+      },
+      "notes": "Two large words stacked. Clean. Less is more."
+    },
+    {
+      "id": 21,
+      "in": "27:57",
+      "out": "28:30",
+      "in_secs": 1677.2,
+      "out_secs": 1710.0,
+      "spoken": "The work which I'm doing today would require a team of two to three people to conduct the research. I'm doing research AND I'm trading.",
+      "template": "Kinetic Stat Hook",
+      "template_id": 1,
+      "content": {
+        "eyebrow": "AI PRODUCTIVITY \u00b7 PRE-CHATGPT vs TODAY",
+        "left": {
+          "label": "2021",
+          "stat": "2\u20133",
+          "sub": "analysts needed"
+        },
+        "equals": "=",
+        "right": {
+          "label": "TODAY",
+          "stat": "1",
+          "sub": "trader + AI"
+        },
+        "footer": "same research output"
+      },
+      "notes": "Left in #FF4D4F, right in #16C784. Left animates first, arrow draws, right slams."
+    },
+    {
+      "id": 22,
+      "in": "30:04",
+      "out": "30:43",
+      "in_secs": 1804.0,
+      "out_secs": 1843.0,
+      "spoken": "An agent needs to be able to control risk, understand your risk profile. Blue wave on midterms. Strait of Hormuz opens. Short oil.",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "INTENT-BASED TRADING AGENT",
+        "flow": [
+          "Macro thesis input",
+          "Policy + event parsing",
+          "Risk profile check",
+          "Trade execution"
+        ],
+        "example": "\"Blue wave \u2192 Short oil\" in 4 steps"
+      },
+      "notes": "4-step vertical flow with example trade. Agents + infrastructure framing."
+    },
+    {
+      "id": 23,
+      "in": "31:25",
+      "out": "31:50",
+      "in_secs": 1885.8,
+      "out_secs": 1910.0,
+      "spoken": "VTFs \u2014 Vault Traded Funds. ETFs were TradFi's massive unlock. VTFs could be crypto native versions. Fully on-chain, programmable",
+      "template": "Book/Product Reveal",
+      "template_id": 4,
+      "content": {
+        "eyebrow": "DEFI INNOVATION",
+        "product_name": "VTF",
+        "product_full": "Vault Traded Fund",
+        "tagline": "On-chain \u00b7 Programmable \u00b7 Any strategy",
+        "comparison": {
+          "left": "ETF \u2014 TradFi",
+          "right": "VTF \u2014 DeFi Native"
+        }
+      },
+      "notes": "Product reveal: large 'VTF' slams in, definition unfolds below. Center-anchored."
+    },
+    {
+      "id": 24,
+      "in": "33:27",
+      "out": "33:56",
+      "in_secs": 2007.0,
+      "out_secs": 2036.0,
+      "spoken": "We've only launched it for two weeks and we feel like the take rates very high. Very controlled, risk-controlled rollout",
+      "template": "Liquid Glass Card",
+      "template_id": 2,
+      "content": {
+        "eyebrow": "WINTERMUTE VAULT CURATOR \u00b7 MORPHO",
+        "stat": "2 WEEKS",
+        "lines": [
+          "Launch: HIGH take rates",
+          "Risk-adjusted returns",
+          "Morpho \u00b7 DeFi native"
+        ]
+      },
+      "notes": "Card reveal. 'HIGH take rates' in #16C784."
+    },
+    {
+      "id": 25,
+      "in": "35:40",
+      "out": "35:54",
+      "in_secs": 2140.0,
+      "out_secs": 2154.0,
+      "spoken": "Covered calls and cash secured puts are 90% of your option flow",
+      "template": "Kinetic Stat Hook",
+      "template_id": 1,
+      "content": {
+        "eyebrow": "WINTERMUTE OTC OPTION FLOW",
+        "stat": "90%",
+        "stat_start": "0%",
+        "label": "COVERED CALLS & CASH-SECURED PUTS",
+        "sublabel": "of total Wintermute option flow"
+      },
+      "notes": "Count-up 0\u219290 with % suffix. Clean single-stat layout."
+    },
+    {
+      "id": 26,
+      "in": "37:52",
+      "out": "38:20",
+      "in_secs": 2272.0,
+      "out_secs": 2300.0,
+      "spoken": "On Paradex we have a few million dollars in a vault \u2014 delta neutral, short volatility on Bitcoin. Implied vol of Bitcoin is at a nine month low",
+      "template": "Book/Product Reveal",
+      "template_id": 4,
+      "content": {
+        "eyebrow": "LIVE VAULT \u00b7 PARADEX",
+        "product_name": "SHORT VOL BTC",
+        "tagline": "Delta neutral \u00b7 Short Bitcoin volatility",
+        "stat": "BTC IV: 9-MONTH LOW",
+        "sublabel": "Harvest premium when vol is suppressed"
+      },
+      "notes": "Product card + stat combo. Stat in accent color. 'PARADEX' as source label."
+    },
+    {
+      "id": 27,
+      "in": "39:02",
+      "out": "39:56",
+      "in_secs": 2342.0,
+      "out_secs": 2396.0,
+      "spoken": "Financial education is accelerating. Before you'd grab an 800-page textbook. Now you just ask Opus 4.7 \u2014 gives you a nice analogy like a five year old",
+      "template": "Minimal Web Evolution",
+      "template_id": 5,
+      "content": {
+        "eyebrow": "OPTIONS EDUCATION: THEN vs NOW",
+        "before": "800-page textbook\n+ manual index search\n+ weeks of study",
+        "after": "Ask Claude\n\u2192 instant analogy\n\u2192 trade-ready"
+      },
+      "notes": "Before/after. 'then' in muted, 'now' in foreground with transition sweep."
+    },
+    {
+      "id": 28,
+      "in": "42:25",
+      "out": "42:55",
+      "in_secs": 2545.6,
+      "out_secs": 2575.0,
+      "spoken": "On the 12 to 18 month basis, risk reward on quite a few tokens are screaming very attractive",
+      "template": "Kinetic Stat Hook",
+      "template_id": 1,
+      "content": {
+        "eyebrow": "RISK/REWARD ANALYSIS \u00b7 MAY 2026",
+        "stat": "12\u201318M",
+        "label": "RISK/REWARD SCREAMING ATTRACTIVE",
+        "sublabel": "Bottom timing: extremely difficult to call",
+        "footer": "Jasper De Maere \u00b7 Wintermute OTC"
+      },
+      "notes": "Stat slams in. No count-up (it's a range, not a single number). Footer muted."
+    },
+    {
+      "id": 29,
+      "in": "43:19",
+      "out": "43:36",
+      "in_secs": 2599.7,
+      "out_secs": 2616.0,
+      "spoken": "It is no longer 2021 where rising tide lifts all boats. Not enough capital for that to happen",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "CYCLE COMPARISON",
+        "left_label": "2021",
+        "left_sub": "Rising tide lifts all boats",
+        "left_strikethrough": true,
+        "right_label": "2026",
+        "right_sub": "Selective is mandatory",
+        "right_cta": "\u2192 Choose carefully"
+      },
+      "notes": "2021 column gets diagonal strikethrough line (scaleX reveal). 2026 right has #00D4FF rule."
+    },
+    {
+      "id": 30,
+      "in": "44:26",
+      "out": "45:44",
+      "in_secs": 2666.0,
+      "out_secs": 2744.0,
+      "spoken": "Sitting at an OTC desk is interesting to see how quickly large institutions are moving. Amount of questions and inbounds around how do you trade, what venues, what are the risks",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "INSTITUTIONAL ONBOARDING \u00b7 2026",
+        "headline": "INSTITUTIONS ARE MOVING",
+        "bullets": [
+          "Hiring crypto-native profiles (inorganic)",
+          "OTC desks as first point of contact",
+          "Questions: venues, risks, execution"
+        ],
+        "quote": "I've never seen the space move so quickly."
+      },
+      "notes": "Bullets stagger in 80ms. Quote below in italic. Muted attribution."
+    },
+    {
+      "id": 31,
+      "in": "46:09",
+      "out": "46:14",
+      "in_secs": 2769.2,
+      "out_secs": 2774.0,
+      "spoken": "We hired like five people team, but we still have no idea",
+      "template": "Cinematic Split",
+      "template_id": 3,
+      "content": {
+        "eyebrow": "THE KICKER",
+        "quote": "\"We hired 5 people... but we still have no idea.\"",
+        "attribution": "What banks told their clients \u00b7 Bull market 2024"
+      },
+      "notes": "5-second window. Quote only. Italic. Large type. Perfect episode ender."
+    },
+    {
+      "id": 32,
+      "in": "46:14",
+      "out": "46:25",
+      "in_secs": 2774.0,
+      "out_secs": 2785.0,
+      "spoken": "(produced end card \u2014 no spoken content)",
+      "template": "Full-Frame Outro",
+      "template_id": 6,
+      "content": {
+        "cta_primary": "Follow Wintermute",
+        "cta_secondary": "Read the Weekly Market Update",
+        "handles": [
+          "@Wintermute_T",
+          "@Paradigm",
+          "@paradex_io"
+        ],
+        "sublabel": "Subscribe for weekly OTC market insights"
+      },
+      "notes": "10s produced card. No spoken content. Fade in from black after kicker."
+    }
+  ]
+}

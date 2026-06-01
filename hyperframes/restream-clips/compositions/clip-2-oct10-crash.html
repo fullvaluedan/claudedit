@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clip 2 — Oct 10 ADL Cascade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0A0A0A;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #clip-2-oct10-crash {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    #clip-2-oct10-crash video.bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* ── Lower-third clip wrapper (framework-managed) ── */
+    #clip-2-oct10-crash .lt-clip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 1920px;
+      height: 340px;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    /* ── Lower-third panel ── */
+    #clip-2-oct10-crash .lt-panel {
+      width: 1920px;
+      height: 340px;
+      background: rgba(10, 10, 10, 0.88);
+      border-top: 3px solid rgba(0, 212, 255, 0.35);
+      padding: 48px 96px;
+      box-sizing: border-box;
+      display: flex;
+      transform: translateY(340px);
+    }
+
+    /* ── Shared text atoms ── */
+    #clip-2-oct10-crash .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 26px;
+      color: #00D4FF;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    #clip-2-oct10-crash .eyebrow-muted {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 26px;
+      color: #888888;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    /* ── Scene 1: ADL Cascade ── */
+    #clip-2-oct10-crash #s1-panel {
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    #clip-2-oct10-crash #s1-headline {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 64px;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #clip-2-oct10-crash #s1-flow {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+    }
+
+    #clip-2-oct10-crash .flow-step {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 30px;
+      color: #F0F0F0;
+      padding: 12px 20px;
+      border: 1px solid #2A2A2A;
+      background: rgba(20, 26, 34, 0.6);
+      line-height: 1.2;
+      opacity: 0;
+    }
+
+    #clip-2-oct10-crash .flow-step.danger {
+      border-color: #FF4D4F;
+      color: #FF4D4F;
+    }
+
+    #clip-2-oct10-crash .flow-arrow {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 28px;
+      color: #2A2A2A;
+      padding: 0 8px;
+      flex-shrink: 0;
+      opacity: 0;
+    }
+
+    /* ── Scene 2: Naked Delta ── */
+    #clip-2-oct10-crash #s2-panel {
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    #clip-2-oct10-crash #s2-columns {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+      flex: 1;
+    }
+
+    #clip-2-oct10-crash #s2-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #clip-2-oct10-crash #s2-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #clip-2-oct10-crash #s2-divider {
+      width: 2px;
+      height: 200px;
+      background: #2A2A2A;
+      margin: 0 48px;
+      flex-shrink: 0;
+      transform-origin: top center;
+      transform: scaleY(0);
+    }
+
+    #clip-2-oct10-crash .col-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 24px;
+      color: #888888;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    #clip-2-oct10-crash .col-heading-neutral {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 60px;
+      color: #F0F0F0;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #clip-2-oct10-crash .col-heading-danger {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 60px;
+      color: #FF4D4F;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #clip-2-oct10-crash .col-sub {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 30px;
+      color: #888888;
+      line-height: 1.4;
+    }
+
+    /* ── Scene 3: 25× Leverage ── */
+    #clip-2-oct10-crash #s3-panel {
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    #clip-2-oct10-crash #s3-big-number {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 120px;
+      color: #FFFFFF;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      opacity: 0;
+    }
+
+    #clip-2-oct10-crash #s3-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 48px;
+      color: #F0F0F0;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    #clip-2-oct10-crash #s3-subs {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 48px;
+      margin-top: 4px;
+    }
+
+    #clip-2-oct10-crash #s3-sub1 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 30px;
+      color: #888888;
+      opacity: 0;
+    }
+
+    #clip-2-oct10-crash #s3-sub2 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 30px;
+      color: #16C784;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div
+    id="clip-2-oct10-crash"
+    data-composition-id="clip-2-oct10-crash"
+    data-width="1920"
+    data-height="1080"
+    data-duration="130"
+    data-fps="30"
+  >
+    <video id="clip-2-oct10-crash-video" class="bg-video" src="../clips/clip-2-oct10-crash.mp4" muted playsinline data-start="0" data-duration="130" data-track-index="0"></video>
+    <audio id="clip-2-oct10-crash-audio" src="../clips/clip-2-oct10-crash.mp4" data-start="0" data-duration="130" data-track-index="2" data-volume="1"></audio>
+
+    <!-- Scene 1: ADL Cascade -->
+    <div id="s1-clip" class="lt-clip clip" data-start="32" data-duration="32" data-track-index="1">
+      <div id="s1-panel" class="lt-panel">
+        <div id="s1-eyebrow" class="eyebrow" style="opacity:0;">OCT 10 POST-MORTEM</div>
+        <div id="s1-headline" style="opacity:0;">THE ADL CASCADE</div>
+        <div id="s1-flow">
+          <div class="flow-step" id="s1-step1">LONG SPOT + SHORT PERP</div>
+          <div class="flow-arrow" id="s1-arr1">→</div>
+          <div class="flow-step" id="s1-step2">PRICE DROPS</div>
+          <div class="flow-arrow" id="s1-arr2">→</div>
+          <div class="flow-step" id="s1-step3">PERP DEEPLY ITM</div>
+          <div class="flow-arrow" id="s1-arr3">→</div>
+          <div class="flow-step" id="s1-step4">ADL FIRES</div>
+          <div class="flow-arrow" id="s1-arr4">→</div>
+          <div class="flow-step danger" id="s1-step5">NAKED LONG DELTA</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 2: Feedback Loop -->
+    <div id="s2-clip" class="lt-clip clip" data-start="65" data-duration="50" data-track-index="1">
+      <div id="s2-panel" class="lt-panel">
+        <div id="s2-eyebrow" class="eyebrow-muted" style="opacity:0;">FEEDBACK LOOP</div>
+        <div id="s2-columns">
+          <div id="s2-left" style="opacity:0;">
+            <div class="col-label">DELTA NEUTRAL</div>
+            <div class="col-heading-neutral">DEALERS</div>
+            <div class="col-sub">Long spot + short perp = market neutral</div>
+          </div>
+          <div id="s2-divider"></div>
+          <div id="s2-right" style="opacity:0;">
+            <div class="col-label">POST-ADL</div>
+            <div class="col-heading-danger">NAKED LONG</div>
+            <div class="col-sub">ADL closes hedge → forced sellers → cascade</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3: 25× Leverage -->
+    <div id="s3-clip" class="lt-clip clip" data-start="116" data-duration="14" data-track-index="1">
+      <div id="s3-panel" class="lt-panel">
+        <div id="s3-eyebrow" class="eyebrow" style="opacity:0;">MARKET STRUCTURE · OCT 10</div>
+        <div id="s3-big-number">1×</div>
+        <div id="s3-label" style="opacity:0;">DERIVATIVES vs. SPOT VOLUME</div>
+        <div id="s3-subs">
+          <div id="s3-sub1">BTC melt-up to $226K built on this leverage</div>
+          <div id="s3-sub2">Stress peak: 30–45 minutes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+
+      const tl = gsap.timeline({ paused: true });
+
+      // ─────────────────────────────────────────────
+      // SCENE 1  (t=32s → t=64s)
+      // ─────────────────────────────────────────────
+      // Panel slides up
+      tl.fromTo('#s1-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        32
+      );
+
+      // Eyebrow + headline
+      tl.fromTo('#s1-eyebrow',
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        32.3
+      );
+      tl.fromTo('#s1-headline',
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        32.3
+      );
+
+      // Flow steps stagger in (5 steps + 4 arrows, 0.3s between steps)
+      // Step 1 + Arrow 1
+      tl.fromTo('#s1-step1',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.25, ease: 'power2.out' },
+        32.7
+      );
+      tl.fromTo('#s1-arr1',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.2, ease: 'power2.out' },
+        32.85
+      );
+      // Step 2 + Arrow 2
+      tl.fromTo('#s1-step2',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.25, ease: 'power2.out' },
+        33.0
+      );
+      tl.fromTo('#s1-arr2',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.2, ease: 'power2.out' },
+        33.15
+      );
+      // Step 3 + Arrow 3
+      tl.fromTo('#s1-step3',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.25, ease: 'power2.out' },
+        33.3
+      );
+      tl.fromTo('#s1-arr3',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.2, ease: 'power2.out' },
+        33.45
+      );
+      // Step 4 + Arrow 4
+      tl.fromTo('#s1-step4',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.25, ease: 'power2.out' },
+        33.6
+      );
+      tl.fromTo('#s1-arr4',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.2, ease: 'power2.out' },
+        33.75
+      );
+      // Step 5 (danger — red)
+      tl.fromTo('#s1-step5',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.25, ease: 'power2.out' },
+        33.9
+      );
+
+      // Panel exit
+      tl.to('#s1-panel',
+        { y: 340, duration: 0.4, ease: 'power2.in' },
+        63.5
+      );
+
+      // ─────────────────────────────────────────────
+      // SCENE 2  (t=65s → t=115s)
+      // ─────────────────────────────────────────────
+      // Panel slides up
+      tl.fromTo('#s2-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        65
+      );
+
+      // Eyebrow
+      tl.fromTo('#s2-eyebrow',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        65.3
+      );
+
+      // Left col slides in from left
+      tl.fromTo('#s2-left',
+        { opacity: 0, x: -40 },
+        { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' },
+        65.5
+      );
+
+      // Divider scales up
+      tl.fromTo('#s2-divider',
+        { scaleY: 0 },
+        { scaleY: 1, duration: 0.4, ease: 'power2.out' },
+        65.7
+      );
+
+      // Right col slides in from right
+      tl.fromTo('#s2-right',
+        { opacity: 0, x: 40 },
+        { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' },
+        65.9
+      );
+
+      // Panel exit
+      tl.to('#s2-panel',
+        { y: 340, duration: 0.4, ease: 'power2.in' },
+        114.5
+      );
+
+      // ─────────────────────────────────────────────
+      // SCENE 3  (t=116s → t=130s, no exit)
+      // ─────────────────────────────────────────────
+      // Panel slides up
+      tl.fromTo('#s3-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        116
+      );
+
+      // Eyebrow
+      tl.fromTo('#s3-eyebrow',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        116.3
+      );
+
+      // Big number fades in
+      tl.fromTo('#s3-big-number',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        116.5
+      );
+
+      // Count-up 1 → 25
+      const s3Counter = { val: 1 };
+      tl.fromTo(s3Counter,
+        { val: 1 },
+        {
+          val: 25,
+          duration: 1.4,
+          ease: 'power3.out',
+          onUpdate: function () {
+            document.getElementById('s3-big-number').textContent =
+              Math.round(s3Counter.val) + '×';
+          }
+        },
+        116.5
+      );
+
+      // Label
+      tl.fromTo('#s3-label',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        117
+      );
+
+      // Sub labels staggered 0.1s
+      tl.fromTo('#s3-sub1',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        117.5
+      );
+      tl.fromTo('#s3-sub2',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        117.6
+      );
+
+      // Register timeline
+      window.__timelines['clip-2-oct10-crash'] = tl;
+    })();
+  </script>
+</body>
+</html>

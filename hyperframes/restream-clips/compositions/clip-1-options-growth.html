@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clip 1 — Altcoin Options 3.5×</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0A0A0A;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #clip-1-options-growth {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    #clip-1-options-growth video.bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* ── Lower-third clip wrapper (framework-managed) ── */
+    #clip-1-options-growth .lt-clip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 1920px;
+      height: 340px;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    /* ── Lower-third panel ── */
+    #clip-1-options-growth .lt-panel {
+      width: 1920px;
+      height: 340px;
+      background: rgba(10, 10, 10, 0.88);
+      border-top: 3px solid rgba(0, 212, 255, 0.35);
+      padding: 48px 96px;
+      box-sizing: border-box;
+      display: flex;
+      transform: translateY(340px);
+    }
+
+    /* ── Shared text atoms ── */
+    #clip-1-options-growth .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 26px;
+      color: #00D4FF;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    #clip-1-options-growth .eyebrow-muted {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 26px;
+      color: #888888;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    /* ── Scene 1 ── */
+    #clip-1-options-growth #s1-panel {
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    #clip-1-options-growth #s1-big-number {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 120px;
+      color: #FFFFFF;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      opacity: 0;
+    }
+
+    #clip-1-options-growth #s1-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 48px;
+      color: #F0F0F0;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    #clip-1-options-growth #s1-sublabel {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 32px;
+      color: #888888;
+      line-height: 1.2;
+    }
+
+    /* ── Scene 2 ── */
+    #clip-1-options-growth #s2-panel {
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+    }
+
+    #clip-1-options-growth #s2-left {
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    #clip-1-options-growth #s2-headline {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 72px;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #clip-1-options-growth .s2-row {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 44px;
+      color: #F0F0F0;
+      line-height: 1.1;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #clip-1-options-growth .s2-row .dash {
+      color: #00D4FF;
+      font-weight: 700;
+    }
+
+    #clip-1-options-growth #s2-right {
+      width: 40%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-left: 48px;
+    }
+
+    #clip-1-options-growth #s2-quote {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 32px;
+      color: #888888;
+      border-left: 3px solid #2A2A2A;
+      padding-left: 24px;
+      line-height: 1.5;
+      max-width: 560px;
+    }
+
+    /* ── Scene 3 ── */
+    #clip-1-options-growth #s3-panel {
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    #clip-1-options-growth #s3-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 40px;
+    }
+
+    #clip-1-options-growth #s3-left {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 54px;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      opacity: 0;
+    }
+
+    #clip-1-options-growth #s3-arrow {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 72px;
+      color: #00D4FF;
+      opacity: 0;
+    }
+
+    #clip-1-options-growth #s3-right {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 54px;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      opacity: 0;
+    }
+
+    #clip-1-options-growth #s3-sub {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 32px;
+      color: #888888;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div
+    id="clip-1-options-growth"
+    data-composition-id="clip-1-options-growth"
+    data-width="1920"
+    data-height="1080"
+    data-duration="149"
+    data-fps="30"
+  >
+    <video id="clip-1-options-growth-video" class="bg-video" src="../clips/clip-1-options-growth.mp4" muted playsinline data-start="0" data-duration="149" data-track-index="0"></video>
+    <audio id="clip-1-options-growth-audio" src="../clips/clip-1-options-growth.mp4" data-start="0" data-duration="149" data-track-index="2" data-volume="1"></audio>
+
+    <!-- Scene 1: 3.5× Stat -->
+    <div id="s1-clip" class="lt-clip clip" data-start="22" data-duration="31" data-track-index="1">
+      <div id="s1-panel" class="lt-panel">
+        <div id="s1-eyebrow" class="eyebrow" style="opacity:0;">WINTERMUTE OTC DESK · 2025 H1</div>
+        <div id="s1-big-number">1.0×</div>
+        <div id="s1-label">MORE ALTCOIN OPTIONS NOTIONAL</div>
+        <div id="s1-sublabel">vs. same period 2024</div>
+      </div>
+    </div>
+
+    <!-- Scene 2: Who's Buying -->
+    <div id="s2-clip" class="lt-clip clip" data-start="54" data-duration="85" data-track-index="1">
+      <div id="s2-panel" class="lt-panel">
+        <div id="s2-left">
+          <div id="s2-eyebrow" class="eyebrow" style="opacity:0;">INSTITUTIONAL DEMAND</div>
+          <div id="s2-headline" style="opacity:0;">WHO'S TRADING ALTCOIN OPTIONS</div>
+          <div class="s2-row" id="s2-row1"><span class="dash">→</span> Family Offices</div>
+          <div class="s2-row" id="s2-row2"><span class="dash">→</span> Asset Managers</div>
+          <div class="s2-row" id="s2-row3"><span class="dash">→</span> Ultra-HNW Individuals</div>
+        </div>
+        <div id="s2-right">
+          <div id="s2-quote" style="opacity:0;">"Yield via covered calls, not just directional bets"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3: Yield Angle -->
+    <div id="s3-clip" class="lt-clip clip" data-start="140" data-duration="9" data-track-index="1">
+      <div id="s3-panel" class="lt-panel">
+        <div id="s3-eyebrow" class="eyebrow" style="opacity:0;">THE TRADE</div>
+        <div id="s3-row">
+          <div id="s3-left">HIGH IMPLIED VOL</div>
+          <div id="s3-arrow">→</div>
+          <div id="s3-right">COVERED CALL YIELD</div>
+        </div>
+        <div id="s3-sub">Altcoin IV still elevated — compelling passive APY</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // Ensure timeline registry exists
+      window.__timelines = window.__timelines || {};
+
+      const tl = gsap.timeline({ paused: true });
+
+      // ─────────────────────────────────────────────
+      // SCENE 1  (t=22s → t=53s)
+      // ─────────────────────────────────────────────
+      // Panel slides up
+      tl.fromTo('#s1-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        22
+      );
+
+      // Eyebrow fades in
+      tl.fromTo('#s1-eyebrow',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        22.3
+      );
+
+      // Big number fades in
+      tl.fromTo('#s1-big-number',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        22.5
+      );
+
+      // Count-up 1.0 → 3.5
+      const s1Counter = { val: 1.0 };
+      tl.fromTo(s1Counter,
+        { val: 1.0 },
+        {
+          val: 3.5,
+          duration: 1.4,
+          ease: 'power3.out',
+          onUpdate: function () {
+            document.getElementById('s1-big-number').textContent =
+              s1Counter.val.toFixed(1) + '×';
+          }
+        },
+        22.5
+      );
+
+      // Panel exit
+      tl.to('#s1-panel',
+        { y: 340, duration: 0.4, ease: 'power2.in' },
+        52.3
+      );
+
+      // ─────────────────────────────────────────────
+      // SCENE 2  (t=54s → t=139s)
+      // ─────────────────────────────────────────────
+      // Panel slides up
+      tl.fromTo('#s2-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        54
+      );
+
+      // Eyebrow
+      tl.fromTo('#s2-eyebrow',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        54.3
+      );
+
+      // Headline
+      tl.fromTo('#s2-headline',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        54.3
+      );
+
+      // Staggered rows (80ms apart)
+      tl.fromTo('#s2-row1',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        54.7
+      );
+      tl.fromTo('#s2-row2',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        54.78
+      );
+      tl.fromTo('#s2-row3',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        54.86
+      );
+
+      // Quote card
+      tl.fromTo('#s2-quote',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        55.0
+      );
+
+      // Panel exit
+      tl.to('#s2-panel',
+        { y: 340, duration: 0.4, ease: 'power2.in' },
+        138.5
+      );
+
+      // ─────────────────────────────────────────────
+      // SCENE 3  (t=140s → t=149s)
+      // ─────────────────────────────────────────────
+      // Panel slides up
+      tl.fromTo('#s3-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        140
+      );
+
+      // Eyebrow
+      tl.fromTo('#s3-eyebrow',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        140.4
+      );
+
+      // Left text slides in from left
+      tl.fromTo('#s3-left',
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' },
+        140.4
+      );
+
+      // Right text slides in from right
+      tl.fromTo('#s3-right',
+        { opacity: 0, x: 30 },
+        { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' },
+        140.4
+      );
+
+      // Arrow fades in
+      tl.fromTo('#s3-arrow',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        140.6
+      );
+
+      // Sub fades in
+      tl.fromTo('#s3-sub',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        140.8
+      );
+
+      // Register timeline
+      window.__timelines['clip-1-options-growth'] = tl;
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clip 7 — Options Edge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0A0A0A;
+      font-family: 'Inter', sans-serif;
+    }
+
+    [data-composition-id="clip-7-options-edge"] {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    /* ── Video fills canvas ── */
+    #c7-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* ── Background glow (decorative) ── */
+    #c7-bg-glow {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+      z-index: 2;
+      width: 800px;
+      height: 400px;
+      bottom: 180px;
+      left: -60px;
+      background: radial-gradient(ellipse at center, rgba(0,212,255,0.06) 0%, transparent 70%);
+    }
+
+    /* ── Lower-third panel ── */
+    #c7-s1-panel {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 1920px;
+      height: 340px;
+      background: rgba(10,10,10,0.88);
+      border-top: 3px solid rgba(0,212,255,0.35);
+      padding: 48px 96px;
+      box-sizing: border-box;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      will-change: transform;
+    }
+
+    /* ── Eyebrow ── */
+    #c7-s1-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 26px;
+      color: #00D4FF;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 14px;
+      opacity: 0;
+    }
+
+    /* ── Two-column comparison row ── */
+    #c7-compare-row {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      flex: 1;
+      gap: 0;
+    }
+
+    /* ── Column shared ── */
+    .c7-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 50%;
+    }
+
+    .c7-col--left {
+      padding-right: 56px;
+    }
+
+    .c7-col--right {
+      padding-left: 56px;
+    }
+
+    /* ── Column headers ── */
+    #c7-left-header {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 64px;
+      color: #888888;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      opacity: 0;
+    }
+
+    #c7-right-header {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 64px;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      opacity: 0;
+    }
+
+    /* ── Horizontal rules under headers ── */
+    .c7-col-rule {
+      width: 60px;
+      height: 1px;
+      background: #2A2A2A;
+      margin: 12px 0;
+      opacity: 0;
+    }
+
+    /* ── List items ── */
+    .c7-left-item {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 34px;
+      color: #888888;
+      line-height: 1.3;
+      opacity: 0;
+    }
+
+    .c7-right-item {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 34px;
+      color: #F0F0F0;
+      line-height: 1.3;
+      opacity: 0;
+    }
+
+    /* ── Edge callout boxes ── */
+    #c7-left-edge {
+      background: rgba(255,77,79,0.08);
+      border-left: 3px solid #FF4D4F;
+      padding: 12px 20px;
+      margin-top: 4px;
+      opacity: 0;
+    }
+
+    #c7-left-edge-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 36px;
+      color: #FF4D4F;
+      line-height: 1;
+    }
+
+    #c7-right-edge {
+      background: rgba(22,199,132,0.08);
+      border-left: 3px solid #16C784;
+      padding: 12px 20px;
+      margin-top: 4px;
+      opacity: 0;
+    }
+
+    #c7-right-edge-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 36px;
+      color: #16C784;
+      line-height: 1;
+    }
+
+    /* ── Vertical divider ── */
+    #c7-divider {
+      width: 2px;
+      background: #2A2A2A;
+      align-self: stretch;
+      flex-shrink: 0;
+      transform-origin: top center;
+      transform: scaleY(0);
+    }
+
+    /* ── Bottom note ── */
+    #c7-bottom-note {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 28px;
+      color: #888888;
+      line-height: 1.3;
+      margin-top: 10px;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div
+    data-composition-id="clip-7-options-edge"
+    data-width="1920"
+    data-height="1080"
+    data-duration="92"
+    data-fps="30"
+  >
+    <!-- Video (muted, sound via separate audio) -->
+    <video
+      id="c7-video"
+      data-start="0"
+      data-duration="92"
+      data-track-index="0"
+      src="../clips/clip-7-options-edge.mp4"
+      muted
+      playsinline
+    ></video>
+    <audio
+      id="c7-audio"
+      data-start="0"
+      data-duration="92"
+      data-track-index="2"
+      src="../clips/clip-7-options-edge.mp4"
+      data-volume="1"
+    ></audio>
+
+    <!-- Background glow (decorative) -->
+    <div id="c7-bg-glow" data-layout-ignore></div>
+
+    <!-- ═══════════════════════════════════════════════
+         SCENE 1 — Delta-1 vs Options institutional edge
+         data-start="20" data-duration="72" track 1
+    ═══════════════════════════════════════════════ -->
+    <div
+      id="c7-s1-panel" class="clip"
+      data-start="20"
+      data-duration="72"
+      data-track-index="1"
+    >
+      <!-- Eyebrow -->
+      <div id="c7-s1-eyebrow">INSTITUTIONAL ALPHA MAP</div>
+
+      <!-- Two-column comparison -->
+      <div id="c7-compare-row">
+
+        <!-- LEFT: Delta-1 / Spot -->
+        <div class="c7-col c7-col--left">
+          <div id="c7-left-header">DELTA-1 / SPOT</div>
+          <div id="c7-left-rule" class="c7-col-rule"></div>
+          <div class="c7-left-item" id="c7-left-item1">· On-chain settlement: visible to all</div>
+          <div class="c7-left-item" id="c7-left-item2">· Retail tracks within hours</div>
+          <div id="c7-left-edge">
+            <div id="c7-left-edge-label">Edge: MINIMAL</div>
+          </div>
+        </div>
+
+        <!-- Vertical divider -->
+        <div id="c7-divider"></div>
+
+        <!-- RIGHT: Options -->
+        <div class="c7-col c7-col--right">
+          <div id="c7-right-header">OPTIONS</div>
+          <div id="c7-right-rule" class="c7-col-rule"></div>
+          <div class="c7-right-item" id="c7-right-item1">· Greeks-based positioning</div>
+          <div class="c7-right-item" id="c7-right-item2">· Vol surface expertise</div>
+          <div class="c7-right-item" id="c7-right-item3">· Covered call yield generation</div>
+          <div id="c7-right-edge">
+            <div id="c7-right-edge-label">Edge: SIGNIFICANT</div>
+          </div>
+        </div>
+
+      </div><!-- end compare-row -->
+
+      <!-- Bottom note -->
+      <div id="c7-bottom-note">Perp activity last year surprised even institutions — retail is closing the gap</div>
+
+    </div><!-- end s1-panel -->
+
+  </div><!-- end composition -->
+
+  <script>
+    window.__timelines = window.__timelines || {};
+
+    const tl = gsap.timeline({ paused: true });
+
+    // ─────────────────────────────────────────────
+    // SCENE 1  (t=20s — single scene, no exit)
+    // ─────────────────────────────────────────────
+
+    // Panel slides up from below
+    tl.fromTo('#c7-s1-panel',
+      { y: 340 },
+      { y: 0, duration: 0.5, ease: 'expo.out' },
+      20
+    );
+
+    // Eyebrow fades + rises
+    tl.fromTo('#c7-s1-eyebrow',
+      { opacity: 0, y: -10 },
+      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+      20.3
+    );
+
+    // Left header slides from left
+    tl.fromTo('#c7-left-header',
+      { opacity: 0, x: -40 },
+      { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' },
+      20.6
+    );
+
+    // Right header slides from right
+    tl.fromTo('#c7-right-header',
+      { opacity: 0, x: 40 },
+      { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' },
+      20.6
+    );
+
+    // Horizontal rules fade in
+    tl.fromTo('#c7-left-rule',
+      { opacity: 0 },
+      { opacity: 1, duration: 0.3, ease: 'power2.out' },
+      20.9
+    );
+    tl.fromTo('#c7-right-rule',
+      { opacity: 0 },
+      { opacity: 1, duration: 0.3, ease: 'power2.out' },
+      20.9
+    );
+
+    // Vertical divider draws down (scaleY 0 → 1)
+    tl.fromTo('#c7-divider',
+      { scaleY: 0 },
+      { scaleY: 1, duration: 0.6, ease: 'power2.out' },
+      21.0
+    );
+
+    // Left items stagger (x from left, 80ms apart)
+    tl.fromTo('#c7-left-item1',
+      { opacity: 0, x: -20 },
+      { opacity: 1, x: 0, duration: 0.45, ease: 'expo.out' },
+      21.2
+    );
+    tl.fromTo('#c7-left-item2',
+      { opacity: 0, x: -20 },
+      { opacity: 1, x: 0, duration: 0.45, ease: 'expo.out' },
+      21.28
+    );
+
+    // Left edge callout
+    tl.fromTo('#c7-left-edge',
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
+      21.6
+    );
+
+    // Right items stagger (x from right, 80ms apart)
+    tl.fromTo('#c7-right-item1',
+      { opacity: 0, x: 20 },
+      { opacity: 1, x: 0, duration: 0.45, ease: 'expo.out' },
+      21.2
+    );
+    tl.fromTo('#c7-right-item2',
+      { opacity: 0, x: 20 },
+      { opacity: 1, x: 0, duration: 0.45, ease: 'expo.out' },
+      21.28
+    );
+    tl.fromTo('#c7-right-item3',
+      { opacity: 0, x: 20 },
+      { opacity: 1, x: 0, duration: 0.45, ease: 'expo.out' },
+      21.36
+    );
+
+    // Right edge callout
+    tl.fromTo('#c7-right-edge',
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
+      21.7
+    );
+
+    // Bottom note fades in
+    tl.fromTo('#c7-bottom-note',
+      { opacity: 0 },
+      { opacity: 1, duration: 0.6, ease: 'power2.out' },
+      22.0
+    );
+
+    // Ambient: subtle glow pulse
+    const glowRepeats = Math.floor(92 / 5) - 1; // 18
+    tl.fromTo('#c7-bg-glow',
+      { opacity: 0.6 },
+      { opacity: 1, duration: 2.5, ease: 'sine.inOut', yoyo: true, repeat: glowRepeats },
+      0.5
+    );
+
+    // Register timeline
+    window.__timelines['clip-7-options-edge'] = tl;
+  </script>
+</body>
+</html>

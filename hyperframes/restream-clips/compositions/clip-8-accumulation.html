@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clip 8 — Accumulation Zone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0A0A0A;
+      font-family: 'Inter', sans-serif;
+    }
+
+    [data-composition-id="clip-8-accumulation"] {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    /* ── Video fills canvas ── */
+    #c8-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* ── Background glows (decorative) ── */
+    #c8-glow-1 {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+      z-index: 2;
+      width: 700px;
+      height: 360px;
+      bottom: 160px;
+      left: -60px;
+      background: radial-gradient(ellipse at center, rgba(0,212,255,0.06) 0%, transparent 70%);
+    }
+
+    #c8-glow-2 {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+      z-index: 2;
+      width: 480px;
+      height: 280px;
+      bottom: 140px;
+      right: 100px;
+      background: radial-gradient(ellipse at center, rgba(22,199,132,0.05) 0%, transparent 70%);
+    }
+
+    /* ── Clip wrapper (framework-managed visibility) ── */
+    .c8-clip {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 1920px;
+      height: 340px;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    /* ── Shared lower-third panel ── */
+    .c8-panel {
+      width: 1920px;
+      height: 340px;
+      background: rgba(10,10,10,0.88);
+      border-top: 3px solid rgba(0,212,255,0.35);
+      padding: 48px 96px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      will-change: transform;
+      transform: translateY(340px);
+    }
+
+    /* ══════════════════════════════════
+       SCENE 1 LAYOUT
+    ══════════════════════════════════ */
+    #c8-s1-panel {
+      flex-direction: row;
+      gap: 0;
+    }
+
+    /* ── Scene 1: Left block (65%) ── */
+    #c8-s1-left {
+      width: 65%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    #c8-s1-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 26px;
+      color: #00D4FF;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 6px;
+      opacity: 0;
+    }
+
+    #c8-s1-headline {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 96px;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      opacity: 0;
+    }
+
+    #c8-s1-sub {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 52px;
+      color: #F0F0F0;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      opacity: 0;
+    }
+
+    #c8-s1-caveat {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 32px;
+      color: #888888;
+      line-height: 1.3;
+      opacity: 0;
+    }
+
+    /* ── Scene 1: Right block (35%) ── */
+    #c8-s1-right {
+      width: 35%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    #c8-s1-card {
+      background: rgba(20,26,34,0.8);
+      border: 1px solid #2A2A2A;
+      padding: 28px 36px;
+      border-radius: 8px;
+      min-width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      opacity: 0;
+    }
+
+    #c8-s1-card-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 22px;
+      color: #888888;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    #c8-s1-card-clock {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 64px;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #c8-s1-card-zone {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 28px;
+      color: #888888;
+      line-height: 1.2;
+    }
+
+    #c8-s1-card-status {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 32px;
+      color: #16C784;
+      margin-top: 12px;
+      line-height: 1;
+    }
+
+    /* ══════════════════════════════════
+       SCENE 2 LAYOUT
+    ══════════════════════════════════ */
+    #c8-s2-panel {
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* ── Scene 2: Left column — 2021 (45%) ── */
+    #c8-s2-left {
+      width: 45%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      opacity: 0;
+    }
+
+    #c8-s2-left-year {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 80px;
+      color: #888888;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #c8-s2-left-rule {
+      width: 80px;
+      height: 2px;
+      background: #888888;
+      margin: 16px 0;
+    }
+
+    #c8-s2-left-desc {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 40px;
+      color: #888888;
+      line-height: 1.2;
+    }
+
+    #c8-s2-left-sub {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 32px;
+      color: #888888;
+      line-height: 1.3;
+    }
+
+    /* Strikethrough overlay on 2021 column */
+    #c8-s2-strikethrough {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #888888;
+      transform: scaleX(0);
+      transform-origin: left center;
+    }
+
+    /* ── Scene 2: Center arrow (10%) ── */
+    #c8-s2-arrow-wrap {
+      width: 10%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+    }
+
+    #c8-s2-arrow {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 72px;
+      color: #2A2A2A;
+      line-height: 1;
+    }
+
+    /* ── Scene 2: Right column — 2026 (45%) ── */
+    #c8-s2-right {
+      width: 45%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      opacity: 0;
+    }
+
+    #c8-s2-right-year {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 80px;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #c8-s2-right-rule {
+      width: 80px;
+      height: 2px;
+      background: #00D4FF;
+      margin: 16px 0;
+    }
+
+    #c8-s2-right-desc {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 40px;
+      color: #F0F0F0;
+      line-height: 1.2;
+    }
+
+    #c8-s2-right-sub {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 32px;
+      color: #888888;
+      line-height: 1.3;
+    }
+
+    #c8-s2-right-action {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 40px;
+      color: #16C784;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div
+    data-composition-id="clip-8-accumulation"
+    data-width="1920"
+    data-height="1080"
+    data-duration="103"
+    data-fps="30"
+  >
+    <!-- Video (muted, sound via separate audio) -->
+    <video
+      id="c8-video"
+      data-start="0"
+      data-duration="103"
+      data-track-index="0"
+      src="../clips/clip-8-accumulation.mp4"
+      muted
+      playsinline
+    ></video>
+    <audio
+      id="c8-audio"
+      data-start="0"
+      data-duration="103"
+      data-track-index="2"
+      src="../clips/clip-8-accumulation.mp4"
+      data-volume="1"
+    ></audio>
+
+    <!-- Background glows (decorative) -->
+    <div id="c8-glow-1" data-layout-ignore></div>
+    <div id="c8-glow-2" data-layout-ignore></div>
+
+    <!-- ═══════════════════════════════════════════════
+         SCENE 1 — 12-18 month time horizon
+         data-start="8" data-duration="48" track 1
+    ═══════════════════════════════════════════════ -->
+    <div id="c8-s1-clip" class="c8-clip clip" data-start="8" data-duration="48" data-track-index="1">
+      <div id="c8-s1-panel" class="c8-panel">
+        <!-- Left: text block -->
+        <div id="c8-s1-left">
+          <div id="c8-s1-eyebrow">RISK/REWARD ANALYSIS · MAY 2026</div>
+          <div id="c8-s1-headline">12–18 MONTHS</div>
+          <div id="c8-s1-sub">risk/reward screaming attractive</div>
+          <div id="c8-s1-caveat">Bottom timing: extremely difficult to call</div>
+        </div>
+
+        <!-- Right: summary card -->
+        <div id="c8-s1-right">
+          <div id="c8-s1-card">
+            <div id="c8-s1-card-label">TIME HORIZON</div>
+            <div id="c8-s1-card-clock">12–18M</div>
+            <div id="c8-s1-card-zone">Accumulation zone</div>
+            <div id="c8-s1-card-status">CONFIRMED</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         SCENE 2 — "Not 2021 — be selective" comparison
+         data-start="57" data-duration="46" track 1
+    ═══════════════════════════════════════════════ -->
+    <div id="c8-s2-clip" class="c8-clip clip" data-start="57" data-duration="46" data-track-index="1">
+      <div id="c8-s2-panel" class="c8-panel">
+        <!-- Left: 2021 -->
+        <div id="c8-s2-left">
+          <div id="c8-s2-left-year">2021</div>
+          <div id="c8-s2-left-rule"></div>
+          <div id="c8-s2-left-desc">Rising tide lifts all boats</div>
+          <div id="c8-s2-left-sub">Buy everything</div>
+          <!-- Strikethrough draws across left column -->
+          <div id="c8-s2-strikethrough" data-layout-allow-overflow></div>
+        </div>
+
+        <!-- Center arrow -->
+        <div id="c8-s2-arrow-wrap">
+          <div id="c8-s2-arrow">→</div>
+        </div>
+
+        <!-- Right: 2026 -->
+        <div id="c8-s2-right">
+          <div id="c8-s2-right-year">2026</div>
+          <div id="c8-s2-right-rule"></div>
+          <div id="c8-s2-right-desc">Selective is mandatory</div>
+          <div id="c8-s2-right-sub">Not enough capital for all alts</div>
+          <div id="c8-s2-right-action">→ Choose carefully</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end composition -->
+
+  <script>
+    window.__timelines = window.__timelines || {};
+
+    const tl = gsap.timeline({ paused: true });
+
+    // ─────────────────────────────────────────────
+    // SCENE 1  (t=8s → t=55.5s exit)
+    // ─────────────────────────────────────────────
+
+    // Panel slides up from below
+    tl.fromTo('#c8-s1-panel',
+      { y: 340 },
+      { y: 0, duration: 0.5, ease: 'expo.out' },
+      8
+    );
+
+    // Eyebrow fades + rises
+    tl.fromTo('#c8-s1-eyebrow',
+      { opacity: 0, y: 16 },
+      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+      8.3
+    );
+
+    // "12–18 MONTHS" headline slams in from below
+    tl.fromTo('#c8-s1-headline',
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' },
+      8.5
+    );
+
+    // Sub slides up
+    tl.fromTo('#c8-s1-sub',
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+      9.0
+    );
+
+    // Caveat fades in
+    tl.fromTo('#c8-s1-caveat',
+      { opacity: 0 },
+      { opacity: 1, duration: 0.4, ease: 'power2.out' },
+      9.4
+    );
+
+    // Card slides in from right
+    tl.fromTo('#c8-s1-card',
+      { opacity: 0, x: 60 },
+      { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
+      8.6
+    );
+
+    // Panel exit
+    tl.to('#c8-s1-panel',
+      { y: 340, duration: 0.4, ease: 'power2.in' },
+      55.5
+    );
+
+    // ─────────────────────────────────────────────
+    // SCENE 2  (t=57s → t=103s, final — no exit)
+    // ─────────────────────────────────────────────
+
+    // Panel slides up from below
+    tl.fromTo('#c8-s2-panel',
+      { y: 340 },
+      { y: 0, duration: 0.5, ease: 'expo.out' },
+      57
+    );
+
+    // Left column (2021) slides from left
+    tl.fromTo('#c8-s2-left',
+      { opacity: 0, x: -50 },
+      { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
+      57.4
+    );
+
+    // Center arrow fades in
+    tl.fromTo('#c8-s2-arrow-wrap',
+      { opacity: 0 },
+      { opacity: 1, duration: 0.4, ease: 'power2.out' },
+      57.8
+    );
+
+    // Right column (2026) slides from right
+    tl.fromTo('#c8-s2-right',
+      { opacity: 0, x: 50 },
+      { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
+      58.0
+    );
+
+    // Strikethrough draws across 2021 column (scaleX 0 → 1)
+    tl.fromTo('#c8-s2-strikethrough',
+      { scaleX: 0 },
+      { scaleX: 1, duration: 0.5, ease: 'power2.inOut' },
+      58.8
+    );
+
+    // ─────────────────────────────────────────────
+    // Ambient: glow pulse on timeline
+    // ─────────────────────────────────────────────
+    const glow1Repeats = Math.floor(103 / 5) - 1; // 20
+    const glow2Repeats = Math.floor(103 / 4) - 1; // 25
+
+    tl.fromTo('#c8-glow-1',
+      { opacity: 0.5 },
+      { opacity: 0.9, duration: 2.5, ease: 'sine.inOut', yoyo: true, repeat: glow1Repeats },
+      0.4
+    );
+    tl.fromTo('#c8-glow-2',
+      { opacity: 0.4 },
+      { opacity: 0.85, duration: 2.0, ease: 'sine.inOut', yoyo: true, repeat: glow2Repeats },
+      1.2
+    );
+
+    // Register timeline
+    window.__timelines['clip-8-accumulation'] = tl;
+  </script>
+</body>
+</html>

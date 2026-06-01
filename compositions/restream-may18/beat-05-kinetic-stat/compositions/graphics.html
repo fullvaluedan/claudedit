@@ -1,0 +1,208 @@
+<template id="graphics-template">
+  <div data-composition-id="graphics" data-width="1920" data-height="1080" data-duration="13.3">
+
+    <!-- Ghost decorative type — oversized, very faint, behind all content -->
+    <div id="ghost-text" data-layout-ignore>OPTIONS</div>
+
+    <!-- Two-zone layout: video spacer left (1152px), stat content right -->
+    <div class="stat-zone">
+      <div class="video-spacer"></div>
+      <div class="content-panel">
+        <div id="eyebrow">WINTERMUTE OTC DESK · 2025 H1</div>
+        <div id="rule"></div>
+        <div id="stat-num">1.0×</div>
+        <div id="stat-label">MORE ALTCOIN OPTIONS NOTIONAL</div>
+        <div id="stat-sublabel">vs. 2024 same period</div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="graphics"] {
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+        overflow: hidden;
+        background: transparent;
+        font-family: "Inter", "Helvetica", sans-serif;
+      }
+
+      /* Ghost type — absolute decorative, data-layout-ignore so inspect skips it */
+      [data-composition-id="graphics"] #ghost-text {
+        position: absolute;
+        right: 40px;
+        bottom: 40px;
+        font-family: "Inter", sans-serif;
+        font-weight: 800;
+        font-size: 300px;
+        color: rgba(0, 212, 255, 0.05);
+        letter-spacing: -0.04em;
+        text-transform: uppercase;
+        pointer-events: none;
+        line-height: 1;
+        opacity: 0;
+        user-select: none;
+      }
+
+      /* Full-canvas flex row: spacer | content */
+      [data-composition-id="graphics"] .stat-zone {
+        display: flex;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Mirrors the 1152px speaker zone — keeps content in the right data zone */
+      [data-composition-id="graphics"] .video-spacer {
+        width: 1152px;
+        flex-shrink: 0;
+      }
+
+      /* Content panel: flex column, centered vertically, proper padding */
+      [data-composition-id="graphics"] .content-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 80px 96px 80px 60px;
+        gap: 0;
+        box-sizing: border-box;
+      }
+
+      /* Eyebrow — JetBrains Mono per DESIGN.md Labels/Source spec */
+      [data-composition-id="graphics"] #eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 400;
+        font-size: 26px;
+        color: #888888;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        line-height: 1;
+        margin-bottom: 28px;
+        opacity: 0;
+      }
+
+      /* Structural divider rule */
+      [data-composition-id="graphics"] #rule {
+        width: 0px;
+        height: 3px;
+        background: #2a2a2a;
+        margin-bottom: 36px;
+        flex-shrink: 0;
+      }
+
+      /* THE stat number — #00D4FF is the ONE accent element per DESIGN.md */
+      [data-composition-id="graphics"] #stat-num {
+        font-family: "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 160px;
+        color: #00d4ff;
+        line-height: 0.85;
+        letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
+        margin-bottom: 32px;
+        opacity: 0;
+      }
+
+      /* Label — Inter 800, white headline, max-width so it wraps naturally */
+      [data-composition-id="graphics"] #stat-label {
+        font-family: "Inter", sans-serif;
+        font-weight: 800;
+        font-size: 60px;
+        color: #ffffff;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        max-width: 580px;
+        margin-bottom: 24px;
+        opacity: 0;
+      }
+
+      /* Sublabel — muted body */
+      [data-composition-id="graphics"] #stat-sublabel {
+        font-family: "Inter", sans-serif;
+        font-weight: 400;
+        font-size: 36px;
+        color: #888888;
+        line-height: 1.4;
+        opacity: 0;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+
+        const tl = gsap.timeline({ paused: true });
+
+        // Ghost text fades in as atmospheric background texture
+        tl.fromTo(
+          "#ghost-text",
+          { opacity: 0 },
+          { opacity: 1, duration: 1.2, ease: "power1.out" },
+          0.2,
+        );
+
+        // Slow ambient drift — single continuous move, no repeat needed for 13.3s clip
+        tl.to("#ghost-text", { y: -18, duration: 12.0, ease: "sine.inOut" }, 1.4);
+
+        // Eyebrow slides up — first signal
+        tl.fromTo(
+          "#eyebrow",
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" },
+          0.45,
+        );
+
+        // Rule draws from left — structural reveal, power3.out per DESIGN.md
+        tl.fromTo(
+          "#rule",
+          { width: "0px" },
+          { width: "220px", duration: 0.6, ease: "power3.out" },
+          0.6,
+        );
+
+        // Stat number fades + rises — payoff element lands last per DESIGN.md
+        tl.fromTo(
+          "#stat-num",
+          { opacity: 0, y: 28 },
+          { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" },
+          0.7,
+        );
+
+        // Count-up 1.0 → 3.5 over 1.4s (power3.out per DESIGN.md counter ramp spec)
+        var counter = { val: 1.0 };
+        tl.fromTo(
+          counter,
+          { val: 1.0 },
+          {
+            val: 3.5,
+            duration: 1.4,
+            ease: "power3.out",
+            onUpdate: function () {
+              var el = document.getElementById("stat-num");
+              if (el) el.textContent = counter.val.toFixed(1) + "×";
+            },
+          },
+          0.75,
+        );
+
+        // Label slides from right — supporting info after stat lands
+        tl.fromTo(
+          "#stat-label",
+          { opacity: 0, x: 28 },
+          { opacity: 1, x: 0, duration: 0.5, ease: "power2.out" },
+          0.9,
+        );
+
+        // Sublabel fades in last — muted, lowest visual hierarchy
+        tl.fromTo(
+          "#stat-sublabel",
+          { opacity: 0 },
+          { opacity: 1, duration: 0.4, ease: "power2.out" },
+          1.1,
+        );
+
+        window.__timelines["graphics"] = tl;
+      })();
+    </script>
+  </div>
+</template>

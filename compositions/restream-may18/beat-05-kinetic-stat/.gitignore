@@ -1,0 +1,6 @@
+.thumbnails/
+.waveform-cache/
+renders/
+*.mp4
+*.mov
+*.wav

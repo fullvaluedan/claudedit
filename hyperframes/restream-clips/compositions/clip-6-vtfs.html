@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clip 6 — ETF vs VTF + Vault Curator Launch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0A0A0A;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #clip-6-vtfs {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    #clip-6-vtfs video.bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* ── Framework-managed clip containers ── */
+    #clip-6-vtfs .lt-clip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 1920px;
+      height: 340px;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    /* ── Inner panel wrapper — this is what GSAP slides ── */
+    #clip-6-vtfs .lt-panel {
+      width: 1920px;
+      height: 340px;
+      background: rgba(10, 10, 10, 0.88);
+      border-top: 3px solid rgba(0, 212, 255, 0.35);
+      padding: 48px 96px;
+      box-sizing: border-box;
+      display: flex;
+      transform: translateY(340px);
+    }
+
+    /* ── SCENE 1: ETF vs VTF ── */
+    #clip-6-vtfs #s1-panel {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    #clip-6-vtfs #s1-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 26px;
+      color: #888888;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    #clip-6-vtfs #s1-columns {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      flex: 1;
+      gap: 0;
+    }
+
+    #clip-6-vtfs #s1-etf-col {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 48px;
+    }
+
+    #clip-6-vtfs #s1-divider-vert {
+      width: 2px;
+      background: #2A2A2A;
+      align-self: stretch;
+      transform-origin: top center;
+      flex-shrink: 0;
+    }
+
+    #clip-6-vtfs #s1-vtf-col {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-left: 48px;
+    }
+
+    #clip-6-vtfs .s1-col-header {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 72px;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #clip-6-vtfs .s1-col-header.etf { color: #888888; }
+    #clip-6-vtfs .s1-col-header.vtf { color: #00D4FF; }
+
+    #clip-6-vtfs .s1-divider-horiz {
+      height: 2px;
+      width: 40px;
+      flex-shrink: 0;
+    }
+
+    #clip-6-vtfs .s1-divider-horiz.etf { background: #2A2A2A; }
+    #clip-6-vtfs .s1-divider-horiz.vtf { background: #00D4FF; }
+
+    #clip-6-vtfs .s1-etf-item {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 36px;
+      color: #888888;
+      line-height: 1.15;
+    }
+
+    #clip-6-vtfs .s1-vtf-item {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 36px;
+      color: #F0F0F0;
+      line-height: 1.15;
+    }
+
+    /* ── SCENE 2: Vault Curator Launch ── */
+    #clip-6-vtfs #s2-panel {
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+    }
+
+    #clip-6-vtfs #s2-left {
+      width: 65%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #clip-6-vtfs #s2-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 26px;
+      color: #888888;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    #clip-6-vtfs #s2-headline {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 80px;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #clip-6-vtfs #s2-sub {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 44px;
+      color: #F0F0F0;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    #clip-6-vtfs #s2-detail {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 32px;
+      color: #888888;
+      line-height: 1.3;
+    }
+
+    #clip-6-vtfs #s2-right {
+      width: 35%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-left: 40px;
+    }
+
+    #clip-6-vtfs #s2-card {
+      background: rgba(20, 26, 34, 0.8);
+      border: 1px solid #2A2A2A;
+      padding: 28px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 380px;
+    }
+
+    #clip-6-vtfs #s2-card-stat {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 72px;
+      color: #FFFFFF;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    #clip-6-vtfs #s2-card-since {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 30px;
+      color: #888888;
+      line-height: 1;
+    }
+
+    #clip-6-vtfs #s2-card-sep {
+      height: 1px;
+      background: #2A2A2A;
+      margin: 4px 0;
+    }
+
+    #clip-6-vtfs #s2-card-status {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 36px;
+      color: #16C784;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <div
+    id="clip-6-vtfs"
+    data-composition-id="clip-6-vtfs"
+    data-start="0"
+    data-width="1920"
+    data-height="1080"
+    data-duration="150"
+    data-fps="30"
+  >
+    <video id="c6-video" class="bg-video" src="../clips/clip-6-vtfs.mp4" muted playsinline data-start="0" data-duration="150" data-track-index="0"></video>
+    <audio id="c6-audio" src="../clips/clip-6-vtfs.mp4" data-start="0" data-duration="150" data-track-index="2" data-volume="1"></audio>
+
+    <!-- Scene 1: ETF vs VTF (t=6 → t=75) — outer .lt-clip is framework-managed -->
+    <div
+      id="s1-clip"
+      class="lt-clip clip"
+      data-start="6"
+      data-duration="69"
+      data-track-index="1"
+    >
+      <!-- Inner panel slides via GSAP -->
+      <div id="s1-panel" class="lt-panel">
+        <div id="s1-eyebrow" style="opacity:0;">DEFI INNOVATION</div>
+        <div id="s1-columns">
+          <!-- ETF column -->
+          <div id="s1-etf-col">
+            <div class="s1-col-header etf" id="s1-etf-header" style="opacity:0;">ETF</div>
+            <div class="s1-divider-horiz etf" id="s1-etf-divider" style="opacity:0;"></div>
+            <div class="s1-etf-item" id="s1-etf-1" style="opacity:0;">Centralized</div>
+            <div class="s1-etf-item" id="s1-etf-2" style="opacity:0;">Fixed basket</div>
+            <div class="s1-etf-item" id="s1-etf-3" style="opacity:0;">Regulated gatekeeping</div>
+            <div class="s1-etf-item" id="s1-etf-4" style="opacity:0;">TradFi access only</div>
+          </div>
+
+          <!-- Vertical divider -->
+          <div id="s1-divider-vert"></div>
+
+          <!-- VTF column -->
+          <div id="s1-vtf-col">
+            <div class="s1-col-header vtf" id="s1-vtf-header" style="opacity:0;">VTF</div>
+            <div class="s1-divider-horiz vtf" id="s1-vtf-divider" style="opacity:0;"></div>
+            <div class="s1-vtf-item" id="s1-vtf-1" style="opacity:0;">Permissionless</div>
+            <div class="s1-vtf-item" id="s1-vtf-2" style="opacity:0;">Any strategy</div>
+            <div class="s1-vtf-item" id="s1-vtf-3" style="opacity:0;">On-chain composable</div>
+            <div class="s1-vtf-item" id="s1-vtf-4" style="opacity:0;">Accessible to anyone</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 2: Vault Curator Launch Stats (t=76 → t=150) -->
+    <div
+      id="s2-clip"
+      class="lt-clip clip"
+      data-start="76"
+      data-duration="74"
+      data-track-index="1"
+    >
+      <div id="s2-panel" class="lt-panel">
+        <!-- Left 65% -->
+        <div id="s2-left">
+          <div id="s2-eyebrow" style="opacity:0;">WINTERMUTE VAULT CURATOR · MORPHO</div>
+          <div id="s2-headline" style="opacity:0;">DEMAND-DRIVEN LAUNCH</div>
+          <div id="s2-sub" style="opacity:0;">OTC clients asked Wintermute to manage capital</div>
+          <div id="s2-detail" style="opacity:0;">Risk-adjusted returns across any yield profile</div>
+        </div>
+        <!-- Right 35% -->
+        <div id="s2-right">
+          <div id="s2-card" style="opacity:0;">
+            <div id="s2-card-stat">2 WEEKS</div>
+            <div id="s2-card-since">since launch</div>
+            <div id="s2-card-sep"></div>
+            <div id="s2-card-status">HIGH TAKE RATES</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+
+      const tl = gsap.timeline({ paused: true });
+
+      // ─────────────────────────────────────────────
+      // SCENE 1  (t=6s → t=75s)  ETF vs VTF
+      // ─────────────────────────────────────────────
+      // Slide inner panel up
+      tl.fromTo('#s1-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        6
+      );
+
+      // Eyebrow fades in
+      tl.fromTo('#s1-eyebrow',
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
+        6.3
+      );
+
+      // ETF header slides in from left, VTF from right — simultaneously
+      tl.fromTo('#s1-etf-header',
+        { opacity: 0, x: -40 },
+        { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' },
+        6.5
+      );
+      tl.fromTo('#s1-vtf-header',
+        { opacity: 0, x: 40 },
+        { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' },
+        6.5
+      );
+
+      // Horizontal dividers under headers
+      tl.fromTo('#s1-etf-divider',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.3, ease: 'power1.out' },
+        6.8
+      );
+      tl.fromTo('#s1-vtf-divider',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.3, ease: 'power1.out' },
+        6.8
+      );
+
+      // Vertical center divider scales down from top
+      tl.fromTo('#s1-divider-vert',
+        { scaleY: 0 },
+        { scaleY: 1, duration: 0.6, ease: 'power2.out' },
+        7.0
+      );
+
+      // ETF items stagger in from t=7.2 (80ms apart)
+      tl.fromTo('#s1-etf-1',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        7.2
+      );
+      tl.fromTo('#s1-etf-2',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        7.28
+      );
+      tl.fromTo('#s1-etf-3',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        7.36
+      );
+      tl.fromTo('#s1-etf-4',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        7.44
+      );
+
+      // VTF items stagger in from t=7.24 (40ms offset from ETF, 80ms apart)
+      tl.fromTo('#s1-vtf-1',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'sine.out' },
+        7.24
+      );
+      tl.fromTo('#s1-vtf-2',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'sine.out' },
+        7.32
+      );
+      tl.fromTo('#s1-vtf-3',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'sine.out' },
+        7.40
+      );
+      tl.fromTo('#s1-vtf-4',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'sine.out' },
+        7.48
+      );
+
+      // Panel exit (slide inner panel down; framework hides .lt-clip at t=75)
+      tl.to('#s1-panel',
+        { y: 340, duration: 0.4, ease: 'power2.in' },
+        74.5
+      );
+
+      // ─────────────────────────────────────────────
+      // SCENE 2  (t=76s → end)  Vault Curator Launch
+      // ─────────────────────────────────────────────
+      // Slide inner panel up
+      tl.fromTo('#s2-panel',
+        { y: 340 },
+        { y: 0, duration: 0.5, ease: 'expo.out' },
+        76
+      );
+
+      // Eyebrow fades up
+      tl.fromTo('#s2-eyebrow',
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
+        76.3
+      );
+
+      // Headline slides in
+      tl.fromTo('#s2-headline',
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.45, ease: 'expo.out' },
+        76.5
+      );
+
+      // Card slides in from right
+      tl.fromTo('#s2-card',
+        { opacity: 0, x: 40 },
+        { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
+        76.6
+      );
+
+      // Sub line
+      tl.fromTo('#s2-sub',
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        76.8
+      );
+
+      // Detail line
+      tl.fromTo('#s2-detail',
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'sine.out' },
+        77.2
+      );
+
+      // Register timeline
+      window.__timelines['clip-6-vtfs'] = tl;
+    })();
+  </script>
+</body>
+</html>
