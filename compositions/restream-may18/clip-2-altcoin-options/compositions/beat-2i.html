@@ -1,0 +1,199 @@
+<template id="beat-2i-template">
+<!--
+  FULL-FRAME OVERLAY — STAKING then COVERED CALLS (sequential replacement)
+  Video is FULL FRAME — text overlays on top.
+  Dark gradient covers left 2/3 for text readability.
+
+  beat starts comp 99.0 = abs 516.72
+
+  SEQ 1: STAKING card (solo, full panel)
+    offset 0.5: enters from left
+    offset 5.0: exits to left (1:44 = comp 104)
+
+  SEQ 2: COVERED CALLS card replaces STAKING at same position
+    offset 5.4: enters from right
+    IV row at offset 10.5 (after STAKING gone)
+
+  Backdrop stays solid at fadeout for beat-apy brightness continuity.
+  Duration 20s (comp 99–119)
+-->
+<div data-composition-id="beat-2i" data-width="1920" data-height="1080" data-duration="20.0">
+
+  <div class="b2i-backdrop" data-layout-ignore></div>
+  <div class="b2i-reg b2i-tl" data-layout-ignore></div>
+  <div class="b2i-reg b2i-bl" data-layout-ignore></div>
+
+  <div class="b2i-zone">
+    <div class="b2i-inner">
+
+      <!-- Chrome -->
+      <div id="b2i-idx">09</div>
+      <div id="b2i-eye">ALTCOIN YIELD — STAKING vs OPTIONS</div>
+      <div id="b2i-rule"></div>
+
+      <!-- Card stage: both cards in same grid cell, only one visible at a time -->
+      <div class="b2i-stage">
+
+        <!-- SEQ 1: STAKING -->
+        <div id="b2i-staking" class="b2i-card">
+          <div class="b2i-head b2i-neg">STAKING</div>
+          <div class="b2i-items">
+            <div class="b2i-item">
+              <span class="b2i-dot b2i-dot-neg"></span>
+              <span class="b2i-item-text">Smart contract risk</span>
+            </div>
+            <div class="b2i-item">
+              <span class="b2i-dot b2i-dot-neg"></span>
+              <span class="b2i-item-text">Locked in obscure chains</span>
+            </div>
+            <div class="b2i-item">
+              <span class="b2i-dot b2i-dot-neg"></span>
+              <span class="b2i-item-text">Variable, unreliable APY</span>
+            </div>
+          </div>
+          <div class="b2i-verdict b2i-verdict-neg">ILLIQUID RISK</div>
+        </div>
+
+        <!-- SEQ 2: COVERED CALLS (replaces STAKING at 1:44) -->
+        <div id="b2i-cc" class="b2i-card b2i-card-accent">
+          <div class="b2i-head b2i-pos">COVERED CALLS</div>
+          <div class="b2i-items">
+            <div class="b2i-item">
+              <span class="b2i-dot b2i-dot-pos"></span>
+              <span class="b2i-item-text">Keep your spot position</span>
+            </div>
+            <div class="b2i-item">
+              <span class="b2i-dot b2i-dot-pos"></span>
+              <span class="b2i-item-text">Generate passive premium income</span>
+            </div>
+            <div id="b2i-iv-row" class="b2i-item b2i-item-accent">
+              <span class="b2i-dot b2i-dot-accent"></span>
+              <span class="b2i-item-text b2i-text-cyan">IV still very high → attractive APY</span>
+            </div>
+          </div>
+          <div class="b2i-verdict b2i-verdict-pos">YIELD + UPSIDE</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-2i"] {
+      width: 1920px; height: 1080px; position: relative;
+      overflow: hidden; background: transparent;
+      font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-2i"] .b2i-backdrop {
+      position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(5,8,12,0.92) 0%,
+        rgba(5,8,12,0.88) 40%,
+        rgba(5,8,12,0.75) 65%,
+        rgba(5,8,12,0.30) 80%,
+        transparent 100%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-2i"] .b2i-reg { position: absolute; width: 26px; height: 26px; opacity: 0; }
+    [data-composition-id="beat-2i"] .b2i-tl { top: 30px; left: 30px; border-top: 2px solid rgba(255,255,255,0.2); border-left: 2px solid rgba(255,255,255,0.2); }
+    [data-composition-id="beat-2i"] .b2i-bl { bottom: 30px; left: 30px; border-bottom: 2px solid rgba(255,255,255,0.2); border-left: 2px solid rgba(255,255,255,0.2); }
+    [data-composition-id="beat-2i"] .b2i-zone {
+      position: absolute; top: 0; left: 0; width: 1100px; height: 1080px;
+      display: flex; align-items: center;
+    }
+    [data-composition-id="beat-2i"] .b2i-inner { padding: 0 72px; width: 100%; }
+    [data-composition-id="beat-2i"] #b2i-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 400;
+      color: #888; letter-spacing: 0.1em; margin-bottom: 14px; opacity: 0;
+    }
+    [data-composition-id="beat-2i"] #b2i-eye {
+      font-family: "JetBrains Mono", monospace; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 20px; opacity: 0;
+    }
+    [data-composition-id="beat-2i"] #b2i-rule { width: 0; height: 2px; background: #00d4ff; margin-bottom: 32px; }
+
+    /* Card stage: CSS grid overlap — both cards occupy the same grid cell */
+    [data-composition-id="beat-2i"] .b2i-stage {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+    }
+    [data-composition-id="beat-2i"] .b2i-card {
+      grid-row: 1; grid-column: 1;
+      opacity: 0;
+      background: rgba(12,16,22,0.80);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px; padding: 32px 36px 28px;
+      max-width: 860px;
+    }
+    [data-composition-id="beat-2i"] .b2i-card-accent {
+      border-color: rgba(0,212,255,0.4);
+      box-shadow: 0 0 40px rgba(0,212,255,0.10);
+    }
+    [data-composition-id="beat-2i"] .b2i-head {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 80px;
+      line-height: 0.92; letter-spacing: -0.02em; text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    [data-composition-id="beat-2i"] .b2i-neg { color: #FF4D4F; }
+    [data-composition-id="beat-2i"] .b2i-pos { color: #f0f0f0; }
+    [data-composition-id="beat-2i"] .b2i-items { margin-bottom: 20px; }
+    [data-composition-id="beat-2i"] .b2i-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    [data-composition-id="beat-2i"] .b2i-item:last-child { border-bottom: none; }
+    [data-composition-id="beat-2i"] .b2i-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      flex-shrink: 0; margin-top: 13px;
+    }
+    [data-composition-id="beat-2i"] .b2i-dot-neg { background: #FF4D4F; }
+    [data-composition-id="beat-2i"] .b2i-dot-pos { background: #16C784; }
+    [data-composition-id="beat-2i"] .b2i-dot-accent { background: #00d4ff; }
+    [data-composition-id="beat-2i"] .b2i-item-text {
+      font-size: 38px; font-weight: 600; color: #c0c0c0; line-height: 1.35;
+      min-width: 0; flex: 1;
+    }
+    [data-composition-id="beat-2i"] .b2i-text-cyan { color: #00d4ff; font-weight: 700; }
+    [data-composition-id="beat-2i"] .b2i-item-accent { border-bottom-color: rgba(0,212,255,0.2); }
+    [data-composition-id="beat-2i"] .b2i-verdict {
+      font-family: "JetBrains Mono", monospace; font-size: 32px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    [data-composition-id="beat-2i"] .b2i-verdict-neg { color: #FF4D4F; }
+    [data-composition-id="beat-2i"] .b2i-verdict-pos { color: #16C784; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Chrome
+    tl.fromTo(".b2i-reg", {opacity:0}, {opacity:1, duration:0.22, ease:"power1.out"}, 0.12);
+    tl.fromTo("#b2i-idx", {opacity:0, x:-14}, {opacity:1, x:0, duration:0.26, ease:"expo.out"}, 0.15);
+    tl.fromTo("#b2i-eye", {opacity:0, y:10}, {opacity:1, y:0, duration:0.30, ease:"power3.out"}, 0.24);
+    tl.fromTo("#b2i-rule", {width:"0px"}, {width:"420px", duration:0.5, ease:"power3.inOut"}, 0.36);
+
+    // SEQ 1: STAKING enters solo (offset 0.5 = comp 99.5 = player 1:39)
+    tl.fromTo("#b2i-staking", {opacity:0, x:-28}, {opacity:1, x:0, duration:0.42, ease:"power3.out"}, 0.5);
+
+    // SEQ 1 EXIT: STAKING slides out left (offset 5.0 = comp 104 = player 1:44)
+    tl.to("#b2i-staking", {x:-900, opacity:0, duration:0.55, ease:"power3.in"}, 5.0);
+
+    // SEQ 2: COVERED CALLS enters from right, replaces STAKING (offset 5.4)
+    tl.fromTo("#b2i-cc", {opacity:0, x:60}, {opacity:1, x:0, duration:0.50, ease:"power3.out"}, 5.4);
+
+    // IV accent row: fires at offset 10.5 (comp 109.5 — CC visible, building detail)
+    tl.fromTo("#b2i-iv-row", {opacity:0}, {opacity:1, duration:0.38, ease:"power2.out"}, 10.5);
+
+    // Fadeout CONTENT ONLY (not backdrop) at offset 19.0 → beat-apy backdrop picks up at comp 119
+    tl.to(".b2i-inner, .b2i-reg", {opacity:0, duration:0.9, ease:"power2.out"}, 19.0);
+
+    window.__timelines["beat-2i"] = tl;
+  })();
+  </script>
+</div>
+</template>

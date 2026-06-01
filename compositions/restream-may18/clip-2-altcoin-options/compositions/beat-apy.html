@@ -1,0 +1,214 @@
+<template id="beat-apy-template">
+<!--
+  APY BAR CHART — comp 119.0–126.0s (7s)
+  Full-frame overlay — Jasper visible on right
+
+  "pretty impressive" abs 540.86 = comp 123.14 = beat offset 4.14
+
+  APY research (annualized covered call premium income, high-IV environments):
+    STOCKS  ~12%  (baseline, S&P covered calls)
+    BTC     ~38%  (100% IV → ~3% weekly → ~46% annualized, conservative 38%)
+    ETH     ~65%  (120-150% IV range)
+    ALTS    ~90%+ (SOL, ETH L2s, high-beta alts, 180%+ IV → 60-120%+ APY)
+
+  Bars animate left-to-right, staggered 0.8s apart.
+  ALTS bar in cyan with glow — the payoff.
+-->
+<div data-composition-id="beat-apy" data-width="1920" data-height="1080" data-duration="7.0">
+
+  <!-- Dark gradient backdrop — left 2/3 for text readability -->
+  <div class="bapy-backdrop" data-layout-ignore></div>
+
+  <!-- Eyebrow — top left -->
+  <div class="bapy-eyezone" data-layout-ignore>
+    <div id="bapy-idx" class="bapy-idx">10</div>
+    <div id="bapy-eye" class="bapy-eye">ALTCOIN COVERED CALLS — ANNUALIZED APY</div>
+    <div id="bapy-rule" class="bapy-rule"></div>
+  </div>
+
+  <!-- Chart zone — left 2/3 -->
+  <div class="bapy-zone">
+    <div class="bapy-inner">
+
+      <div id="bapy-headline" class="bapy-headline">ANNUALIZED PREMIUM INCOME</div>
+
+      <!-- Bar chart -->
+      <div class="bapy-chart">
+
+        <div id="bapy-row-stocks" class="bapy-row" style="opacity:0">
+          <div class="bapy-label">STOCKS</div>
+          <div class="bapy-track">
+            <div id="bapy-bar-stocks" class="bapy-bar bapy-bar-dim"></div>
+          </div>
+          <div id="bapy-pct-stocks" class="bapy-pct" style="opacity:0">12%</div>
+        </div>
+
+        <div id="bapy-row-btc" class="bapy-row" style="opacity:0">
+          <div class="bapy-label">BTC</div>
+          <div class="bapy-track">
+            <div id="bapy-bar-btc" class="bapy-bar bapy-bar-mid"></div>
+          </div>
+          <div id="bapy-pct-btc" class="bapy-pct" style="opacity:0">38%</div>
+        </div>
+
+        <div id="bapy-row-eth" class="bapy-row" style="opacity:0">
+          <div class="bapy-label">ETH</div>
+          <div class="bapy-track">
+            <div id="bapy-bar-eth" class="bapy-bar bapy-bar-mid"></div>
+          </div>
+          <div id="bapy-pct-eth" class="bapy-pct" style="opacity:0">65%</div>
+        </div>
+
+        <div id="bapy-row-alts" class="bapy-row bapy-row-accent" style="opacity:0">
+          <div class="bapy-label bapy-label-accent">ALTCOINS</div>
+          <div class="bapy-track">
+            <div id="bapy-bar-alts" class="bapy-bar bapy-bar-accent"></div>
+          </div>
+          <div id="bapy-pct-alts" class="bapy-pct bapy-pct-accent" style="opacity:0">90%+</div>
+        </div>
+
+      </div>
+
+      <div id="bapy-footer" class="bapy-footer">"PRETTY IMPRESSIVE" — JASPER DE MAERE, WINTERMUTE</div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-apy"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", sans-serif;
+    }
+    [data-composition-id="beat-apy"] .bapy-backdrop {
+      position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(5,8,12,0.92) 0%, rgba(5,8,12,0.88) 42%,
+        rgba(5,8,12,0.72) 65%, rgba(5,8,12,0.28) 80%, transparent 100%);
+      pointer-events: none;
+    }
+    /* Eyebrow top-left */
+    [data-composition-id="beat-apy"] .bapy-eyezone {
+      position: absolute; top: 60px; left: 72px;
+    }
+    [data-composition-id="beat-apy"] .bapy-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 400;
+      color: #888; letter-spacing: 0.1em; opacity: 0; margin-bottom: 12px;
+    }
+    [data-composition-id="beat-apy"] .bapy-eye {
+      font-family: "JetBrains Mono", monospace; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.2em; text-transform: uppercase;
+      opacity: 0; margin-bottom: 16px;
+    }
+    [data-composition-id="beat-apy"] .bapy-rule {
+      width: 0; height: 2px; background: #00d4ff;
+    }
+    /* Chart zone fills left 1440px vertically centered */
+    [data-composition-id="beat-apy"] .bapy-zone {
+      position: absolute; top: 0; left: 0; width: 1300px; height: 1080px;
+      display: flex; align-items: center;
+    }
+    [data-composition-id="beat-apy"] .bapy-inner {
+      padding: 0 72px; width: 100%;
+    }
+    [data-composition-id="beat-apy"] .bapy-headline {
+      font-family: "JetBrains Mono", monospace; font-size: 26px; font-weight: 700;
+      color: #666; letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 40px; opacity: 0;
+    }
+    /* Bar chart rows */
+    [data-composition-id="beat-apy"] .bapy-chart {
+      display: flex; flex-direction: column; gap: 22px;
+    }
+    [data-composition-id="beat-apy"] .bapy-row {
+      display: flex; align-items: center; gap: 28px;
+    }
+    [data-composition-id="beat-apy"] .bapy-label {
+      font-family: "JetBrains Mono", monospace; font-size: 28px; font-weight: 700;
+      color: #777; letter-spacing: 0.08em; text-transform: uppercase;
+      width: 130px; flex-shrink: 0; text-align: right;
+    }
+    [data-composition-id="beat-apy"] .bapy-label-accent { color: #00d4ff; }
+    [data-composition-id="beat-apy"] .bapy-track {
+      flex: 1; height: 52px; background: rgba(255,255,255,0.05);
+      border-radius: 4px; overflow: hidden; position: relative;
+    }
+    [data-composition-id="beat-apy"] .bapy-bar {
+      position: absolute; top: 0; left: 0; height: 100%; width: 0;
+      border-radius: 4px;
+    }
+    [data-composition-id="beat-apy"] .bapy-bar-dim {
+      background: rgba(255,255,255,0.25);
+    }
+    [data-composition-id="beat-apy"] .bapy-bar-mid {
+      background: rgba(255,255,255,0.45);
+    }
+    [data-composition-id="beat-apy"] .bapy-bar-accent {
+      background: #00d4ff;
+      box-shadow: 0 0 30px rgba(0,212,255,0.6), 0 0 60px rgba(0,212,255,0.3);
+    }
+    [data-composition-id="beat-apy"] .bapy-pct {
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 42px;
+      color: #f0f0f0; letter-spacing: -0.02em;
+      width: 110px; flex-shrink: 0; text-align: left;
+    }
+    [data-composition-id="beat-apy"] .bapy-pct-accent {
+      color: #00d4ff;
+      text-shadow: 0 0 40px rgba(0,212,255,0.6);
+    }
+    /* Footer */
+    [data-composition-id="beat-apy"] .bapy-footer {
+      font-family: "JetBrains Mono", monospace; font-size: 26px; font-weight: 400;
+      color: #444; letter-spacing: 0.08em; text-transform: uppercase;
+      margin-top: 36px; opacity: 0;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Bar widths (max track ~900px; alts at 100%)
+    // STOCKS 12/90 = 13.3% → 120px | BTC 38/90 = 42.2% → 380px
+    // ETH   65/90 = 72.2% → 650px | ALTS 90/90 = 100% → 900px
+    const W = { stocks: "120px", btc: "380px", eth: "650px", alts: "900px" };
+
+    // Eyebrow
+    tl.fromTo("#bapy-idx", {opacity:0, x:-14}, {opacity:1, x:0, duration:0.28, ease:"expo.out"}, 0.15);
+    tl.fromTo("#bapy-eye", {opacity:0, y:10}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 0.25);
+    tl.fromTo("#bapy-rule", {width:"0px"}, {width:"560px", duration:0.5, ease:"power3.inOut"}, 0.38);
+
+    // Sub-headline
+    tl.fromTo("#bapy-headline", {opacity:0, y:14}, {opacity:1, y:0, duration:0.38, ease:"power3.out"}, 0.5);
+
+    // STOCKS row — 0.8
+    tl.fromTo("#bapy-row-stocks", {opacity:0, x:-16}, {opacity:1, x:0, duration:0.35, ease:"power3.out"}, 0.8);
+    tl.fromTo("#bapy-bar-stocks", {width:"0px"}, {width:W.stocks, duration:0.55, ease:"power3.out"}, 0.95);
+    tl.fromTo("#bapy-pct-stocks", {opacity:0}, {opacity:1, duration:0.22, ease:"power2.out"}, 1.48);
+
+    // BTC row — 1.6
+    tl.fromTo("#bapy-row-btc", {opacity:0, x:-16}, {opacity:1, x:0, duration:0.35, ease:"power3.out"}, 1.6);
+    tl.fromTo("#bapy-bar-btc", {width:"0px"}, {width:W.btc, duration:0.75, ease:"power3.out"}, 1.75);
+    tl.fromTo("#bapy-pct-btc", {opacity:0}, {opacity:1, duration:0.22, ease:"power2.out"}, 2.48);
+
+    // ETH row — 2.4
+    tl.fromTo("#bapy-row-eth", {opacity:0, x:-16}, {opacity:1, x:0, duration:0.35, ease:"power3.out"}, 2.4);
+    tl.fromTo("#bapy-bar-eth", {width:"0px"}, {width:W.eth, duration:0.9, ease:"power3.out"}, 2.55);
+    tl.fromTo("#bapy-pct-eth", {opacity:0}, {opacity:1, duration:0.22, ease:"power2.out"}, 3.4);
+
+    // ALTCOINS row — 3.2 (cyan accent, bar fills longer for impact)
+    tl.fromTo("#bapy-row-alts", {opacity:0, x:-16}, {opacity:1, x:0, duration:0.4, ease:"power3.out"}, 3.2);
+    tl.fromTo("#bapy-bar-alts", {width:"0px"}, {width:W.alts, duration:1.2, ease:"power3.out"}, 3.35);
+    tl.fromTo("#bapy-pct-alts", {opacity:0, scale:0.85}, {opacity:1, scale:1, duration:0.4, ease:"expo.out"}, 4.4);
+
+    // Footer — fires when Jasper says "pretty impressive": beat offset 4.14
+    tl.fromTo("#bapy-footer", {opacity:0, y:8}, {opacity:1, y:0, duration:0.38, ease:"power2.out"}, 4.14);
+
+    // Fadeout at offset 6.5 (beat ends 7.0 = comp 126 = clip end)
+    tl.to(".bapy-zone, .bapy-eyezone, .bapy-backdrop", {opacity:0, duration:0.5, ease:"power2.out"}, 6.5);
+
+    window.__timelines["beat-apy"] = tl;
+  })();
+  </script>
+</div>
+</template>

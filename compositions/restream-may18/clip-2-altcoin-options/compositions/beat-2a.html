@@ -1,0 +1,82 @@
+<template id="beat-2a-template">
+<!-- KINETIC WORD STACK — Opening hook: "3.5×" anticipatory slam before speaker confirms -->
+<div data-composition-id="beat-2a" data-width="1920" data-height="1080" data-duration="9.5">
+
+  <div class="b2a-zone">
+    <div class="b2a-words">
+      <div id="b2a-w1" class="b2a-chunk b2a-stat">3.5×</div>
+      <div id="b2a-w2" class="b2a-chunk">MORE NOTIONAL</div>
+      <div id="b2a-w3" class="b2a-chunk b2a-cyan">IN ALTCOIN OPTIONS</div>
+    </div>
+    <div id="b2a-confirm" class="b2a-sub">Speaker confirms at 3.5s ↗</div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-2a"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background:
+        radial-gradient(ellipse at 18% 45%, rgba(0,212,255,0.10) 0%, transparent 48%),
+        radial-gradient(ellipse at 85% 80%, rgba(0,212,255,0.04) 0%, transparent 35%),
+        #0a0a0a;
+      font-family: "Inter", "Helvetica", sans-serif;
+    }
+    /* Ghost background text for depth */
+    [data-composition-id="beat-2a"]::before {
+      content: "3.5×";
+      position: absolute; bottom: -60px; right: -40px;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 500px;
+      color: rgba(0,212,255,0.04); letter-spacing: -0.05em;
+      line-height: 1; pointer-events: none; user-select: none;
+    }
+    [data-composition-id="beat-2a"] .b2a-zone {
+      position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 0 100px;
+    }
+    [data-composition-id="beat-2a"] .b2a-words {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    [data-composition-id="beat-2a"] .b2a-chunk {
+      font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 132px; color: #f0f0f0;
+      line-height: 1.0; letter-spacing: -0.03em;
+      text-transform: uppercase; opacity: 0; max-width: 1400px;
+    }
+    [data-composition-id="beat-2a"] .b2a-stat {
+      font-size: 200px; color: #f0f0f0;
+      letter-spacing: -0.05em; line-height: 0.9;
+    }
+    [data-composition-id="beat-2a"] .b2a-cyan { color: #00d4ff; }
+    [data-composition-id="beat-2a"] #b2a-confirm {
+      font-family: "JetBrains Mono", monospace; font-size: 24px; font-weight: 400;
+      color: #444; letter-spacing: 0.12em; text-transform: uppercase;
+      margin-top: 48px; opacity: 0; display: none;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // t=0.08: "3.5×" slams — OPENING HOOK (fires before speaker says it at comp 3.5s)
+    tl.fromTo("#b2a-w1", {opacity:0, y:80, scale:0.92}, {opacity:1, y:0, scale:1, duration:0.35, ease:"expo.out"}, 0.08);
+
+    // t=1.4: "MORE NOTIONAL" — dim stat slightly
+    tl.to("#b2a-w1", {opacity:0.45, duration:0.2, ease:"power2.out"}, 1.38);
+    tl.fromTo("#b2a-w2", {opacity:0, y:60}, {opacity:1, y:0, duration:0.32, ease:"expo.out"}, 1.40);
+
+    // t=2.2: "IN ALTCOIN OPTIONS" (cyan punchline) — dim previous
+    tl.to("#b2a-w2", {opacity:0.4, duration:0.2, ease:"power2.out"}, 2.18);
+    tl.fromTo("#b2a-w3", {opacity:0, y:60}, {opacity:1, y:0, duration:0.35, ease:"expo.out"}, 2.20);
+
+    // Exit the stack at t=3.0 — beat-2b (swiss-grid stat) fires at comp t=3.5
+    // Kinetic exits 0.5s before the stat beat slams in → clean transition, no dead frame
+    tl.to(".b2a-chunk", {y:-50, opacity:0, duration:0.28, ease:"power2.in"}, 3.0);
+
+    window.__timelines["beat-2a"] = tl;
+  })();
+  </script>
+</div>
+</template>

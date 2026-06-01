@@ -1,0 +1,174 @@
+<template id="beat-kinetic2-template">
+<!--
+  FULL-FRAME KINETIC — extended 14s with two sequences
+
+  SEQ 1 (0:09–0:13): TRUE WORD STACK — WE'RE SEEING / STRONG / APPETITE
+    Each word slams in and STAYS. All 3 visible simultaneously.
+    "seeing" spoken comp 11.80 = offset 2.80 | "strong appetite" comp 12.36 = offset 3.36
+
+  SEQ 2 (0:13–0:23): Liquid glass bullet card — WHY OPTIONS?
+    Eyebrow + 3 bullets build as Jasper speaks.
+    "yield" comp 13.76 = offset 4.76 | "low delta" comp 16.16 = offset 7.16 | "elegant" comp 17.52 = offset 8.52
+-->
+<div data-composition-id="beat-kinetic2" data-width="1920" data-height="1080" data-duration="14.0">
+
+  <div class="bk2-backdrop" data-layout-ignore></div>
+
+  <!-- Sequence 1: Word STACK — all words stay visible -->
+  <div id="bk2-seq1" class="bk2-zone">
+    <div class="bk2-words">
+      <div id="bk2-w1" class="bk2-word">WE'RE SEEING</div>
+      <div id="bk2-w2" class="bk2-word">STRONG</div>
+      <div id="bk2-w3" class="bk2-word bk2-cyan">APPETITE</div>
+    </div>
+  </div>
+
+  <!-- Sequence 2: Liquid glass bullet card — appears after seq1 exits -->
+  <div id="bk2-seq2" class="bk2-zone2">
+    <div class="bk2-card">
+      <div class="bk2-card-accent" data-layout-ignore></div>
+      <div id="bk2-card-eye">WHY OPTIONS?</div>
+      <div id="bk2-card-rule" class="bk2-card-rule"></div>
+      <div class="bk2-bullets">
+        <div id="bk2-b1" class="bk2-bullet">
+          <span class="bk2-dot"></span>
+          <span class="bk2-btext">Yield strategies</span>
+        </div>
+        <div id="bk2-b2" class="bk2-bullet">
+          <span class="bk2-dot"></span>
+          <span class="bk2-btext">Low delta exposure</span>
+        </div>
+        <div id="bk2-b3" class="bk2-bullet bk2-bullet-accent">
+          <span class="bk2-dot bk2-dot-accent"></span>
+          <span class="bk2-btext bk2-btext-cyan">Elegant risk management</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-kinetic2"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", sans-serif;
+    }
+    [data-composition-id="beat-kinetic2"] .bk2-backdrop {
+      position: absolute; top: 0; left: 0; width: 1050px; height: 1080px;
+      z-index: 0;
+      background: linear-gradient(to right,
+        rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.5) 55%, transparent 100%);
+      pointer-events: none;
+    }
+    /* Seq 1 zone — vertically centered lower half */
+    [data-composition-id="beat-kinetic2"] .bk2-zone {
+      position: absolute; top: 0; left: 0; width: 960px; height: 1080px;
+      display: flex; align-items: center; padding: 0 80px;
+    }
+    [data-composition-id="beat-kinetic2"] .bk2-words {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    [data-composition-id="beat-kinetic2"] .bk2-word {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 132px;
+      color: #ffffff; line-height: 1.0; letter-spacing: -0.03em;
+      text-transform: uppercase; opacity: 0;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.8);
+    }
+    [data-composition-id="beat-kinetic2"] .bk2-cyan {
+      color: #00d4ff;
+      text-shadow:
+        0 0 80px rgba(0,212,255,0.9), 0 0 40px rgba(0,212,255,0.7),
+        0 0 20px rgba(0,212,255,0.5), 0 4px 24px rgba(0,0,0,0.8);
+    }
+    /* Seq 2 zone — layout container only, no opacity control here */
+    [data-composition-id="beat-kinetic2"] .bk2-zone2 {
+      position: absolute; top: 0; left: 0; width: 960px; height: 1080px;
+      display: flex; align-items: center; padding: 0 80px;
+      z-index: 2;
+    }
+    /* Liquid glass card — opacity:0 in CSS; GSAP reveals with immediateRender:true */
+    [data-composition-id="beat-kinetic2"] .bk2-card {
+      position: relative;
+      opacity: 0;
+      background: rgba(20,26,34,0.85);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255,255,255,0.07);
+      box-shadow: 0 0 60px rgba(0,212,255,0.07), 0 8px 40px rgba(0,0,0,0.65);
+      border-radius: 6px; padding: 36px 44px 36px 52px;
+      width: 100%;
+    }
+    [data-composition-id="beat-kinetic2"] .bk2-card-accent {
+      position: absolute; left: 0; top: 32px; bottom: 32px; width: 4px;
+      background: #00d4ff;
+      box-shadow: 0 0 16px rgba(0,212,255,0.7);
+      border-radius: 0 4px 4px 0;
+    }
+    [data-composition-id="beat-kinetic2"] #bk2-card-eye {
+      font-family: "JetBrains Mono", monospace; font-size: 28px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 16px; opacity: 0;
+    }
+    [data-composition-id="beat-kinetic2"] .bk2-card-rule {
+      width: 0; height: 2px; background: #00d4ff; margin-bottom: 28px;
+    }
+    [data-composition-id="beat-kinetic2"] .bk2-bullets {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    [data-composition-id="beat-kinetic2"] .bk2-bullet {
+      display: flex; align-items: flex-start; gap: 18px;
+      padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+      opacity: 0;
+    }
+    [data-composition-id="beat-kinetic2"] .bk2-bullet:last-child { border-bottom: none; }
+    [data-composition-id="beat-kinetic2"] .bk2-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #555; flex-shrink: 0; margin-top: 15px;
+    }
+    [data-composition-id="beat-kinetic2"] .bk2-dot-accent { background: #00d4ff; }
+    [data-composition-id="beat-kinetic2"] .bk2-btext {
+      font-family: "Inter", sans-serif; font-size: 42px; font-weight: 600;
+      color: #c8c8c8; line-height: 1.3; min-width: 0; flex: 1;
+    }
+    [data-composition-id="beat-kinetic2"] .bk2-btext-cyan {
+      color: #00d4ff; font-weight: 700;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // ── SEQ 1: TRUE WORD STACK — each word stays ──
+    // All 3 words fire and accumulate (NO dim calls)
+    tl.fromTo("#bk2-w1", {opacity:0, y:22}, {opacity:1, y:0, duration:0.30, ease:"expo.out"}, 0.5);
+    tl.fromTo("#bk2-w2", {opacity:0, y:22}, {opacity:1, y:0, duration:0.30, ease:"expo.out"}, 1.0);
+    tl.fromTo("#bk2-w3", {opacity:0, y:22, scale:0.88}, {opacity:1, y:0, scale:1, duration:0.35, ease:"expo.out"}, 1.5);
+    // Seq1 exits upward before seq2 enters
+    tl.to("#bk2-seq1", {y:-50, opacity:0, duration:0.32, ease:"power2.in"}, 4.0);
+
+    // ── SEQ 2: LIQUID GLASS BULLET CARD ──
+    // Card starts opacity:0 in CSS. immediateRender:true sets initial x:-30 at timeline creation.
+    // This is deterministic on seek — no parent container opacity trick needed.
+    tl.fromTo(".bk2-card",
+      {opacity:0, x:-30},
+      {opacity:1, x:0, duration:0.4, ease:"power3.out", immediateRender:true},
+      4.65
+    );
+    // Eyebrow + rule
+    tl.fromTo("#bk2-card-eye", {opacity:0, y:8}, {opacity:1, y:0, duration:0.30, ease:"power3.out"}, 4.82);
+    tl.fromTo("#bk2-card-rule", {width:"0px"}, {width:"260px", duration:0.4, ease:"power3.inOut"}, 4.96);
+    // Bullet 1: "yield strategies" comp 13.76 = offset 4.76
+    tl.fromTo("#bk2-b1", {opacity:0, x:-18}, {opacity:1, x:0, duration:0.35, ease:"power3.out"}, 5.2);
+    // Bullet 2: "low delta" comp 16.16 = offset 7.16
+    tl.fromTo("#bk2-b2", {opacity:0, x:-18}, {opacity:1, x:0, duration:0.35, ease:"power3.out"}, 7.16);
+    // Bullet 3: "elegant" comp 17.52 = offset 8.52 (cyan accent)
+    tl.fromTo("#bk2-b3", {opacity:0, x:-18}, {opacity:1, x:0, duration:0.38, ease:"power3.out"}, 8.52);
+    // Card exits — target .bk2-card directly (parent no longer controls opacity)
+    tl.to(".bk2-card", {opacity:0, y:-18, duration:0.4, ease:"power2.in"}, 13.1);
+
+    window.__timelines["beat-kinetic2"] = tl;
+  })();
+  </script>
+</div>
+</template>
