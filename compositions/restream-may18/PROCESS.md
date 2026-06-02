@@ -20,12 +20,10 @@ Hand-authoring the timeline and beats separately is why all three causes exist a
 0. **Inputs (once per episode):** `timing/clipN-words.txt` (word-sync ground truth from audio.json), `_JARGON.md`, `DESIGN.md`; extract one source frame and confirm the layout (side-by-side: host left, guest right).
 1. **EDL** (`timing/clipN-edl-*.md`): open on a line actually spoken in the first ~5s; one DISTINCT primary device per clip; a **view-timeline** that is grouped (graphic beats → one Mode-A block, kinetic/breath → full-frame) with **every Mode-A beat's eyebrow/frame at beat-start (offset ≤0.5s)** so the zone is never empty; all on-screen text mapped through `_JARGON.md`; no duplicate words; no clip-number.
 2. **Build** from the EDL (match clip-2 patterns; install catalog blocks for variety).
-3. **ALL STATIC GATES FIRST — instant, NO render. Fix everything here before spending a single render.** This is the efficiency win: renders are minutes; statics are seconds.
-   - `npx hyperframes lint` → 0 errors
-   - `python3 timing/check-edl.py <clip>` → PASS (predicts blank-left from view-timeline vs first-content time; names late-firing Mode-A beats)
-   - `python3 timing/check-content.py <clip>` → PASS (EMPTY-BOX: container on screen before its content, or eyebrow-only sparse hold — the thing a luminance gate can't see)
-4. **ONE HQ render** (not draft — draft's 2fps/low-res sampling misses borderline blanks; gate the deliverable). Render the affected clips only, 2 concurrent.
-5. **RENDER GATE — `python3 timing/check-render.py <clip>`** on the HQ → PASS (authoritative pixels: blank-left, lint, z-index, index, jargon).
+3. **ALL STATIC GATES FIRST — `python3 timing/gate.py <clip>` (instant, NO render). Fix everything here before spending a single render.** This is the efficiency win: renders are minutes; statics are seconds. One command runs, cheapest-first:
+   - `lint` → 0 errors · `check-edl.py` (blank-left predict + **content-exit model** — catches content fading before its window ends, the cause #3 the pixel gate's glow blind-spot misses) · `check-content.py` (empty/hollow box) · `check-views.py` (R1: no <6s jitter hold, no A-B-A) · `check-selectors.py` (every GSAP `#id`/`.class` target resolves — the text-over-face bug) · `check-text.py` (jargon via `_JARGON.md` / on-screen index / blur-grain).
+4. **ONE HQ render** (not draft — draft's low-res/2fps sampling misses borderline blanks; gate the deliverable). Render the affected clips only, 2 concurrent.
+5. **RENDER GATE — `python3 timing/gate.py <clip> --render`** (adds `check-render.py` on the HQ pixels: blank-left + lint + z-index + index + jargon). Note: `check-render` flags on YMAX, so a faint glow in an empty zone can pass — the pre-render content gates above are primary for "is there content"; this is the pixel backstop.
 6. **Human frame-verify — the cheap, mandatory step.** `ffmpeg -ss <t> -i HQ.mp4 -frames:v 1 f.png` at every Mode-A beat-START + every window any gate ever flagged, and LOOK at each (gates are necessary, not sufficient — they can't see a hollow box or wrong content; eyes can). Paste the flagged frames back to the user.
 7. **Commit** (renders gitignored) — only when the user asks.
 

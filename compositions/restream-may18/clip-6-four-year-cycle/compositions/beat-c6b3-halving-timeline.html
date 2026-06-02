@@ -121,10 +121,11 @@
     window.__timelines = window.__timelines || {};
     const tl = gsap.timeline({ paused: true });
 
-    // Eyebrow — "very (self-fulfilling)" src 1435.52 → comp 15.22 → offset 1.22
-    tl.fromTo("#b3-eye", {opacity:0, y:10}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 1.22);
-    // Baseline rule draws L→R — comp 15.6 → offset 1.6
-    tl.fromTo("#b3-base", {scaleX:0}, {scaleX:1, duration:0.55, ease:"power3.inOut"}, 1.6);
+    // R7 frame-at-start: eyebrow + baseline fill the zone as the beat begins (was +1.22/+1.6 ->
+    // thin boundary with c6b2). The timeline markers below stay word-synced.
+    tl.fromTo("#b3-eye", {opacity:0, y:10}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 0.40);
+    // Baseline rule draws L→R
+    tl.fromTo("#b3-base", {scaleX:0}, {scaleX:1, duration:0.55, ease:"power3.inOut"}, 0.60);
 
     // Ticks pop left→right on the cadence (back.out for a confident node pop)
     // 2012 — "also" src 1437.54 → comp 17.24 → offset 3.24

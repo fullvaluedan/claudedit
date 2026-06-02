@@ -109,8 +109,9 @@
     tl.fromTo("#b2-l2", {opacity:0, y:28, scale:0.94}, {opacity:1, y:0, scale:1, duration:0.34, ease:"expo.out"}, 10.16);
 
     // Beat ends comp 14.0 (offset 11.0); index.html shrinks→timeline handoff for c6b3.
-    // Fade left-zone content just before boundary so nothing lingers into c6b3.
-    tl.to(".b2-inner", {opacity:0, duration:0.30, ease:"power2.in"}, 10.6);
+    // Hold to the window end (14.0) so the zone never empties before c6b3 fills it. Was 10.6
+    // (comp 13.6) -> a real ~1.5s blank-left the luminance gate missed; exit-model caught it.
+    tl.to(".b2-inner", {opacity:0, duration:0.30, ease:"power2.in"}, 11.5);
 
     window.__timelines["beat-c6b2"] = tl;
   })();

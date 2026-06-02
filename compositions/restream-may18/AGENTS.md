@@ -3,7 +3,14 @@
 This directory holds the podcast social clips. We have an established house style, hard-won across
 several review rounds. **Read `PROCESS.md` first — it is the production SOP (pipeline + the gate + the revisions-to-zero loop).**
 
-**THE GATES (non-negotiable):** a clip is NOT done until ALL THREE print PASS — `timing/check-edl.py` (pre-render blank-left prediction), `timing/check-render.py` (rendered-pixel blank-left + lint/z-index/index/jargon), and `timing/check-content.py` (EMPTY-BOX: a container/card on screen with no content inside it — the brightness gate CANNOT see this, a glowing empty card passes check-render). Run check-edl + check-content (instant, no render) first; render gate on a draft; nothing ships until all green AND a human has eyeballed every Mode-A beat-START + every previously-flagged window. Design rule: a container never appears emptier than it will be a frame later — full-frame the talky lead-in, then enter Mode-A + container + first content together.
+**THE GATE — ONE COMMAND (non-negotiable).** Canonical workflow + reasoning live in **`../../LESSONS.md` → "THE CLIP WORKFLOW"**. Run:
+
+```
+python3 timing/gate.py <clip-dir>            # all STATIC gates (instant, no render) — BEFORE rendering
+python3 timing/gate.py <clip-dir> --render   # + the pixel gate, after ONE HQ render
+```
+
+`gate.py` runs, cheapest-first: `lint` · `check-edl.py` (blank-left predict + content-exit model) · `check-content.py` (empty/hollow box) · `check-views.py` (R1 view discipline) · `check-selectors.py` (every GSAP `#id`/`.class` target resolves — the text-over-face bug) · `check-text.py` (jargon via `_JARGON.md` / on-screen index / blur-grain) — then `check-render.py` (rendered-pixel blank-left + lint + z-index + index + jargon). Nothing ships until ALL print PASS **AND** a human has eyeballed every Mode-A beat-START + every previously-flagged window (gates are necessary, not sufficient — they can't see wrong/dark/semantically-off content; eyes can). Design rule: a container never appears emptier than it will be a frame later — full-frame the talky lead-in, then enter Mode-A + container + first content together.
 
 **Before building, QA'ing, or planning ANY clip here, READ these files and grade against them — they are the source of truth and override generic instincts:**
 

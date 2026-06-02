@@ -60,34 +60,50 @@ def first_content_offset(subpath):
         if best is None or off < best: best = off
     return best
 
+# whole-beat exit: a wrapper/multi-element opacity:0 .to(). Single decorative fades (.reg, one line)
+# do NOT count, so this never falsely shrinks a beat's covered span. Models blank-left cause #3
+# (content fades before the Mode-A window ends — clip-4). check-render remains the pixel authority.
+WRAP_EXIT = re.compile(r'inner|zone|words|stack|backdrop|scover|content|wrap', re.I)
+def content_exit_offset(subpath):
+    if not os.path.exists(subpath): return None
+    s = open(subpath, errors='ignore').read()
+    best = None
+    for mm in re.finditer(r'\.to\(\s*([^,]+?(?:,\s*[^,{]+)*?)\s*,\s*\{([^}]*opacity:\s*0(?!\.)[^}]*)\}\s*,\s*([0-9.]+)\)', s):
+        sel, off = mm.group(1), float(mm.group(3))
+        if (',' in sel) or WRAP_EXIT.search(sel):     # whole-beat fade only
+            if best is None or off < best: best = off
+    return best
+
 def main():
     d = sys.argv[1].rstrip('/'); html = open(os.path.join(d,'index.html')).read()
     segs = parse_views(html)
-    beats = []  # (start, end, content_time, id)
-    for mm in re.finditer(r'<div\b[^>]*\bid="(beat-[a-z0-9-]+)"[^>]*data-composition-src="compositions/([^"]+)"[^>]*data-start="([0-9.]+)"[^>]*data-duration="([0-9.]+)"', html, re.S):
-        bid, src, ds, dd = mm.group(1), mm.group(2), float(mm.group(3)), float(mm.group(4))
+    beats = []  # (start, end, content_time, id, off, exit_t)
+    def mk(bid, src, ds, dd):
         off = first_content_offset(os.path.join(d,'compositions',src))
         ct = ds + (off if off is not None else 0)
-        beats.append((ds, ds+dd, ct, bid, off))
+        ex = content_exit_offset(os.path.join(d,'compositions',src))
+        exit_t = ds + ex if (ex is not None and ds + ex > ct) else ds + dd   # only if after content
+        beats.append((ds, ds+dd, ct, bid, off, exit_t))
+    for mm in re.finditer(r'<div\b[^>]*\bid="(beat-[a-z0-9-]+)"[^>]*data-composition-src="compositions/([^"]+)"[^>]*data-start="([0-9.]+)"[^>]*data-duration="([0-9.]+)"', html, re.S):
+        mk(mm.group(1), mm.group(2), float(mm.group(3)), float(mm.group(4)))
     # also handle id-after-src ordering
     for mm in re.finditer(r'<div\b[^>]*data-composition-src="compositions/([^"]+)"[^>]*\bid="(beat-[a-z0-9-]+)"[^>]*data-start="([0-9.]+)"[^>]*data-duration="([0-9.]+)"', html, re.S):
-        src, bid, ds, dd = mm.group(1), mm.group(2), float(mm.group(3)), float(mm.group(4))
-        if any(b[3]==bid for b in beats): continue
-        off = first_content_offset(os.path.join(d,'compositions',src)); ct = ds + (off if off is not None else 0)
-        beats.append((ds, ds+dd, ct, bid, off))
+        if any(b[3]==mm.group(2) for b in beats): continue
+        mk(mm.group(2), mm.group(1), float(mm.group(3)), float(mm.group(4)))
     # walk every MODE_A segment in 0.25s steps; flag uncovered stretches
     gaps = []; late = []
     t_steps = []
     for (s,e,v) in segs:
         if v != 'MODE_A': continue
         # which beats start inside this seg and fire late?
-        for (bs,be,ct,bid,off) in beats:
+        for (bs,be,ct,bid,off,xt) in beats:
             if s-0.5 <= bs <= e and off is not None and off > START_TOL:
                 late.append((bid, bs, off))
         t = s
         run = None
         while t < e:
-            covered = any(bs <= t <= be and ct <= t for (bs,be,ct,bid,off) in beats)
+            # covered only while content is present: after it fires (ct) and before it exits (xt)
+            covered = any(bs <= t <= be and ct <= t <= xt for (bs,be,ct,bid,off,xt) in beats)
             if not covered:
                 if run is None: run = t
             else:

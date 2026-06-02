@@ -23,6 +23,12 @@ import sys, os, re, subprocess, glob
 THRESH_YMAX = 100      # below this = no bright content in the zone
 MIN_BLANK   = 1.5      # seconds; a dark-left run longer than this fails
 LEFT_W      = 1120     # left graphics zone width (of 1920)
+SAMPLE_FPS  = 5        # was 2 — finer temporal resolution (caught the clip-1 borderline 1.5s class)
+PERIOD      = 1.0 / SAMPLE_FPS
+# NOTE (blind spot, see LESSONS backlog): this flags on YMAX (max luminance). A faint bg-glow in an
+# otherwise-empty Mode-A zone keeps YMAX>threshold and PASSES — a real blank the content gates
+# (check-edl exit-model + check-content) catch pre-render instead. A bright-pixel-AREA measure would
+# close it here too; not changed yet to avoid destabilizing the full-frame pass case.
 
 def find_mp4(d):
     # prefer the NEWEST render (verify.mp4 during iteration; HQ after final) so the gate
@@ -34,7 +40,7 @@ def find_mp4(d):
 def blank_left_runs(mp4):
     # sample left-60% max-luminance at 2 fps via signalstats
     cmd = ['ffmpeg','-nostdin','-i',mp4,'-vf',
-           f'crop={LEFT_W}:1080:0:0,fps=2,signalstats,metadata=print:file=-','-an','-f','null','-']
+           f'crop={LEFT_W}:1080:0:0,fps={SAMPLE_FPS},signalstats,metadata=print:file=-','-an','-f','null','-']
     out = subprocess.run(cmd, capture_output=True, text=True).stdout
     t=None; series=[]
     for line in out.splitlines():
@@ -48,9 +54,9 @@ def blank_left_runs(mp4):
             if start is None: start=t
             last=t
         else:
-            if start is not None and (last-start) >= MIN_BLANK: runs.append((start,last))
+            if start is not None and (last-start+PERIOD) >= MIN_BLANK: runs.append((start,last))
             start=None
-    if start is not None and (last-start) >= MIN_BLANK: runs.append((start,last))
+    if start is not None and (last-start+PERIOD) >= MIN_BLANK: runs.append((start,last))
     return runs
 
 def grep_html(d, pattern, flags=re.I):
