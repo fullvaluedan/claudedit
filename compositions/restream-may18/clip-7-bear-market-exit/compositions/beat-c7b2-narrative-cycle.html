@@ -1,0 +1,225 @@
+<template id="beat-c7b2-narrative-cycle-template">
+<!--
+  c7b2 — HERO: the narrative-cycle TIMELINE (decision-tree --example re-skinned vertical) · Mode A
+  Beat starts comp 6.0; offsets below = comp_t - 6.0.
+  A neutral #2A2A2A spine slow-draws top->bottom; nodes pop back.out(1.5) ON their spoken era.
+  Ends on an OPEN cyan "?" node (n6) — the pose the closing card (c7b6) answers.
+
+  R3 FIX: n4 DePIN ADDED (v2 omitted it; Whisper wrote "deep intaking off").
+  Cyan discipline: the ONLY cyan element is the n6 "?" node (fill + border + glow; "?" glyph
+  >=48px so the #888-under-48 rule is moot; NEXT sublabel cyan-tinted on this node only).
+  Eyebrow is an EDITORIAL section label (not word-synced) — shares no word with any node.
+
+  Node fire times — SPOKEN ORDER (comp = src - 1530.50; offset = comp - 6.0):
+    n1 2024 / ETF ANNOUNCEMENTS         ETF          src1541.26 / comp 10.76 / offset  4.76
+    n2 ORDINALS + INSCRIPTIONS          inscriptions src1543.76 / comp 13.26 / offset  7.26
+    n3 DeFi SUMMER                      DeFi         src1547.58 / comp 17.08 / offset 11.08
+    n4 DePIN / Decentralized Phys.Infra deep         src1549.02 / comp 18.52 / offset 12.52  (JARGON fix)
+    n5 AI AGENTS                        AI           src1550.82 / comp 20.32 / offset 14.32
+    n6 ? / NEXT                         curious      src1556.28 / comp 25.78 / offset 19.78  (EDITORIAL turn, cyan)
+  Inner content fades out @ comp ~31.6 (offset 25.6) before V3 establishes.
+-->
+<div data-composition-id="beat-c7b2-narrative-cycle" data-width="1920" data-height="1080" data-duration="26.0">
+
+  <!-- Corner registration marks (left zone) -->
+  <div class="b2-reg b2-tl" data-layout-ignore></div>
+  <div class="b2-reg b2-tr" data-layout-ignore></div>
+  <div class="b2-reg b2-bl" data-layout-ignore></div>
+  <div class="b2-reg b2-br" data-layout-ignore></div>
+
+  <div class="b2-zone">
+    <div class="b2-inner">
+
+      <!-- Chrome: index + eyebrow (EDITORIAL label) -->
+      <!-- EDITORIAL: section label, not word-synced -->
+      <div id="b2-eye">THE NARRATIVE CYCLE</div>
+
+      <!-- Vertical narrative-cycle timeline: neutral spine + 6 nodes (DePIN added as n4) -->
+      <div class="b2-timeline">
+        <div id="b2-spine" class="b2-spine"></div>
+
+        <div id="b2-n1" class="b2-node">
+          <span class="b2-dot"></span>
+          <div class="b2-node-body">
+            <div class="b2-yr">2024</div>
+            <div class="b2-label">ETF ANNOUNCEMENTS</div>
+          </div>
+        </div>
+
+        <div id="b2-n2" class="b2-node">
+          <span class="b2-dot"></span>
+          <div class="b2-node-body">
+            <div class="b2-label">ORDINALS + INSCRIPTIONS</div>
+          </div>
+        </div>
+
+        <div id="b2-n3" class="b2-node">
+          <span class="b2-dot"></span>
+          <div class="b2-node-body">
+            <div class="b2-label">DeFi SUMMER</div>
+          </div>
+        </div>
+
+        <!-- n4 — DePIN (JARGON: Whisper "deep intaking off" -> DePIN per _JARGON.md, user-flagged confirmed) -->
+        <div id="b2-n4" class="b2-node">
+          <span class="b2-dot"></span>
+          <div class="b2-node-body">
+            <div class="b2-label">DePIN</div>
+            <div class="b2-sub">Decentralized Physical Infra.</div>
+          </div>
+        </div>
+
+        <div id="b2-n5" class="b2-node">
+          <span class="b2-dot"></span>
+          <div class="b2-node-body">
+            <div class="b2-label">AI AGENTS</div>
+          </div>
+        </div>
+
+        <!-- n6 — the OPEN cyan "?" node (the pose c7b6 answers). EDITORIAL turn, fires on "curious". -->
+        <div id="b2-n6" class="b2-node b2-node-open">
+          <span class="b2-dot b2-dot-open"></span>
+          <div class="b2-node-body">
+            <div class="b2-q">?</div>
+            <div class="b2-label b2-label-open">NEXT</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c7b2-narrative-cycle"] {
+      width: 1920px; height: 1080px; position: relative;
+      overflow: hidden; background: transparent;
+      font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-reg { position: absolute; width: 26px; height: 26px; opacity: 0; }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-tl { top:30px; left:30px; border-top:2px solid #2a2a2a; border-left:2px solid #2a2a2a; }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-tr { top:30px; left:1094px; border-top:2px solid #2a2a2a; border-right:2px solid #2a2a2a; }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-bl { bottom:30px; left:30px; border-bottom:2px solid #2a2a2a; border-left:2px solid #2a2a2a; }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-br { bottom:30px; left:1094px; border-bottom:2px solid #2a2a2a; border-right:2px solid #2a2a2a; }
+
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center;
+    }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-inner { padding: 0 80px; width: 100%; }
+
+    [data-composition-id="beat-c7b2-narrative-cycle"] #b2-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 400;
+      color: #888; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 12px; opacity: 0;
+    }
+    /* EYEBROW — Inter 700, >=32px, #F0F0F0 */
+    [data-composition-id="beat-c7b2-narrative-cycle"] #b2-eye {
+      font-family: "Inter", sans-serif; font-size: 34px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.16em; text-transform: uppercase;
+      margin-bottom: 30px; opacity: 0;
+    }
+
+    /* Vertical timeline */
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-timeline {
+      position: relative; padding-left: 6px;
+    }
+    /* Neutral spine — NOT cyan (single cyan element is the n6 node). 600px for 6 nodes. */
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-spine {
+      position: absolute; left: 13px; top: 8px;
+      width: 2px; height: 600px;
+      background: #2a2a2a; transform-origin: top center;
+      transform: scaleY(0);
+    }
+    /* margin-bottom 22px (was 30) so all 6 nodes fit the left zone */
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-node {
+      position: relative; display: flex; align-items: center; gap: 26px;
+      margin-bottom: 22px; opacity: 0;
+    }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-node:last-child { margin-bottom: 0; }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-dot {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: #141a22; border: 3px solid #555; flex-shrink: 0;
+      position: relative; z-index: 1;
+    }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-node-body {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-yr {
+      font-family: "JetBrains Mono", monospace; font-size: 24px; font-weight: 500;
+      color: #f0f0f0; letter-spacing: 0.08em; opacity: 0.7;
+    }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-label {
+      font-family: "Inter", sans-serif; font-size: 40px; font-weight: 800;
+      color: #f0f0f0; letter-spacing: 0.005em; text-transform: uppercase;
+      line-height: 1.04;
+    }
+    /* n4 DePIN sublabel — Inter 600, >=32px, #F0F0F0 */
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-sub {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 600;
+      color: #f0f0f0; letter-spacing: 0.005em; line-height: 1.1;
+      opacity: 0.82; margin-top: 2px;
+    }
+
+    /* n6 — the OPEN cyan "?" node (the single cyan element) */
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-dot-open {
+      background: rgba(0,212,255,0.18);
+      border-color: #00d4ff;
+      box-shadow: 0 0 18px rgba(0,212,255,0.55);
+    }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-node-open .b2-node-body {
+      flex-direction: row; align-items: center; gap: 22px;
+    }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-q {
+      font-family: "Inter", sans-serif; font-size: 64px; font-weight: 900;
+      color: #00d4ff; line-height: 0.9;
+      text-shadow: 0 0 40px rgba(0,212,255,0.7), 0 0 16px rgba(0,212,255,0.5);
+    }
+    [data-composition-id="beat-c7b2-narrative-cycle"] .b2-label-open {
+      color: #00d4ff;
+      text-shadow: 0 0 24px rgba(0,212,255,0.45);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Beat starts comp 6.0 — chrome fires right after Mode A is established.
+    tl.fromTo(".b2-reg", {opacity:0}, {opacity:1, duration:0.22, ease:"power1.out"}, 0.1);
+    // Eyebrow slam @ offset 0.40 (comp 6.4) — EDITORIAL section label
+    tl.fromTo("#b2-eye", {opacity:0, y:10}, {opacity:1, y:0, duration:0.30, ease:"power3.out"}, 0.40);
+
+    // Spine slow-draws from offset ~1.2 (comp 7.2) down across the beat
+    tl.fromTo("#b2-spine", {scaleY:0}, {scaleY:1, duration:18.0, ease:"none"}, 1.2);
+
+    // Nodes pop ON their spoken era (back.out(1.5)) — SPOKEN ORDER
+    // n1 2024/ETF — offset 4.76 (comp 10.76)
+    tl.fromTo("#b2-n1", {opacity:0, scale:0.6, transformOrigin:"left center"},
+      {opacity:1, scale:1, duration:0.45, ease:"back.out(1.5)"}, 4.76);
+    // n2 ORDINALS + INSCRIPTIONS — offset 7.26 (comp 13.26)
+    tl.fromTo("#b2-n2", {opacity:0, scale:0.6, transformOrigin:"left center"},
+      {opacity:1, scale:1, duration:0.45, ease:"back.out(1.5)"}, 7.26);
+    // n3 DeFi SUMMER — offset 11.08 (comp 17.08)
+    tl.fromTo("#b2-n3", {opacity:0, scale:0.6, transformOrigin:"left center"},
+      {opacity:1, scale:1, duration:0.45, ease:"back.out(1.5)"}, 11.08);
+    // n4 DePIN — offset 12.52 (comp 18.52) — the R3 critical add
+    tl.fromTo("#b2-n4", {opacity:0, scale:0.6, transformOrigin:"left center"},
+      {opacity:1, scale:1, duration:0.45, ease:"back.out(1.5)"}, 12.52);
+    // n5 AI AGENTS — offset 14.32 (comp 20.32)
+    tl.fromTo("#b2-n5", {opacity:0, scale:0.6, transformOrigin:"left center"},
+      {opacity:1, scale:1, duration:0.45, ease:"back.out(1.5)"}, 14.32);
+    // n6 ? / NEXT — offset 19.78 (comp 25.78) — the open cyan node (EDITORIAL turn, fires on "curious")
+    tl.fromTo("#b2-n6", {opacity:0, scale:0.5, transformOrigin:"left center"},
+      {opacity:1, scale:1, duration:0.6, ease:"back.out(1.6)"}, 19.78);
+
+    // n6 holds UNRESOLVED through beat end — the pose the clip answers.
+    // Exit before c7b3 establishes (beat ends comp 32.0 = offset 26.0).
+    tl.to(".b2-inner, .b2-reg", {opacity:0, duration:0.45, ease:"power2.in"}, 25.6);
+
+    window.__timelines["beat-c7b2-narrative-cycle"] = tl;
+  })();
+  </script>
+</div>
+</template>

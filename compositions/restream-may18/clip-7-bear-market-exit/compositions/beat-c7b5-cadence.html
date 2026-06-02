@@ -1,0 +1,86 @@
+<template id="beat-c7b5-cadence-template">
+<!--
+  c7b5 — KINETIC: "cadence of innovation" bridge (kinetic-type) · view V3 full-frame (both speakers)
+  Beat starts comp 45.2; offsets = comp_t - 45.2.
+  2-line phrase build — the thesis bridge before the Mode-A payoff. Lines slam in and STAY.
+  comp = src - 1530.50:
+    L1 "that cadence of"   cadence    src1576.08 / comp 45.58 / offset 0.38  #F0F0F0
+    L2 "of innovation"     innovation src1576.64 / comp 46.14 / offset 0.94  CYAN payoff
+  Cyan: L2 only. Video still FULL-FRAME (NO view change since c7b3). Lines hold to ~48.6,
+  then exit as video shrinks to Mode-A for c7b6 at master comp 49.0.
+-->
+<div data-composition-id="beat-c7b5-cadence" data-width="1920" data-height="1080" data-duration="3.8">
+
+  <div class="b5c-backdrop" data-layout-ignore></div>
+
+  <div class="b5c-zone">
+    <div class="b5c-words">
+      <div id="b5c-l1" class="b5c-line">THE CADENCE</div>
+      <div id="b5c-l2" class="b5c-line b5c-cyan">OF INNOVATION</div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c7b5-cadence"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent;
+      font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c7b5-cadence"] .b5c-backdrop {
+      position: absolute; top: 0; left: 0; width: 1040px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(0,0,0,0.78) 0%,
+        rgba(0,0,0,0.55) 60%,
+        transparent 100%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-c7b5-cadence"] .b5c-zone {
+      position: absolute; top: 0; left: 0;
+      width: 1040px; height: 1080px;
+      display: flex; align-items: center;
+      padding-left: 80px;
+    }
+    [data-composition-id="beat-c7b5-cadence"] .b5c-words {
+      display: flex; flex-direction: column; gap: 12px;
+      width: 100%;
+    }
+    [data-composition-id="beat-c7b5-cadence"] .b5c-line {
+      font-family: "Inter", sans-serif;
+      font-weight: 900;
+      font-size: 124px;
+      color: #ffffff;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      opacity: 0;
+      text-shadow: 0 4px 22px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.85);
+    }
+    [data-composition-id="beat-c7b5-cadence"] .b5c-cyan {
+      color: #00d4ff;
+      text-shadow:
+        0 0 80px rgba(0,212,255,0.95),
+        0 0 40px rgba(0,212,255,0.75),
+        0 0 18px rgba(0,212,255,0.55),
+        0 4px 22px rgba(0,0,0,0.85);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // L1 "THE CADENCE" — offset 0.38 (cadence @ comp 45.58)
+    tl.fromTo("#b5c-l1", {opacity:0, y:26}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 0.38);
+    // L2 "OF INNOVATION" — offset 0.94 (innovation @ comp 46.14) — CYAN payoff
+    tl.fromTo("#b5c-l2", {opacity:0, y:26, scale:0.92}, {opacity:1, y:0, scale:1, duration:0.32, ease:"expo.out"}, 0.94);
+
+    // Hold, exit upward as video shrinks to Mode-A for c7b6
+    tl.to(".b5c-line", {y:-30, opacity:0, duration:0.28, ease:"power2.in"}, 3.4);
+
+    window.__timelines["beat-c7b5-cadence"] = tl;
+  })();
+  </script>
+</div>
+</template>

@@ -1,0 +1,130 @@
+<template id="beat-c4b5-template">
+<!--
+  c4b5 — caption-kinetic-slam (25× REVEAL — task-mandated device) · full-frame · comp 58.5–72.8
+  Device: the installed `caption-kinetic-slam` motion signature — single-word / short-phrase
+  full-screen slams with ALTERNATING entrance directions + a hero scale-pop on the number —
+  restyled to DESIGN palette (Inter 900, white slams + ONE cyan payoff). This is the ONLY
+  25× appearance in the clip. No eyebrow (so the v2 DERIVATIVES/SPOT eyebrow dup is gone).
+
+  WORD-SYNCED (offset = comp_t − 58.5, comp read off clip4-words.txt):
+    25×            hero white  "25x."@comp63.76 → slam offset 5.26 (scale-pop, back.out)
+    TIMES MORE     white       "times"@comp65.68 → slam offset 7.18 (enters from LEFT)
+    DERIVATIVES    white       "derivatives"@comp66.88 → slam offset 8.38 (enters from RIGHT)
+    THAN SPOT      white       "than"@comp67.62 → slam offset 9.12 (enters from BOTTOM)
+    $226K MELT-UP  CYAN payoff  "melt"@comp69.92 → slam offset 11.42 (cyan in), "226k"@71.82 → 13.32 ($226K emphasized)
+
+  CYAN ELEMENT (single): $226K MELT-UP payoff only. The 25× hero stays WHITE
+  (D7 "stat OR accent, not both" — the cyan is the payoff line, not the number).
+  All build & STAY, then exit together ~comp 72.4 → offset 13.9.
+-->
+<div data-composition-id="beat-c4b5" data-width="1920" data-height="1080" data-duration="14.3">
+
+  <div class="c5-backdrop" data-layout-ignore></div>
+
+  <div class="c5-stage">
+    <div id="c5-hero" class="c5-hero">25×</div>
+    <div class="c5-mid">
+      <div id="c5-w1" class="c5-word">TIMES MORE</div>
+      <div id="c5-w2" class="c5-word">DERIVATIVES</div>
+      <div id="c5-w3" class="c5-word">THAN SPOT</div>
+    </div>
+    <div id="c5-payoff" class="c5-payoff">$226K MELT-UP</div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c4b5"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent;
+      font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c4b5"] .c5-backdrop {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg,
+        rgba(0,0,0,0.48) 0%,
+        rgba(0,0,0,0.64) 50%,
+        rgba(0,0,0,0.48) 100%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-c4b5"] .c5-stage {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px;
+    }
+    [data-composition-id="beat-c4b5"] .c5-hero {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 240px;
+      color: #ffffff; line-height: 0.9; letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums; opacity: 0;
+      text-shadow: 0 8px 40px rgba(0,0,0,0.95), 0 2px 12px rgba(0,0,0,0.9);
+    }
+    [data-composition-id="beat-c4b5"] .c5-mid {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    [data-composition-id="beat-c4b5"] .c5-word {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 88px;
+      color: #ffffff; line-height: 1.0; letter-spacing: -0.01em;
+      text-transform: uppercase; opacity: 0;
+      text-shadow: 0 5px 26px rgba(0,0,0,0.95), 0 2px 9px rgba(0,0,0,0.9);
+    }
+    [data-composition-id="beat-c4b5"] .c5-payoff {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 104px;
+      color: #00d4ff; line-height: 1.0; letter-spacing: -0.02em;
+      text-transform: uppercase; opacity: 0; margin-top: 10px;
+      text-shadow:
+        0 0 90px rgba(0,212,255,0.95),
+        0 0 44px rgba(0,212,255,0.78),
+        0 0 20px rgba(0,212,255,0.55),
+        0 5px 26px rgba(0,0,0,0.85);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // beat starts comp 58.5 → offset = comp_t − 58.5
+
+    // 25× hero — scale-pop on "25x."@comp63.76 → offset 5.26
+    tl.fromTo("#c5-hero",
+      {opacity:0, scale:0.4},
+      {opacity:1, scale:1, duration:0.30, ease:"back.out(2.0)"},
+      5.26
+    );
+
+    // TIMES MORE — "times"@comp65.68 → offset 7.18, enters from LEFT
+    tl.fromTo("#c5-w1",
+      {opacity:0, x:-340},
+      {opacity:1, x:0, duration:0.24, ease:"expo.out"},
+      7.18
+    );
+    // DERIVATIVES — "derivatives"@comp66.88 → offset 8.38, enters from RIGHT
+    tl.fromTo("#c5-w2",
+      {opacity:0, x:340},
+      {opacity:1, x:0, duration:0.24, ease:"expo.out"},
+      8.38
+    );
+    // THAN SPOT — "than"@comp67.62 → offset 9.12, enters from BOTTOM
+    tl.fromTo("#c5-w3",
+      {opacity:0, y:120},
+      {opacity:1, y:0, duration:0.24, ease:"expo.out"},
+      9.12
+    );
+
+    // $226K MELT-UP (cyan payoff) — cyan slam on "melt"@comp69.92 → offset 11.42,
+    // emphasis pulse as "226k"@comp71.82 → offset 13.32
+    tl.fromTo("#c5-payoff",
+      {opacity:0, scale:0.88},
+      {opacity:1, scale:1, duration:0.34, ease:"expo.out"},
+      11.42
+    );
+    tl.to("#c5-payoff", {scale:1.06, duration:0.16, ease:"power2.out", yoyo:true, repeat:1}, 13.32);
+
+    // All build & STAY, then exit together ~comp 72.4 → offset 13.9
+    tl.to(".c5-stage", {opacity:0, y:-30, duration:0.30, ease:"power2.in"}, 13.9);
+
+    window.__timelines["beat-c4b5"] = tl;
+  })();
+  </script>
+</div>
+</template>

@@ -1,0 +1,98 @@
+<template id="beat-c1b9-enter-exit-template">
+<!--
+  c1b9 — CLOSING KINETIC (content close) · comp 106.7–111.3 · src 345.80–350.40 · MODE A · WORD-SYNCED
+  Plays IN Mode-A (kinetic builds in the LEFT zone, Jasper framed right) — a full-frame flip here would be a
+  sub-8s segment = R1 FAIL, so the view stays Mode-A through the end.
+  Host: "So in one sentence…" Jasper: "…it's HELPING PEOPLE ENTER and EXIT POSITIONS very smoothly."
+  Phrase build-and-STAY. NO exit drift — the full sentence holds through clip end (no CTA / end-card). Cyan = AND EXIT POSITIONS.
+  Payoff fires on "exit" comp 110.54 → 3.84, completes its 0.32s entry by ~comp 110.86 (as "positions" completes spoken
+  @ src 349.90 = comp 110.80), then HOLDS until comp 111.3 (~0.44s tail). Lines ~110px (Mode-A left zone is narrower).
+  Eyebrow THE MODEL, IN ONE LINE @ comp 106.9 → 0.20 (top-left, above the stack).
+  WORD-SYNCED close: helping@108.58 enter@109.42 exit@110.54 (src−239.10)
+-->
+<div data-composition-id="beat-c1b9-enter-exit" data-width="1920" data-height="1080" data-duration="4.6">
+
+  <div class="b9-backdrop" data-layout-ignore></div>
+
+  <!-- Eyebrow top-left of the left zone -->
+  <div class="b9-chrome" data-layout-ignore>
+    <div id="b9-eye" class="b9-eye">THE MODEL, IN ONE LINE</div>
+  </div>
+
+  <div class="b9-zone">
+    <div class="b9-words">
+      <div id="b9-l1" class="b9-line">HELP PEOPLE</div>
+      <div id="b9-l2" class="b9-line">ENTER</div>
+      <div id="b9-l3" class="b9-line b9-cyan b9-line-long">AND EXIT POSITIONS</div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c1b9-enter-exit"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    /* Backdrop confined to the LEFT zone (Mode-A — Jasper framed right) */
+    [data-composition-id="beat-c1b9-enter-exit"] .b9-backdrop {
+      position: absolute; top: 0; left: 0; width: 1080px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(8,11,16,0.86) 0%, rgba(8,11,16,0.74) 55%, transparent 100%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-c1b9-enter-exit"] .b9-chrome {
+      position: absolute; top: 72px; left: 80px;
+    }
+    [data-composition-id="beat-c1b9-enter-exit"] .b9-eye {
+      font-family: "JetBrains Mono", monospace; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0;
+    }
+    /* Left-zone stack (60% zone — narrower than full-frame) */
+    [data-composition-id="beat-c1b9-enter-exit"] .b9-zone {
+      position: absolute; top: 0; left: 0; width: 1080px; height: 1080px;
+      display: flex; align-items: center; padding-left: 80px;
+    }
+    [data-composition-id="beat-c1b9-enter-exit"] .b9-words {
+      display: flex; flex-direction: column; gap: 12px; width: 100%;
+    }
+    [data-composition-id="beat-c1b9-enter-exit"] .b9-line {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 110px;
+      color: #ffffff; line-height: 1.0; letter-spacing: -0.03em;
+      text-transform: uppercase; opacity: 0;
+      text-shadow: 0 4px 22px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.85);
+    }
+    /* Long payoff line — smaller so it never wraps in the narrower left zone */
+    [data-composition-id="beat-c1b9-enter-exit"] .b9-line-long {
+      font-size: 78px; letter-spacing: -0.02em;
+    }
+    [data-composition-id="beat-c1b9-enter-exit"] .b9-cyan {
+      color: #00d4ff;
+      text-shadow:
+        0 0 80px rgba(0,212,255,0.95), 0 0 40px rgba(0,212,255,0.75),
+        0 0 18px rgba(0,212,255,0.55), 0 4px 22px rgba(0,0,0,0.85);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // beat starts comp 106.7 → local offsets = comp − 106.7
+    // eyebrow @ comp 106.9 → 0.20
+    tl.fromTo("#b9-eye", {opacity:0, y:10}, {opacity:1, y:0, duration:0.3, ease:"power3.out"}, 0.20);
+
+    // "helping" comp 108.58 → 1.88
+    tl.fromTo("#b9-l1", {opacity:0, y:28}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 1.88);
+    // "enter" comp 109.42 → 2.72
+    tl.fromTo("#b9-l2", {opacity:0, y:28}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 2.72);
+    // "exit" comp 110.54 → 3.84 (cyan payoff, scale pop) — entry completes ~4.16, then HOLDS to clip end (no exit drift)
+    tl.fromTo("#b9-l3", {opacity:0, y:28, scale:0.92}, {opacity:1, y:0, scale:1, duration:0.32, ease:"expo.out"}, 3.84);
+
+    // NO exit tween — full sentence + eyebrow hold to clip end (content close, no-outro)
+
+    window.__timelines["beat-c1b9-enter-exit"] = tl;
+  })();
+  </script>
+</div>
+</template>

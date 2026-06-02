@@ -1,0 +1,164 @@
+<template id="beat-c5b9-template">
+<!--
+  b9 — VOL-PROFILE two-series converging chart · distinct PRIMARY device pt2 (HAND-BUILT dark data-chart)
+  NOTE: catalog `data-chart` block is cream (#faf9f6) bg, serif Libre Baskerville, bar+line dual-axis,
+  scale(1.15) centered full-canvas — does not fit a dark left-zone two-series converging line chart.
+  Hand-built a DISTINCT equivalent: dark SVG, two series drawing via strokeDashoffset, convergence cyan.
+  beat data-start = 121.0 → internal offset = comp_t - 121.0
+    eyebrow VOLATILITY PROFILE       comp 123.52 ("the volatility of crypto" 139.02) -> offset 2.52
+    x-labels 2021 / NOW [EDITORIAL] @122 -> offset 1.0
+    series labels CRYPTO(red) / EQUITIES(green) [EDITORIAL] @122.5 -> offset 1.5
+    crypto line drawing DOWN keys on comp 135.12 ("volatility in crypto compressed" 150.62) -> offset 14.12
+    convergence callout THEY CONVERGED *CYAN comp 136.44 ("compressed" 151.94) -> offset 15.44
+  CYAN = the convergence point/callout only (the two series are red/green directional indicators per D7).
+  Series A CRYPTO: red #FF4D4F descending 2021->NOW.  Series B EQUITIES: green #16C784 ascending. They cross.
+-->
+<div data-composition-id="beat-c5b9" data-width="1920" data-height="1080" data-duration="16.5">
+
+  <div class="c5b9-panel" data-layout-ignore></div>
+
+  <div class="c5b9-zone">
+    <div class="c5b9-inner">
+      <div id="c5b9-eye">VOLATILITY PROFILE</div>
+      <div id="c5b9-rule"></div>
+
+      <div class="c5b9-chartwrap">
+        <svg class="c5b9-svg" width="900" height="460" viewBox="0 0 900 460">
+          <!-- baseline + frame -->
+          <line x1="60" y1="40" x2="60" y2="380" stroke="#2a323c" stroke-width="2"/>
+          <line x1="60" y1="380" x2="860" y2="380" stroke="#2a323c" stroke-width="2"/>
+          <!-- gridlines -->
+          <line class="c5b9-grid" x1="60" y1="295" x2="860" y2="295" stroke="#1a2129" stroke-width="1"/>
+          <line class="c5b9-grid" x1="60" y1="210" x2="860" y2="210" stroke="#1a2129" stroke-width="1"/>
+          <line class="c5b9-grid" x1="60" y1="125" x2="860" y2="125" stroke="#1a2129" stroke-width="1"/>
+
+          <!-- Series A: CRYPTO (red) — high-left to low-right -->
+          <path id="c5b9-crypto" d="M 90 70 C 320 95, 470 230, 820 320"
+                fill="none" stroke="#FF4D4F" stroke-width="6" stroke-linecap="round"/>
+          <!-- Series B: EQUITY (green) — low-left to high-right -->
+          <path id="c5b9-equity" d="M 90 350 C 320 330, 470 210, 820 110"
+                fill="none" stroke="#16C784" stroke-width="6" stroke-linecap="round"/>
+
+          <!-- convergence point (cyan) near the crossing ~x520 -->
+          <circle id="c5b9-cross" cx="520" cy="200" r="11" fill="#00d4ff" opacity="0"/>
+          <circle id="c5b9-crosshalo" cx="520" cy="200" r="22" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0"/>
+        </svg>
+
+        <!-- x-axis anchors -->
+        <div class="c5b9-xrow">
+          <span class="c5b9-x" id="c5b9-x1">2021</span>
+          <span class="c5b9-x" id="c5b9-x2">NOW</span>
+        </div>
+
+        <!-- series legend -->
+        <div class="c5b9-legend">
+          <span id="c5b9-lg-c" class="c5b9-lg"><span class="c5b9-sw c5b9-sw-red"></span>CRYPTO</span>
+          <span id="c5b9-lg-e" class="c5b9-lg"><span class="c5b9-sw c5b9-sw-green"></span>EQUITIES</span>
+        </div>
+      </div>
+
+      <div id="c5b9-callout" class="c5b9-callout">THEY CONVERGED</div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c5b9"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c5b9"] .c5b9-panel {
+      position: absolute; top: 0; left: 0; width: 1200px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(10,14,20,0.90) 0%, rgba(10,14,20,0.82) 48%,
+        rgba(10,14,20,0.30) 74%, transparent 92%);
+      pointer-events: none; z-index: 0;
+    }
+    [data-composition-id="beat-c5b9"] .c5b9-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center; z-index: 1;
+      mask-image: linear-gradient(to right, black 84%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 84%, transparent 100%);
+    }
+    [data-composition-id="beat-c5b9"] .c5b9-inner { padding: 0 80px; width: 100%; }
+    [data-composition-id="beat-c5b9"] #c5b9-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 500;
+      color: #F0F0F0; opacity: 0; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    [data-composition-id="beat-c5b9"] #c5b9-eye {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 18px; opacity: 0;
+    }
+    [data-composition-id="beat-c5b9"] #c5b9-rule {
+      width: 0; height: 2px; background: rgba(255,255,255,0.18); margin-bottom: 24px;
+    }
+    [data-composition-id="beat-c5b9"] .c5b9-chartwrap { position: relative; width: 900px; }
+    [data-composition-id="beat-c5b9"] .c5b9-svg { display: block; overflow: visible; }
+    [data-composition-id="beat-c5b9"] #c5b9-crypto,
+    [data-composition-id="beat-c5b9"] #c5b9-equity {
+      stroke-dasharray: 1000; stroke-dashoffset: 1000;
+    }
+    [data-composition-id="beat-c5b9"] .c5b9-xrow {
+      display: flex; justify-content: space-between;
+      width: 800px; margin-left: 50px; margin-top: 6px;
+    }
+    [data-composition-id="beat-c5b9"] .c5b9-x {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 600;
+      color: #f0f0f0; letter-spacing: 0.06em; opacity: 0;
+    }
+    [data-composition-id="beat-c5b9"] .c5b9-legend {
+      display: flex; gap: 40px; margin-top: 22px;
+    }
+    [data-composition-id="beat-c5b9"] .c5b9-lg {
+      display: flex; align-items: center; gap: 12px; opacity: 0;
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    [data-composition-id="beat-c5b9"] .c5b9-sw { width: 28px; height: 6px; border-radius: 3px; }
+    [data-composition-id="beat-c5b9"] .c5b9-sw-red { background: #FF4D4F; }
+    [data-composition-id="beat-c5b9"] .c5b9-sw-green { background: #16C784; }
+    [data-composition-id="beat-c5b9"] #c5b9-callout {
+      position: absolute; left: 80px; bottom: 96px;
+      font-family: "Inter", sans-serif; font-size: 56px; font-weight: 900;
+      color: #00d4ff; letter-spacing: -0.01em; text-transform: uppercase; opacity: 0;
+      text-shadow: 0 0 40px rgba(0,212,255,0.55);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Chrome
+    // x-labels [EDITORIAL] @122 -> offset 1.0
+    tl.fromTo("#c5b9-x1", {opacity:0}, {opacity:1, duration:0.3, ease:"power2.out"}, 1.0);
+    tl.fromTo("#c5b9-x2", {opacity:0}, {opacity:1, duration:0.3, ease:"power2.out"}, 1.1);
+    // series legend [EDITORIAL] @122.5 -> offset 1.5
+    tl.fromTo("#c5b9-lg-c", {opacity:0, y:8}, {opacity:1, y:0, duration:0.3, ease:"power2.out"}, 1.5);
+    tl.fromTo("#c5b9-lg-e", {opacity:0, y:8}, {opacity:1, y:0, duration:0.3, ease:"power2.out"}, 1.6);
+    // grid
+    tl.fromTo(".c5b9-grid", {opacity:0}, {opacity:1, duration:0.4, stagger:0.1, ease:"power2.out"}, 1.7);
+
+    // eyebrow VOLATILITY PROFILE — comp 123.52 -> offset 2.52
+    tl.fromTo("#c5b9-eye", {opacity:0, y:10}, {opacity:1, y:0, duration:0.30, ease:"power3.out"}, 2.52);
+    tl.fromTo("#c5b9-rule", {width:"0px"}, {width:"360px", duration:0.45, ease:"power3.inOut"}, 2.70);
+
+    // equity line ascends first (it rose) — starts ~offset 3.4, slow draw
+    tl.to("#c5b9-equity", {strokeDashoffset:0, duration:5.0, ease:"power1.inOut"}, 3.4);
+
+    // crypto line drawing DOWN keys on "compressed" — comp 135.12 -> offset 14.12
+    tl.to("#c5b9-crypto", {strokeDashoffset:0, duration:1.8, ease:"power2.inOut"}, 14.12);
+
+    // convergence callout *CYAN — comp 136.44 -> offset 15.44
+    tl.to("#c5b9-cross", {opacity:1, duration:0.3, ease:"power2.out"}, 15.30);
+    tl.fromTo("#c5b9-crosshalo", {opacity:0, scale:0.5, transformOrigin:"520px 200px"}, {opacity:0.9, scale:1, duration:0.45, ease:"expo.out"}, 15.30);
+    tl.fromTo("#c5b9-callout", {opacity:0, y:12, scale:0.92}, {opacity:1, y:0, scale:1, duration:0.42, ease:"expo.out"}, 15.44);
+
+    window.__timelines["beat-c5b9"] = tl;
+  })();
+  </script>
+</div>
+</template>

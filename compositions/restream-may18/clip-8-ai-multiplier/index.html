@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clip 8 — AI Multiplier: 2–3 Analysts → 1 Trader (v3)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body, html {
+        width: 1920px; height: 1080px;
+        background: #0a0a0a; overflow: hidden;
+        font-family: "Inter", sans-serif;
+      }
+      #master-root { width: 1920px; height: 1080px; position: relative; background: #0a0a0a; }
+
+      /* Dot grid */
+      #master-root::before {
+        content: ''; position: absolute; inset: 0;
+        background-image: radial-gradient(circle, rgba(255,255,255,0.038) 1px, transparent 1px);
+        background-size: 44px 44px; pointer-events: none; z-index: 0;
+      }
+
+      /* Left-zone glow */
+      #bg-glow {
+        position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+        background:
+          radial-gradient(ellipse at 22% 55%, rgba(0,212,255,0.13) 0%, transparent 50%),
+          radial-gradient(ellipse at 78% 18%, rgba(0,212,255,0.05) 0%, transparent 38%);
+        pointer-events: none; z-index: 0; opacity: 0;
+      }
+      #zone-rule {
+        position: absolute; left: 1151px; top: 60px; width: 1px; height: 960px;
+        background: #2a2a2a; transform-origin: top center; z-index: 1; opacity: 0;
+      }
+
+      /*
+        VIDEO — starts FULL FRAME (1920×1080), visible from t=0 for the opening kinetic
+        phrase-build (c8b1). Per v3 VIEW-TIMELINE the whole 0→16 window is FULL-FRAME
+        (c8b1 open kinetic · c8b2 clean · c8b3 one-person kinetic — grouped into S1, no
+        bounce), then GSAP settles to Mode A ONCE at comp 16.0.
+
+        Mode A (cover-scale 0.80): width:614, height:864
+          Centered in right zone: x=1152+(768-614)/2=1229, y=(1080-864)/2=108
+          Bottom clearance: 1080-108-864=108px > 40px ✓ (burned-in name visible)
+          Top clearance: 108px > 20px ✓
+
+        FRAMING (v3 EDL — verified from real source frames):
+          Source is hard side-by-side. Nic (host) LEFT half (x 0–960);
+          Jasper (guest, the subject) RIGHT half (x 960–1920), head center ≈ x1380.
+          object-position: 83% center centers JASPER and keeps the burned-in
+          "Jasper De Maere / Wintermute" lower-third fully on-screen. 90% truncated the
+          name; 50/62% centered the seam/Nic — both WRONG. Keep 83%.
+          Ken-Burns base scale 1.08 → 1.12 removes the dead ceiling above his head
+          (Mode A has zero vertical overflow, so the scale-up is the only ceiling fix).
+      */
+      #short_mag_cut_frame {
+        position: absolute;
+        left: 0; top: 0; width: 1920px; height: 1080px;
+        overflow: hidden; background: transparent;
+        border-radius: 0; z-index: 2;
+      }
+      #short_mag_cut,
+      #short_mag_cut_frame > img.__render_frame__,
+      #short_mag_cut_frame > img.__preview_render_frame__ {
+        position: absolute; inset: 0; width: 100%; height: 100%;
+        object-fit: cover;
+        /* 83% center: centers Jasper; keeps burned-in name on-screen (v3 EDL) */
+        object-position: 83% center;
+        display: block;
+      }
+
+      .overlay-layer {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none;
+      }
+      /*
+        CRITICAL (DESIGN.md + MEMORY): EVERY beat overlay id MUST be listed here at
+        z-index:3, or it renders BEHIND the z-index:2 video and is invisible.
+        Clean beats c8b2 / c8b6 / c8b14 have NO overlay (not listed). 11 overlay ids.
+      */
+      #beat-c8b1, #beat-c8b3, #beat-c8b4, #beat-c8b5, #beat-c8b7,
+      #beat-c8b8, #beat-c8b9, #beat-c8b10, #beat-c8b11, #beat-c8b12,
+      #beat-c8b13 { z-index: 3; }
+    </style>
+  </head>
+  <body>
+    <div id="master-root" data-composition-id="master" data-width="1920" data-height="1080" data-start="0" data-duration="167.8">
+      <div id="bg-glow" data-layout-ignore></div>
+      <div id="zone-rule" data-layout-ignore></div>
+
+      <!--
+        c8b1 — OPEN kinetic phrase-build (COHERENT, R5) + shimmer-sweep · FULL-FRAME · LEAD
+        comp 0.0–7.0 · src 1677.20–1684.20
+        08 + THE AI MULTIPLIER @0.08, grey rule @0.5, L1 "THE WORK I DO TODAY" @1.78,
+        L2 "WOULD REQUIRE" @3.44, L3 cyan "A TEAM OF 2–3 ANALYSTS" @4.80 + shimmer @6.5.
+      -->
+      <div id="beat-c8b1" class="overlay-layer clip"
+        data-composition-id="beat-c8b1"
+        data-composition-src="compositions/beat-c8b1-open.html"
+        data-start="0.0" data-duration="7.0" data-track-index="3"></div>
+
+      <!-- c8b2 — CLEAN VIDEO · FULL-FRAME · comp 7.0–12.0 · no overlay, no transition (R1 fix) -->
+
+      <!--
+        c8b3 — "I'M DOING RESEARCH / AND TRADING / ONE PERSON." (kinetic) · FULL-FRAME (S1)
+        comp 12.0–16.0 · src 1689.20–1693.20
+        L1 @12.76, L2 @14.48, L3 cyan EDITORIAL cap "ONE PERSON." @15.24 (fired ~0.3s early).
+      -->
+      <div id="beat-c8b3" class="overlay-layer clip"
+        data-composition-id="beat-c8b3"
+        data-composition-src="compositions/beat-c8b3-one-person.html"
+        data-start="12.0" data-duration="4.0" data-track-index="3"></div>
+
+      <!--
+        c8b4 — "IT COLLAPSES THE / LONGER-DURATION GRUNT WORK" + tag chips · MODE-A (S2)
+        comp 16.0–26.0 · src 1693.20–1703.20
+        L1 @17.46, L2 @19.72 (GRUNT WORK cyan — R3 fix), chip ANALYSIS @23.06, chip DATA GATHERING @23.88.
+      -->
+      <div id="beat-c8b4" class="overlay-layer clip"
+        data-composition-id="beat-c8b4"
+        data-composition-src="compositions/beat-c8b4-collapse.html"
+        data-start="16.0" data-duration="10.0" data-track-index="3"></div>
+
+      <!--
+        c8b5 — PRODUCTIVITY COMPARISON "5 YEARS AGO → TODAY" (swiss-grid before/after) · MODE-A · DEVICE 1
+        comp 26.0–33.0 · src 1703.20–1710.20
+        eyebrow "THE PRODUCTIVITY DELTA" @27.68 (R4 fix), arrow @28.90,
+        RIGHT value "1 TRADER + AI" cyan, footer @30.52.
+      -->
+      <div id="beat-c8b5" class="overlay-layer clip"
+        data-composition-id="beat-c8b5"
+        data-composition-src="compositions/beat-c8b5-before-after.html"
+        data-start="26.0" data-duration="7.0" data-track-index="3"></div>
+
+      <!-- c8b6 — CLEAN VIDEO · MODE-A · comp 33.0–45.0 · no overlay -->
+
+      <!--
+        c8b7 — AGENT PIPELINE "TALK TO A TERMINAL" (flow / node chain) · MODE-A · DEVICE 2
+        comp 45.0–69.0 · src 1722.20–1746.20
+        eyebrow "REVAMPING THE TRADING STACK" @51.00 (R4 fix); nodes @54.32 (State your thesis — R4 fix) /
+        57.04 / 62.90 / 65.54 (cyan "+ Paradigm"; "dime terminal" dropped — R3).
+      -->
+      <div id="beat-c8b7" class="overlay-layer clip"
+        data-composition-id="beat-c8b7"
+        data-composition-src="compositions/beat-c8b7-terminal-flow.html"
+        data-start="45.0" data-duration="24.0" data-track-index="3"></div>
+
+      <!--
+        c8b8 — "IT KNOWS YOUR PROFILE / THE EXCHANGE / HOW TO ROUTE YOUR TRADE" (kinetic) · FULL-FRAME (S3)
+        comp 69.0–74.0 · src 1746.20–1751.20
+        L1 @70.40, L2 @71.52, L3 cyan "…ROUTE YOUR TRADE" @72.94.
+      -->
+      <div id="beat-c8b8" class="overlay-layer clip"
+        data-composition-id="beat-c8b8"
+        data-composition-src="compositions/beat-c8b8-knows.html"
+        data-start="69.0" data-duration="5.0" data-track-index="3"></div>
+
+      <!--
+        c8b9 — HOST QUESTION "ARE THESE THEMATICS / YOU'RE EXPLORING?" (kinetic, no label) · FULL-FRAME (S3)
+        comp 74.0–81.3 · src 1751.20–1758.50
+        L1 @74.72, L2 @75.74; text exits ~76.2. NO cyan by design. View HOLDS full-frame
+        through Jasper resuming at comp 79.02; settles to Mode A only at 81.0 (R1 A-B-A fix).
+      -->
+      <div id="beat-c8b9" class="overlay-layer clip"
+        data-composition-id="beat-c8b9"
+        data-composition-src="compositions/beat-c8b9-host-q.html"
+        data-start="74.0" data-duration="7.3" data-track-index="3"></div>
+
+      <!--
+        c8b10 — FRONT-END vs BACK-END (swiss-grid split) · MODE-A (S4)
+        comp 81.3–102.0 · src 1758.50–1779.20
+        eyebrow "WHERE AI FITS" + LEFT "FRONT END" @81.72; LEFT body @82.58;
+        RIGHT tag "US (Wintermute)" @94.08; RIGHT "BACK END" @97.60; cyan divider @97.8; RIGHT body @98.46.
+      -->
+      <div id="beat-c8b10" class="overlay-layer clip"
+        data-composition-id="beat-c8b10"
+        data-composition-src="compositions/beat-c8b10-front-back.html"
+        data-start="81.3" data-duration="20.7" data-track-index="3"></div>
+
+      <!--
+        c8b11 — BACK-END USE CASES (bulleted liquid-glass card) · MODE-A (S4)
+        comp 102.0–116.5 · src 1779.20–1793.70
+        eyebrow "WHAT AI HANDLES BACK-END" @100.84; bullets @101.82 / 105.66 / 108.08;
+        payoff "→ WHERE IT LANDS FIRST" @115.48 (R4 fix). cyan = accent bar.
+      -->
+      <div id="beat-c8b11" class="overlay-layer clip"
+        data-composition-id="beat-c8b11"
+        data-composition-src="compositions/beat-c8b11-use-cases.html"
+        data-start="102.0" data-duration="14.5" data-track-index="3"></div>
+
+      <!--
+        c8b12 — "BLUE WAVE / STRAIT OF HORMUZ / SHORT OIL" (kinetic) · FULL-FRAME · STANDOUT (S5)
+        comp 116.5–139.0 · src 1793.70–1816.20
+        Phase A: lead @116.92, mid1 @120.10, mid2 @126.36 (drift out ~129).
+        Phase B: BLUE WAVE @130.50, STRAIT OF HORMUZ @134.24, SHORT OIL cyan @138.48.
+      -->
+      <div id="beat-c8b12" class="overlay-layer clip"
+        data-composition-id="beat-c8b12"
+        data-composition-src="compositions/beat-c8b12-blue-wave.html"
+        data-start="116.5" data-duration="22.5" data-track-index="3"></div>
+
+      <!--
+        c8b13 — RISK METRICS "BETA · MAX DRAWDOWN" (liquid-glass + mini-bars) · MODE-A (S6)
+        comp 139.0–165.0 · src 1816.20–1842.20
+        Clean breather 139–151; eyebrow @151.14; BETA bar @155.44; MAX DRAWDOWN bar @157.40;
+        payoff "…ENTIRE INVESTABLE UNIVERSE" @161.98. Fades by ~164.6 (D4 — NOT a closer).
+      -->
+      <div id="beat-c8b13" class="overlay-layer clip"
+        data-composition-id="beat-c8b13"
+        data-composition-src="compositions/beat-c8b13-risk-metrics.html"
+        data-start="139.0" data-duration="26.0" data-track-index="3"></div>
+
+      <!-- c8b14 — CLEAN VIDEO (close) · MODE-A · comp 165.0–167.8 · no overlay (D4 — ends on conversation) -->
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const masterTL = gsap.timeline({ paused: true });
+
+        const v   = document.getElementById("short_mag_cut_frame");
+        const vid = document.getElementById("short_mag_cut");
+        const gr  = document.getElementById("bg-glow");
+        const zr  = document.getElementById("zone-rule");
+
+        // Mode A: cover-scale 0.80 of the right 40% zone. object-position:83% centers Jasper.
+        const MODE_A = { left: 1229, top: 108, width: 614, height: 864 };
+
+        // Helper: shrink full-frame → Mode A, bring glow + rule in.
+        function toModeA(t, dur) {
+          masterTL.to(v, {
+            left: MODE_A.left, top: MODE_A.top,
+            width: MODE_A.width, height: MODE_A.height,
+            borderRadius: "6px", x: 0, opacity: 1,
+            duration: dur, ease: "expo.inOut"
+          }, t);
+          masterTL.to(gr, { opacity: 1, duration: 0.5, ease: "power2.out" }, t + 0.3);
+          masterTL.fromTo(zr, { scaleY: 0, opacity: 1 }, { scaleY: 1, duration: 0.5, ease: "power4.out" }, t + 0.4);
+        }
+        // Helper: expand Mode A → full-frame, fade glow + rule out.
+        function toFull(t, dur) {
+          masterTL.to([gr, zr], { opacity: 0, duration: 0.3, ease: "power2.in" }, t - 0.2);
+          masterTL.to(v, {
+            left: 0, top: 0, width: 1920, height: 1080,
+            borderRadius: "0px", x: 0, opacity: 1,
+            duration: dur, ease: "expo.inOut"
+          }, t);
+        }
+
+        // ── S1 (0–16): FULL FRAME — opening grouped view ──
+        //   c8b1 open kinetic (0–7) · c8b2 clean (7–12) · c8b3 one-person kinetic (12–16).
+        //   CSS default is full-frame; video visible immediately. NO transition in the
+        //   7–16s window (that was the v2 twitch — the R1 fix groups all three into S1).
+
+        // ── S1→S2 settle (16.0): the ONE early settle, FULL FRAME → Mode A ──
+        toModeA(16.0, 0.6);
+        // Ken Burns base scale 1.08 → 1.12 — STARTS at 16.0 (closes the dead ceiling).
+        masterTL.fromTo(vid,
+          { scale: 1.08, transformOrigin: "center center" },
+          { scale: 1.12, duration: 160, ease: "none" },
+          16.0
+        );
+
+        // ── S2a (16–33): MODE-A — c8b4 kinetic+chips · c8b5 swiss (graphic fills the left) ──
+        // ── breath (33–45): c8b6 has NO graphic → FULL-FRAME both speakers (R7: never blank-left Mode-A) ──
+        toFull(33.0, 0.4);
+        toModeA(45.0, 0.5);
+        // ── S2b (45–69): MODE-A — c8b7 flow (graphic fills the left) ──
+
+        // ── S2b→S3 (68.7): expand → FULL FRAME for the "IT KNOWS…" climax + host-Q ──
+        toFull(68.7, 0.4);
+
+        // ── S3 (69–81.3): FULL FRAME holds — c8b8 kinetic · c8b9 host-Q ──
+        //   NO toModeA in the 69–81s window (Mode-A gone ≥12s — the R1 A-B-A fix).
+        //   Full-frame holds through Jasper resuming his answer at comp 79.02.
+
+        // ── S3→S4 (81.0): return → Mode A (pushed from 78.7 so Mode-A returns ≥12s after 69) ──
+        toModeA(81.0, 0.5);
+
+        // ── S4 (81.3–116.5): MODE-A holds — c8b10 front/back split · c8b11 use-cases card ──
+
+        // ── S4→S5 (116.2): expand → FULL FRAME for the BLUE WAVE standout ──
+        toFull(116.2, 0.4);
+
+        // ── S5 (116.5–139): FULL FRAME holds — c8b12 BLUE WAVE two-phase kinetic ──
+
+        // ── S5→S6 (138.7): return → Mode A (risk metrics card) ──
+        toModeA(138.7, 0.5);
+
+        // ── S6 (139–164.6): MODE-A — c8b13 risk card (graphic fills the left) ──
+        // ── close (164.6–167.8): c8b14 has NO graphic → FULL-FRAME both speakers (R7: never blank-left Mode-A) ──
+        toFull(164.6, 0.4);
+
+        window.__timelines["master"] = masterTL;
+      </script>
+    </div>
+
+    <!-- A-roll: full-frame by default; GSAP groups 0–16 full-frame then settles to Mode A at comp 16.0 -->
+    <div id="short_mag_cut_frame">
+      <video id="short_mag_cut"
+        src="source.mp4" muted playsinline
+        data-start="0" data-duration="167.8" data-media-start="1677.20" data-track-index="1"></video>
+    </div>
+    <audio id="a-roll-audio"
+      src="source.mp4"
+      data-start="0" data-duration="167.8" data-media-start="1677.20" data-track-index="5" data-volume="1"></audio>
+  </body>
+</html>

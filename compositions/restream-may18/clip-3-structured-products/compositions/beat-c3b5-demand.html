@@ -1,0 +1,109 @@
+<template id="beat-c3b5-template">
+<!--
+  c3b5 — Mode-A CAPTION: demand reality (LOW-KEY supplemental, NOT a full kinetic slam)
+  comp 30.5–42.4 | src 748.70–760.60
+  caption-clip-wipe style left-to-right reveal, ~56–64px in the LEFT zone (deliberately smaller
+  than the b1/b7 ~130px stacks so it reads as supplemental — keeps full kinetic count at 2 for R2,
+  and stays in Mode A so the frame does NOT flip — replaces v2's flip-flopping FF demand wedge).
+  Lines stack, STAY (no dim). Fire-times READ off clip3-words.txt (comp = src − 718.20):
+    insaturable 749.28 → 31.08  (PRINTED "INSATIABLE? NO." — R3 fix on screen)
+    fit 756.66 → 38.46          (line B prints WHERE THE DEMAND IS — "FIT" lives ONLY on payoff)
+    accelerator 758.02 → 39.82  (cyan payoff = ACCELERATOR FIT)
+-->
+<div data-composition-id="beat-c3b5" data-width="1920" data-height="1080" data-duration="11.9">
+
+  <!-- Subtle left-zone backdrop for caption readability -->
+  <div class="b5-backdrop" data-layout-ignore></div>
+
+  <div class="b5-zone">
+    <div class="b5-inner">
+      <div id="b5-eye" class="b5-eye">DEMAND REALITY</div>
+      <div id="b5-rule" class="b5-rule"></div>
+
+      <div class="b5-lines">
+        <div id="b5-l1" class="b5-cap"><span class="b5-clip">INSATIABLE? NO.</span></div>
+        <div id="b5-l2" class="b5-cap"><span class="b5-clip">WHERE THE DEMAND IS</span></div>
+        <div id="b5-l3" class="b5-cap b5-payoff"><span class="b5-clip">= ACCELERATOR FIT</span></div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c3b5"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", sans-serif;
+    }
+    [data-composition-id="beat-c3b5"] .b5-backdrop {
+      position: absolute; top: 0; left: 0; width: 1100px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(10,13,18,0.84) 0%, rgba(10,13,18,0.74) 50%,
+        rgba(10,13,18,0.26) 76%, transparent 92%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-c3b5"] .b5-zone {
+      position: absolute; top: 0; left: 0; width: 1100px; height: 1080px;
+      display: flex; align-items: center;
+      mask-image: linear-gradient(to right, black 86%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 86%, transparent 100%);
+    }
+    [data-composition-id="beat-c3b5"] .b5-inner { padding: 0 80px; width: 100%; }
+    [data-composition-id="beat-c3b5"] .b5-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 500;
+      color: #f0f0f0; letter-spacing: 0.1em; margin-bottom: 14px; opacity: 0;
+    }
+    [data-composition-id="beat-c3b5"] .b5-eye {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 22px; opacity: 0;
+    }
+    [data-composition-id="beat-c3b5"] .b5-rule {
+      width: 0; height: 2px; background: #2a2a2a; margin-bottom: 44px;
+    }
+    [data-composition-id="beat-c3b5"] .b5-lines {
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    /* caption-clip-wipe: reveal via clip-path inset, supplemental size */
+    [data-composition-id="beat-c3b5"] .b5-cap {
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 60px;
+      color: #f0f0f0; letter-spacing: 0.01em; text-transform: uppercase; line-height: 1.05;
+      text-shadow: 0 3px 16px rgba(0,0,0,0.85);
+    }
+    [data-composition-id="beat-c3b5"] .b5-clip {
+      display: inline-block; clip-path: inset(0 100% 0 0);
+    }
+    [data-composition-id="beat-c3b5"] .b5-payoff {
+      font-size: 64px; color: #00d4ff;
+      text-shadow:
+        0 0 60px rgba(0,212,255,0.85),
+        0 0 26px rgba(0,212,255,0.55),
+        0 3px 16px rgba(0,0,0,0.8);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Chrome (offsets relative to beat start comp 30.5)
+    tl.fromTo("#b5-eye", {opacity:0, y:12}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 0.25);
+    tl.fromTo("#b5-rule", {width:"0px"}, {width:"340px", duration:0.5, ease:"power3.inOut"}, 0.38);
+
+    // Caption lines wipe in left→right at spoken offsets:
+    //   line A INSATIABLE? NO. → comp 31.08 = offset 0.58 (insaturable spoken)
+    //   line B WHERE THE DEMAND IS → comp 38.46 = offset 7.96 (fit spoken)
+    //   payoff = ACCELERATOR FIT → comp 39.82 = offset 9.32 (accelerator spoken)
+    tl.to("#b5-l1 .b5-clip", {clipPath:"inset(0 0% 0 0)", duration:0.5, ease:"power2.out"}, 0.58);
+    tl.to("#b5-l2 .b5-clip", {clipPath:"inset(0 0% 0 0)", duration:0.5, ease:"power2.out"}, 7.96);
+    tl.fromTo("#b5-l3", {scale:0.94}, {scale:1, duration:0.4, ease:"expo.out"}, 9.32);
+    tl.to("#b5-l3 .b5-clip", {clipPath:"inset(0 0% 0 0)", duration:0.45, ease:"power2.out"}, 9.32);
+
+    // All hold (no dim). Exit before data-chart takes the frame (offset 11.5 = comp 42.0)
+    tl.to(".b5-zone", {opacity:0, duration:0.35, ease:"power2.in"}, 11.50);
+
+    window.__timelines["beat-c3b5"] = tl;
+  })();
+  </script>
+</div>
+</template>

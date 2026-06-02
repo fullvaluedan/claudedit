@@ -1,0 +1,105 @@
+<template id="beat-c5b5-template">
+<!--
+  b5 — WINTERMUTE WEEKLY + "marginal risk dollar" QUOTE CARD (liquid-glass; HAND-BUILD)
+  beat data-start = 38.9 → internal offset = comp_t - 38.9
+    card slides in        comp 38.96 ("Jasper is also writing" 54.46) -> offset 0.06
+    eyebrow WINTERMUTE WEEKLY comp 40.34 ("Wintermute weekly" 55.84)  -> offset 1.44
+    pull-quote fades in   comp 54.50 ("the marginal risk dollar" 70.00) -> offset 15.60
+    "not crypto" *CYAN flip comp 57.94 ("not crypto" 73.44)            -> offset 19.04
+    attribution — Jasper De Maere [EDITORIAL] @58.6                    -> offset 19.70
+  ONE liquid-glass card: rgba(20,26,34,0.92) fill, 4px cyan accent bar inset-left, glow, mask feather.
+  NO backdrop-filter, NO grain. CYAN = the words "not crypto" only (accent bar stays neutral grey).
+-->
+<div data-composition-id="beat-c5b5" data-width="1920" data-height="1080" data-duration="20.1">
+
+  <div class="c5b5-panel" data-layout-ignore></div>
+
+  <div class="c5b5-zone">
+    <div class="c5b5-inner">
+      <div id="c5b5-card" class="c5b5-card">
+        <div class="c5b5-bar"></div>
+        <div class="c5b5-body">
+          <div id="c5b5-eye" class="c5b5-eye">WINTERMUTE WEEKLY</div>
+          <div id="c5b5-quote" class="c5b5-quote">&ldquo;The marginal risk dollar went into equities, <span id="c5b5-notcrypto" class="c5b5-notcrypto">not crypto</span>.&rdquo;</div>
+          <div id="c5b5-attr" class="c5b5-attr">&mdash; Jasper De Maere</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c5b5"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c5b5"] .c5b5-panel {
+      position: absolute; top: 0; left: 0; width: 1200px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(10,14,20,0.72) 0%,
+        rgba(10,14,20,0.55) 50%,
+        rgba(10,14,20,0.18) 76%,
+        transparent 92%);
+      pointer-events: none; z-index: 0;
+    }
+    [data-composition-id="beat-c5b5"] .c5b5-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center; z-index: 1;
+      mask-image: linear-gradient(to right, black 84%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 84%, transparent 100%);
+    }
+    [data-composition-id="beat-c5b5"] .c5b5-inner { padding: 0 80px; width: 100%; }
+
+    /* ONE liquid-glass card — solid translucent fill, NO blur */
+    [data-composition-id="beat-c5b5"] .c5b5-card {
+      position: relative; display: flex; opacity: 0;
+      max-width: 920px;
+      background: rgba(20,26,34,0.92);
+      border: 1px solid rgba(255,255,255,0.07);
+      box-shadow: 0 0 60px rgba(0,212,255,0.08), 0 8px 40px rgba(0,0,0,0.65);
+      border-radius: 8px; overflow: hidden;
+    }
+    /* 4px accent bar INSET-LEFT (not border-left). NEUTRAL grey so the ONLY cyan is "not crypto" (EDL b5). */
+    [data-composition-id="beat-c5b5"] .c5b5-bar {
+      width: 4px; flex-shrink: 0; background: rgba(255,255,255,0.28);
+      border-radius: 4px 0 0 4px;
+    }
+    [data-composition-id="beat-c5b5"] .c5b5-body { padding: 44px 52px; flex: 1; }
+    [data-composition-id="beat-c5b5"] .c5b5-eye {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.20em; text-transform: uppercase;
+      margin-bottom: 32px; opacity: 0;
+    }
+    [data-composition-id="beat-c5b5"] .c5b5-quote {
+      font-family: "Inter", sans-serif; font-size: 64px; font-weight: 700;
+      color: #f0f0f0; line-height: 1.18; letter-spacing: -0.01em;
+      margin-bottom: 30px; opacity: 0;
+    }
+    [data-composition-id="beat-c5b5"] .c5b5-notcrypto { color: #f0f0f0; }
+    [data-composition-id="beat-c5b5"] .c5b5-attr {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 600;
+      color: #f0f0f0; letter-spacing: 0.04em; opacity: 0;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // card slides in from right — comp 38.96 -> offset 0.06
+    tl.fromTo("#c5b5-card", {opacity:0, x:60}, {opacity:1, x:0, duration:0.5, ease:"expo.out"}, 0.06);
+    // eyebrow — comp 40.34 -> offset 1.44
+    tl.fromTo("#c5b5-eye",  {opacity:0, y:10}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 1.44);
+    // pull-quote fades in — comp 54.50 -> offset 15.60 (card holds while Nic reads the line)
+    tl.fromTo("#c5b5-quote",{opacity:0, y:14}, {opacity:1, y:0, duration:0.5, ease:"power3.out"}, 15.60);
+    // "not crypto" flips CYAN — comp 57.94 -> offset 19.04
+    tl.to("#c5b5-notcrypto", {color:"#00d4ff", textShadow:"0 0 26px rgba(0,212,255,0.7)", duration:0.3, ease:"power2.out"}, 19.04);
+    // attribution [EDITORIAL] @58.6 -> offset 19.70
+    tl.fromTo("#c5b5-attr", {opacity:0}, {opacity:1, duration:0.34, ease:"power2.out"}, 19.70);
+
+    window.__timelines["beat-c5b5"] = tl;
+  })();
+  </script>
+</div>
+</template>

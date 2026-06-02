@@ -1,0 +1,120 @@
+<template id="beat-c7b4-examples-template">
+<!--
+  c7b4 — LIQUID-GLASS examples chip-row (HAND-BUILT) · view V3 full-frame (over both speakers)
+  Beat starts comp 41.2; offsets = comp_t - 41.2.
+  NON-KINETIC device placed BETWEEN the two kinetics (c7b3, c7b5) so kinetics never run
+  3-in-a-row and the same template never repeats back-to-back. Two chips slam in, each on
+  its spoken example. DESIGN.md card recipe: solid rgba(20,26,34,0.92) fill, 4px cyan accent
+  bar (inset left), soft glow, 1px border, mask-image feather right. NO backdrop-filter blur. NO grain.
+
+  comp = src - 1530.50:
+    eyebrow EVERY CYCLE'S TOYS    (EDITORIAL label)             comp 41.4 / offset 0.20
+    c1 PERP DEXES   "we had like perp dexes"   perp src1572.36 / comp 41.86 / offset 0.66  (fill #141A22)
+    c2 MEME COINS   "meme coin launch ..."     meme src1573.46 / comp 42.96 / offset 1.76  (fill #141A22)
+  JARGON: spoken Whisper "perp dexes" OK; "meme con" -> MEME COINS per _JARGON.md.
+  Cyan element: the single 4px accent strip on the row (chips themselves are neutral #141A22).
+  Video stays FULL-FRAME (NO view change since c7b3). Strip exits ~3.6 into c7b5.
+-->
+<div data-composition-id="beat-c7b4-examples" data-width="1920" data-height="1080" data-duration="4.0">
+
+  <!-- Full-frame readability backdrop — feathered dark fill behind the strip (lower-left) -->
+  <div id="b4-backdrop" data-layout-ignore></div>
+
+  <div class="b4-zone">
+    <div class="b4-inner">
+      <!-- EDITORIAL: section label, not word-synced -->
+      <div id="b4-eye">EVERY CYCLE'S TOYS</div>
+
+      <!-- Liquid-glass strip: 4px cyan accent bar + two neutral chips -->
+      <div id="b4-strip" class="b4-strip">
+        <div class="b4-accent-bar"></div>
+        <div class="b4-chips">
+          <div id="b4-c1" class="b4-chip">PERP DEXES</div>
+          <div id="b4-c2" class="b4-chip">MEME COINS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c7b4-examples"] {
+      width: 1920px; height: 1080px; position: relative;
+      overflow: hidden; background: transparent;
+      font-family: "Inter", "Helvetica", sans-serif;
+    }
+    /* Feathered dark fill behind the strip — readability over full-frame video, lower-left */
+    [data-composition-id="beat-c7b4-examples"] #b4-backdrop {
+      position: absolute; left: 0; bottom: 0; width: 1080px; height: 560px;
+      background: linear-gradient(to top right,
+        rgba(0,0,0,0.78) 0%,
+        rgba(0,0,0,0.42) 55%,
+        transparent 88%);
+      pointer-events: none; z-index: 0;
+    }
+    /* Strip sits lower-left over the video */
+    [data-composition-id="beat-c7b4-examples"] .b4-zone {
+      position: absolute; left: 0; bottom: 0; width: 1152px; height: 420px;
+      display: flex; align-items: flex-end; z-index: 1;
+      mask-image: linear-gradient(to right, black 82%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 82%, transparent 100%);
+    }
+    [data-composition-id="beat-c7b4-examples"] .b4-inner { padding: 0 80px 96px 80px; width: 100%; }
+    /* EYEBROW — Inter 700, >=32px, #F0F0F0 */
+    [data-composition-id="beat-c7b4-examples"] #b4-eye {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 26px; opacity: 0;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9);
+    }
+    /* Liquid-glass strip — solid fill + 4px cyan bar + glow, NO blur */
+    [data-composition-id="beat-c7b4-examples"] .b4-strip {
+      display: flex; align-items: stretch;
+      background: rgba(20,26,34,0.92);
+      border: 1px solid rgba(255,255,255,0.07);
+      box-shadow: 0 0 60px rgba(0,212,255,0.08), 0 8px 40px rgba(0,0,0,0.65);
+      border-radius: 6px; overflow: hidden;
+      width: max-content; max-width: 900px;
+    }
+    [data-composition-id="beat-c7b4-examples"] .b4-accent-bar {
+      width: 4px; background: #00d4ff; flex-shrink: 0; border-radius: 4px 0 0 4px;
+      box-shadow: 0 0 14px rgba(0,212,255,0.5);
+    }
+    [data-composition-id="beat-c7b4-examples"] .b4-chips {
+      display: flex; align-items: center; gap: 20px; padding: 30px 44px;
+    }
+    /* Neutral #141A22 chips (NOT cyan) */
+    [data-composition-id="beat-c7b4-examples"] .b4-chip {
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 52px;
+      color: #f0f0f0; letter-spacing: 0.01em; text-transform: uppercase;
+      line-height: 1.0; padding: 16px 30px; border-radius: 6px;
+      background: #141a22; border: 1px solid #2a2a2a;
+      opacity: 0; white-space: nowrap;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Eyebrow @ offset 0.20 (comp 41.4) — EDITORIAL label
+    tl.fromTo("#b4-eye", {opacity:0, y:12}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 0.20);
+    // Strip frame slides in (empty) from the left
+    tl.fromTo("#b4-strip", {opacity:0, x:-40}, {opacity:1, x:0, duration:0.4, ease:"expo.out"}, 0.30);
+
+    // c1 PERP DEXES slams in @ offset 0.66 (perp @ comp 41.86) — back.out(1.5)
+    tl.fromTo("#b4-c1", {opacity:0, scale:0.7, transformOrigin:"left center"},
+      {opacity:1, scale:1, duration:0.42, ease:"back.out(1.5)"}, 0.66);
+    // c2 MEME COINS slams in @ offset 1.76 (meme @ comp 42.96)
+    tl.fromTo("#b4-c2", {opacity:0, scale:0.7, transformOrigin:"left center"},
+      {opacity:1, scale:1, duration:0.42, ease:"back.out(1.5)"}, 1.76);
+
+    // Strip holds, exits before c7b5 (video stays full-frame — no view change)
+    tl.to(".b4-inner", {opacity:0, duration:0.32, ease:"power2.in"}, 3.6);
+
+    window.__timelines["beat-c7b4-examples"] = tl;
+  })();
+  </script>
+</div>
+</template>

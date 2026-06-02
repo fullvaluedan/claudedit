@@ -1,0 +1,151 @@
+<template id="beat-c1b5-two-sides-template">
+<!--
+  c1b5 — FLOWCHART (1 root → 2 branches) · comp 33.0–48.5 · src 272.10–287.60 · MODE A · WORD-SYNCED reveals
+  Catalog `flowchart` block, re-skinned dark-finance (the shipped flowchart.html is a light-mode kid-themed
+  reference; per QA-checklist "hand-build a DISTINCT equivalent" — this IS the flowchart device, dark-themed).
+  Jasper: "OTC trading… bread and butter is MARKET MAKING… The OTC desk is very much the other side of this."
+  ONE root node (THE FIRM) → TWO branches: MARKET-MAKING (neutral) and OTC DESK (accent = single cyan).
+  Branch A reveals on "market" comp 36.66 → 3.66. Branch B reveals on "OTC" (other side) comp 46.66 → 13.66.
+  NO footer line (removed — eyebrow already states the idea; avoids R4 "two/firm" dup).
+  Eyebrow @ 33.2, neutral rule @ 33.4, root @ 33.8. (local offsets = comp − 33.0)
+-->
+<div data-composition-id="beat-c1b5-two-sides" data-width="1920" data-height="1080" data-duration="15.5">
+
+  <!-- Feathered backdrop for legibility over Mode-A video -->
+  <div id="b5-backdrop" data-layout-ignore></div>
+
+  <div class="b5-reg b5-tl" data-layout-ignore></div>
+  <div class="b5-reg b5-tr" data-layout-ignore></div>
+  <div class="b5-reg b5-bl" data-layout-ignore></div>
+  <div class="b5-reg b5-br" data-layout-ignore></div>
+
+  <div class="b5-zone">
+    <div class="b5-inner">
+      <div id="b5-eye">TWO SIDES OF THE BOOK</div>
+      <div id="b5-rule"></div>
+
+      <!-- Root node → two branches (SVG connectors draw between) -->
+      <div class="b5-flow">
+        <div id="b5-root" class="b5-node b5-root">
+          <div class="b5-node-title">THE FIRM</div>
+        </div>
+
+        <svg class="b5-conn" viewBox="0 0 130 320" preserveAspectRatio="none">
+          <path id="b5-path-a" class="b5-cpath" d="M 0 160 L 65 160 L 65 70 L 130 70" />
+          <path id="b5-path-b" class="b5-cpath b5-cpath-accent" d="M 0 160 L 65 160 L 65 250 L 130 250" />
+        </svg>
+
+        <div class="b5-branches">
+          <div id="b5-nA" class="b5-node">
+            <div class="b5-node-title">MARKET-MAKING</div>
+            <div class="b5-node-desc">Maker across exchanges &amp; tokens · provides liquidity</div>
+          </div>
+          <div id="b5-nB" class="b5-node b5-accent">
+            <div class="b5-node-title">OTC DESK</div>
+            <div class="b5-node-desc">Executes specific client transactions</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c1b5-two-sides"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c1b5-two-sides"] #b5-backdrop {
+      position: absolute; top: 0; left: 0; width: 1200px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(12,16,22,0.88) 0%, rgba(12,16,22,0.82) 45%,
+        rgba(12,16,22,0.30) 72%, transparent 92%);
+      pointer-events: none; z-index: 0;
+    }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-reg { position: absolute; width: 26px; height: 26px; opacity: 0; z-index: 1; }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-tl { top: 30px; left: 30px; border-top: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-tr { top: 30px; left: 1094px; border-top: 2px solid #2a2a2a; border-right: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-bl { bottom: 30px; left: 30px; border-bottom: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-br { bottom: 30px; left: 1094px; border-bottom: 2px solid #2a2a2a; border-right: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center; z-index: 1;
+      mask-image: linear-gradient(to right, black 82%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 82%, transparent 100%);
+    }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-inner { padding: 0 80px; width: 100%; }
+    [data-composition-id="beat-c1b5-two-sides"] #b5-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 400;
+      color: #B6BEC6; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 14px; opacity: 0;
+    }
+    [data-composition-id="beat-c1b5-two-sides"] #b5-eye {
+      font-family: "JetBrains Mono", monospace; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 22px; opacity: 0;
+    }
+    [data-composition-id="beat-c1b5-two-sides"] #b5-rule { width: 0; height: 2px; background: #2a2a2a; margin-bottom: 28px; }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-flow { display: flex; align-items: center; gap: 0; }
+    /* SVG connector channel between root and branches */
+    [data-composition-id="beat-c1b5-two-sides"] .b5-conn {
+      width: 130px; height: 320px; flex-shrink: 0; overflow: visible;
+    }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-cpath {
+      fill: none; stroke: #3a3f47; stroke-width: 3;
+      stroke-dasharray: 320; stroke-dashoffset: 320;
+    }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-cpath-accent { stroke: #00d4ff; }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-branches { display: flex; flex-direction: column; gap: 16px; }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-node {
+      background: rgba(20,26,34,0.92); border: 1px solid #2a2a2a;
+      border-radius: 4px; padding: 18px 22px; opacity: 0;
+      display: flex; flex-direction: column; justify-content: center;
+      min-height: 96px; max-width: 560px;
+    }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-root {
+      max-width: 280px; min-height: 88px; align-items: center; text-align: center;
+    }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-root .b5-node-title { margin-bottom: 0; }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-accent {
+      border-color: #00d4ff; box-shadow: 0 0 24px rgba(0,212,255,0.12);
+    }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-node-title {
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 36px;
+      color: #f0f0f0; text-transform: uppercase; letter-spacing: 0.01em;
+      line-height: 1.1; margin-bottom: 8px;
+    }
+    [data-composition-id="beat-c1b5-two-sides"] .b5-node-desc {
+      font-size: 28px; font-weight: 600; color: #f0f0f0; line-height: 1.3;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // local offsets = comp − 33.0
+    tl.fromTo(".b5-reg", {opacity:0}, {opacity:1, duration:0.22, ease:"power1.out"}, 0.12);
+    // eyebrow @ comp 33.2 → 0.20
+    tl.fromTo("#b5-eye", {opacity:0, y:10}, {opacity:1, y:0, duration:0.3, ease:"power3.out"}, 0.20);
+    // neutral rule @ comp 33.4 → 0.40
+    tl.fromTo("#b5-rule", {width:"0px"}, {width:"360px", duration:0.45, ease:"power3.inOut"}, 0.40);
+    // root @ comp 33.8 → 0.80 (back.out pop)
+    tl.fromTo("#b5-root", {opacity:0, scale:0}, {opacity:1, scale:1, duration:0.45, ease:"back.out(1.5)"}, 0.80);
+
+    // Branch A MARKET-MAKING — "market" comp 36.66 → 3.66 (connector draws 0.15s before the node lands)
+    tl.fromTo("#b5-path-a", {strokeDashoffset:320}, {strokeDashoffset:0, duration:0.5, ease:"power1.inOut"}, 3.51);
+    tl.fromTo("#b5-nA", {opacity:0, y:24}, {opacity:1, y:0, duration:0.5, ease:"power3.out"}, 3.66);
+
+    // Branch B OTC DESK (accent, single cyan) — "OTC" (other side) comp 46.66 → 13.66
+    tl.fromTo("#b5-path-b", {strokeDashoffset:320}, {strokeDashoffset:0, duration:0.5, ease:"power1.inOut"}, 13.51);
+    tl.fromTo("#b5-nB", {opacity:0, scale:0.88}, {opacity:1, scale:1, duration:0.5, ease:"expo.out"}, 13.66);
+
+    // Exit before c1b6 card slides in (card @ comp 50.5; this beat ends comp 48.5 → local 15.5)
+    tl.to(".b5-inner, .b5-reg, #b5-backdrop", {opacity:0, duration:0.5, ease:"power2.out"}, 15.0);
+
+    window.__timelines["beat-c1b5-two-sides"] = tl;
+  })();
+  </script>
+</div>
+</template>

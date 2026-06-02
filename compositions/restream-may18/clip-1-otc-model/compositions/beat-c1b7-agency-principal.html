@@ -1,0 +1,221 @@
+<template id="beat-c1b7-agency-principal-template">
+<!--
+  c1b7 — SWISS-GRID TWO-COLUMN (CENTERPIECE) + shimmer-sweep · comp 80.5–99.0 · src 319.60–338.10 · MODE A · WORD-SYNCED
+  ★ THE LEAD DEVICE ★. LEFT = AGENCY (rival desks, neutral). RIGHT = PRINCIPAL (Wintermute, cyan header = single cyan).
+  shimmer-sweep (catalog component, inlined) plays ONCE across the PRINCIPAL header on its reveal — the only shimmer in the clip.
+  Jasper: "…quite DIFFERENT… they would execute in AGENCY. We do this in PRINCIPAL trading. So the prices we offer
+  is a RISK PRICE. We WAREHOUSE that risk and then we trade on it very gradually… very much ALIGNED."
+  On-screen PRINCIPAL is the correct finance term (audio.json Whisper artifact 'principle' remapped per _JARGON.md).
+  WORD-SYNCED reveals: AGENCY@82.68 PRINCIPAL@84.62(+shimmer) RISK-PRICE@87.76 OTHER-SIDE@88.92 ALIGNED@96.30 (src−239.10)
+  Equal-height headers (both single-line 48px). Bullet rows use min-width:0; flex:1 so wraps align under first char.
+  Eyebrow @ 80.7 → 0.20 (deliberately NOT "AGENCY"/"PRINCIPAL" — those are column headers; R4). (local = comp − 80.5)
+-->
+<div data-composition-id="beat-c1b7-agency-principal" data-width="1920" data-height="1080" data-duration="18.5">
+
+  <!-- Feathered backdrop for legibility over Mode-A video -->
+  <div id="b7-backdrop" data-layout-ignore></div>
+
+  <div class="b7-reg b7-tl" data-layout-ignore></div>
+  <div class="b7-reg b7-tr" data-layout-ignore></div>
+  <div class="b7-reg b7-bl" data-layout-ignore></div>
+  <div class="b7-reg b7-br" data-layout-ignore></div>
+
+  <div class="b7-zone">
+    <div class="b7-inner">
+      <div id="b7-eye">TWO EXECUTION MODELS</div>
+      <div id="b7-rule"></div>
+
+      <div class="b7-cols">
+        <!-- LEFT: AGENCY (rival desks) -->
+        <div class="b7-col">
+          <div id="b7-hL" class="b7-col-head">
+            <div class="b7-col-title">AGENCY</div>
+            <div class="b7-col-sub">RIVAL DESKS</div>
+          </div>
+          <div class="b7-rows">
+            <div id="b7-a1" class="b7-row">
+              <span class="b7-dot"></span>
+              <span class="b7-row-text">Trades on the client behalf</span>
+            </div>
+            <div id="b7-a2" class="b7-row">
+              <span class="b7-dot"></span>
+              <span class="b7-row-text">Holds no position</span>
+            </div>
+            <div id="b7-a3" class="b7-row">
+              <span class="b7-dot"></span>
+              <span class="b7-row-text">Incentives can diverge</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: PRINCIPAL (Wintermute) — cyan header = single cyan + the only shimmer -->
+        <div class="b7-col">
+          <div id="b7-hR" class="b7-col-head">
+            <div class="b7-col-title b7-title-accent shimmer-sweep-target">PRINCIPAL</div>
+            <div class="b7-col-sub">WINTERMUTE</div>
+          </div>
+          <div class="b7-rows">
+            <div id="b7-p1" class="b7-row">
+              <span class="b7-dot b7-dot-accent"></span>
+              <span class="b7-row-text">Quotes a RISK PRICE</span>
+            </div>
+            <div id="b7-p2" class="b7-row">
+              <span class="b7-dot b7-dot-accent"></span>
+              <span class="b7-row-text">Takes the other side</span>
+            </div>
+            <div id="b7-p3" class="b7-row">
+              <span class="b7-dot b7-dot-accent"></span>
+              <span class="b7-row-text">Fully ALIGNED</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c1b7-agency-principal"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] #b7-backdrop {
+      position: absolute; top: 0; left: 0; width: 1200px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(12,16,22,0.88) 0%, rgba(12,16,22,0.82) 45%,
+        rgba(12,16,22,0.30) 72%, transparent 92%);
+      pointer-events: none; z-index: 0;
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-reg { position: absolute; width: 26px; height: 26px; opacity: 0; z-index: 1; }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-tl { top: 30px; left: 30px; border-top: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-tr { top: 30px; left: 1094px; border-top: 2px solid #2a2a2a; border-right: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-bl { bottom: 30px; left: 30px; border-bottom: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-br { bottom: 30px; left: 1094px; border-bottom: 2px solid #2a2a2a; border-right: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center; z-index: 1;
+      mask-image: linear-gradient(to right, black 84%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 84%, transparent 100%);
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-inner { padding: 0 72px; width: 100%; }
+    [data-composition-id="beat-c1b7-agency-principal"] #b7-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 400;
+      color: #B6BEC6; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 14px; opacity: 0;
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] #b7-eye {
+      font-family: "JetBrains Mono", monospace; font-size: 34px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 22px; opacity: 0;
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] #b7-rule { width: 0; height: 2px; background: #2a2a2a; margin-bottom: 34px; }
+    /* Two equal columns */
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-cols {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 940px;
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-col { min-width: 0; }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-col-head {
+      opacity: 0; margin-bottom: 26px; padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-col-title {
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 48px;
+      color: #f0f0f0; text-transform: uppercase; letter-spacing: 0.01em;
+      line-height: 1.05; margin-bottom: 8px;
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-title-accent {
+      color: #00d4ff; text-shadow: 0 0 36px rgba(0,212,255,0.4);
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-col-sub {
+      font-family: "JetBrains Mono", monospace; font-size: 24px; font-weight: 700;
+      color: #B6BEC6; letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-rows {
+      display: flex; flex-direction: column; gap: 22px;
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-row {
+      display: flex; align-items: flex-start; gap: 16px; opacity: 0;
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #555; flex-shrink: 0; margin-top: 16px;
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-dot-accent { background: #00d4ff; }
+    /* min-width:0; flex:1 so wrapped text aligns under the first char, not the dot */
+    [data-composition-id="beat-c1b7-agency-principal"] .b7-row-text {
+      min-width: 0; flex: 1;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 30px;
+      color: #f0f0f0; line-height: 1.3; letter-spacing: 0.005em;
+    }
+
+    /* ── shimmer-sweep (catalog component, inlined) — premium light pass across PRINCIPAL header ── */
+    [data-composition-id="beat-c1b7-agency-principal"] .shimmer-sweep-target {
+      position: relative; display: inline-block;
+      --shimmer-color: rgba(255,255,255,0.85);
+      --shimmer-width: 22%;
+      --shimmer-angle: 115deg;
+    }
+    [data-composition-id="beat-c1b7-agency-principal"] .shimmer-sweep-target .shimmer-mask {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      background: linear-gradient(
+        var(--shimmer-angle, 120deg),
+        transparent 0%,
+        transparent calc(var(--shimmer-pos, -20%) - var(--shimmer-width, 20%) / 2),
+        var(--shimmer-color, rgba(255,255,255,0.6)) var(--shimmer-pos, -20%),
+        transparent calc(var(--shimmer-pos, -20%) + var(--shimmer-width, 20%) / 2),
+        transparent 100%
+      );
+      mix-blend-mode: overlay;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // shimmer-sweep: auto-inject .shimmer-mask into the PRINCIPAL header target
+    document.querySelectorAll('[data-composition-id="beat-c1b7-agency-principal"] .shimmer-sweep-target').forEach((el) => {
+      if (!el.querySelector(".shimmer-mask")) {
+        const mask = document.createElement("div");
+        mask.className = "shimmer-mask";
+        el.appendChild(mask);
+      }
+    });
+
+    // local offsets = comp − 80.5
+    tl.fromTo(".b7-reg", {opacity:0}, {opacity:1, duration:0.22, ease:"power1.out"}, 0.12);
+    // eyebrow @ comp 80.7 → 0.20
+    tl.fromTo("#b7-eye", {opacity:0, y:10}, {opacity:1, y:0, duration:0.3, ease:"power3.out"}, 0.20);
+    // neutral rule @ comp 80.9 → 0.40
+    tl.fromTo("#b7-rule", {width:"0px"}, {width:"420px", duration:0.5, ease:"power3.inOut"}, 0.40);
+
+    // LEFT header AGENCY — "agency" comp 82.68 → 2.18
+    tl.fromTo("#b7-hL", {opacity:0, y:16}, {opacity:1, y:0, duration:0.4, ease:"power3.out"}, 2.18);
+    // Agency rows stagger (comp 83.1 / 83.5 / 83.9 → 2.60 / 3.00 / 3.40)
+    tl.fromTo("#b7-a1", {opacity:0, x:18}, {opacity:1, x:0, duration:0.3, ease:"power2.out"}, 2.60);
+    tl.fromTo("#b7-a2", {opacity:0, x:18}, {opacity:1, x:0, duration:0.3, ease:"power2.out"}, 3.00);
+    tl.fromTo("#b7-a3", {opacity:0, x:18}, {opacity:1, x:0, duration:0.3, ease:"power2.out"}, 3.40);
+
+    // RIGHT header PRINCIPAL (cyan) — "principal" comp 84.62 → 4.12
+    tl.fromTo("#b7-hR", {opacity:0, y:16, scale:0.96}, {opacity:1, y:0, scale:1, duration:0.45, ease:"expo.out"}, 4.12);
+    // shimmer-sweep ONCE across the PRINCIPAL header, starting just after it lands
+    tl.fromTo(".shimmer-sweep-target",
+      {"--shimmer-pos":"-25%"},
+      {"--shimmer-pos":"125%", duration:1.1, ease:"power2.inOut"},
+      4.45
+    );
+    // Principal rows on spoken words: risk-price comp 87.76 → 7.26 | other-side(warehouse) comp 88.92 → 8.42 | aligned comp 96.30 → 15.80
+    tl.fromTo("#b7-p1", {opacity:0, x:18}, {opacity:1, x:0, duration:0.32, ease:"power2.out"}, 7.26);
+    tl.fromTo("#b7-p2", {opacity:0, x:18}, {opacity:1, x:0, duration:0.32, ease:"power2.out"}, 8.42);
+    tl.fromTo("#b7-p3", {opacity:0, x:18}, {opacity:1, x:0, duration:0.4, ease:"power3.out"}, 15.80);
+
+    // Exit fade @ comp 98.5 → local 18.0 (beat ends comp 99.0 → local 18.5)
+    tl.to(".b7-inner, .b7-reg, #b7-backdrop", {opacity:0, duration:0.5, ease:"power2.out"}, 18.0);
+
+    window.__timelines["beat-c1b7-agency-principal"] = tl;
+  })();
+  </script>
+</div>
+</template>

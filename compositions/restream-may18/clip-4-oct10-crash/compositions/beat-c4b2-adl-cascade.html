@@ -1,0 +1,188 @@
+<template id="beat-c4b2-template">
+<!--
+  c4b2 — ADL CASCADE flowchart (CENTERPIECE / PRIMARY DEVICE) · Mode A · comp 8.0–33.4
+  Vertical cause→effect chain (5 nodes) that BUILDS in sync with the spoken cascade.
+
+  Catalog note: `npx hyperframes add flowchart` was installed, but that block is a
+  HORIZONTAL branching decision tree on a white background with cursor/squiggle/emoji
+  cosmetics (a "should I learn to code?" gag) — structurally unfit for a linear 5-step
+  cause→effect cascade. Per EDL line 175 ("restyle to DESIGN palette … strip the
+  catalog's sticky-note/cursor cosmetics") and the task's "hand-build a DISTINCT
+  equivalent" clause, this is a hand-built VERTICAL flowchart in the DESIGN palette —
+  a genuinely distinct device from the kinetic stacks / cards used elsewhere in the clip.
+
+  Node reveals are WORD-CUED (offset = comp_t − 8.0, comp read off clip4-words.txt):
+    eyebrow "ADL CASCADE · LAST OCTOBER"  → offset 0.20   (EDITORIAL: structural label; §8: relative-time, NO literal year)
+    node1 [DELTA-NEUTRAL BOOK]            → offset 0.60   (EDITORIAL: structural recap node)
+    node2 [PERP CLOSED OUT]   "closed out"        comp 15.9 → offset 7.90
+    node3 [NAKED LONG DELTA]  "naked long delta"  comp 17.7 → offset 9.70
+    node4 [FORCED SELLING → FEEDBACK LOOP] "feedback loop" comp 24.7 → offset 16.70
+    node5 [ALTS −60 / −70 / −80%] (CYAN)  "60,70,80%" comp 31.90/32.40/32.78
+          → numbers tick at offsets 23.90 / 24.40 / 24.78; node finalizes cyan.
+
+  CYAN ELEMENT (single): node5 only (final-node convention).
+  Connectors are muted #6B7480 throughout — structural, NOT an accent (they draw
+  scaleY 0→1 between reveals but never go cyan). This is the §8 "ONE cyan per frame" fix.
+  Exit whole diagram ~comp 33.0 → offset 25.0 (clears before the V2 expand at 33.6).
+-->
+<div data-composition-id="beat-c4b2" data-width="1920" data-height="1080" data-duration="25.4">
+
+  <div class="c2-reg c2-tl" data-layout-ignore></div>
+  <div class="c2-reg c2-bl" data-layout-ignore></div>
+
+  <div class="c2-zone">
+    <div class="c2-inner">
+      <div id="c2-eye">ADL CASCADE · LAST OCTOBER</div>
+      <div id="c2-rule"></div>
+
+      <div class="c2-flow">
+        <div id="c2-n1" class="c2-node">
+          <div class="c2-node-title">DELTA-NEUTRAL BOOK</div>
+          <div class="c2-node-sub">long spot · short the perp</div>
+        </div>
+        <div id="c2-a1" class="c2-arrow"></div>
+
+        <div id="c2-n2" class="c2-node">
+          <div class="c2-node-title">PERP CLOSED OUT</div>
+          <div class="c2-node-sub">deep ITM · auto-deleveraged</div>
+        </div>
+        <div id="c2-a2" class="c2-arrow"></div>
+
+        <div id="c2-n3" class="c2-node">
+          <div class="c2-node-title">NAKED LONG DELTA</div>
+          <div class="c2-node-sub">hedge gone · fully exposed</div>
+        </div>
+        <div id="c2-a3" class="c2-arrow"></div>
+
+        <div id="c2-n4" class="c2-node">
+          <div class="c2-node-title">FORCED SELLING → FEEDBACK LOOP</div>
+          <div class="c2-node-sub">continuous pressure into the market</div>
+        </div>
+        <div id="c2-a4" class="c2-arrow"></div>
+
+        <div id="c2-n5" class="c2-node c2-accent">
+          <div class="c2-node-title">
+            ALTS <span class="c2-pct" id="c2-p1">−60</span><span class="c2-pct" id="c2-p2"> / −70</span><span class="c2-pct" id="c2-p3"> / −80%</span>
+          </div>
+          <div class="c2-node-sub">the cascade outcome</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c4b2"] {
+      width: 1920px; height: 1080px; position: relative;
+      overflow: hidden; background: transparent;
+      font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c4b2"] .c2-reg { position: absolute; width: 26px; height: 26px; opacity: 0; }
+    [data-composition-id="beat-c4b2"] .c2-tl { top: 30px; left: 30px; border-top: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c4b2"] .c2-bl { bottom: 30px; left: 30px; border-bottom: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c4b2"] .c2-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center;
+    }
+    [data-composition-id="beat-c4b2"] .c2-inner { padding: 0 80px; width: 100%; }
+    [data-composition-id="beat-c4b2"] #c2-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 400;
+      color: #B6BEC6; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 14px; opacity: 0;
+    }
+    [data-composition-id="beat-c4b2"] #c2-eye {
+      font-family: "JetBrains Mono", monospace; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 20px; opacity: 0;
+    }
+    [data-composition-id="beat-c4b2"] #c2-rule { width: 0; height: 2px; background: #00d4ff; margin-bottom: 26px; }
+
+    [data-composition-id="beat-c4b2"] .c2-flow {
+      display: flex; flex-direction: column; align-items: flex-start;
+    }
+    [data-composition-id="beat-c4b2"] .c2-node {
+      background: rgba(20,26,34,0.92);
+      border: 1px solid #2a2a2a;
+      border-radius: 5px; padding: 15px 26px; opacity: 0;
+      display: flex; flex-direction: column; justify-content: center;
+      min-width: 760px;
+    }
+    /* node5 — the single cyan element: cyan border + glow, numbers tick to cyan */
+    [data-composition-id="beat-c4b2"] .c2-accent {
+      border-color: #00d4ff;
+      box-shadow: 0 0 30px rgba(0,212,255,0.16);
+    }
+    [data-composition-id="beat-c4b2"] .c2-node-title {
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 42px;
+      color: #f0f0f0; text-transform: uppercase; letter-spacing: 0.01em;
+      line-height: 1.08;
+    }
+    [data-composition-id="beat-c4b2"] .c2-node-sub {
+      font-family: "Inter", sans-serif; font-size: 28px; font-weight: 600;
+      color: #C4C9D0; line-height: 1.25; margin-top: 6px;
+    }
+    /* −60/−70/−80% — start muted, finalize cyan with node5 (cyan is contained to node5) */
+    [data-composition-id="beat-c4b2"] .c2-pct { color: #6B7480; }
+    [data-composition-id="beat-c4b2"] .c2-accent .c2-node-title { color: #ffffff; }
+
+    /* Connector arrows — MUTED #6B7480, vertical, draw scaleY 0→1. NEVER cyan (line-184 fix). */
+    [data-composition-id="beat-c4b2"] .c2-arrow {
+      width: 3px; height: 32px; background: #6B7480;
+      margin: 7px 0 7px 56px; transform-origin: top center;
+      transform: scaleY(0); position: relative;
+    }
+    [data-composition-id="beat-c4b2"] .c2-arrow::after {
+      content: ''; position: absolute; bottom: -2px; left: 50%;
+      transform: translateX(-50%);
+      border-left: 7px solid transparent; border-right: 7px solid transparent;
+      border-top: 9px solid #6B7480;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // beat starts comp 8.0 → offset = comp_t − 8.0
+
+    // Chrome + eyebrow (structural)
+    tl.fromTo(".c2-reg", {opacity:0}, {opacity:1, duration:0.22, ease:"power1.out"}, 0.12);
+    tl.fromTo("#c2-eye", {opacity:0, y:10}, {opacity:1, y:0, duration:0.30, ease:"power3.out"}, 0.20);
+    tl.fromTo("#c2-rule", {width:"0px"}, {width:"380px", duration:0.45, ease:"power3.inOut"}, 0.32);
+
+    // node1 (structural recap) — offset 0.60
+    tl.fromTo("#c2-n1", {opacity:0, y:20}, {opacity:1, y:0, duration:0.5, ease:"power3.out"}, 0.60);
+
+    // arrow1 (muted) + node2 "closed out" comp 15.9 → offset 7.90
+    tl.fromTo("#c2-a1", {scaleY:0}, {scaleY:1, duration:0.4, ease:"power2.out"}, 7.50);
+    tl.fromTo("#c2-n2", {opacity:0, y:20}, {opacity:1, y:0, duration:0.5, ease:"power3.out"}, 7.90);
+
+    // arrow2 (muted) + node3 "naked long delta" comp 17.7 → offset 9.70
+    tl.fromTo("#c2-a2", {scaleY:0}, {scaleY:1, duration:0.4, ease:"power2.out"}, 9.30);
+    tl.fromTo("#c2-n3", {opacity:0, y:20}, {opacity:1, y:0, duration:0.5, ease:"power3.out"}, 9.70);
+
+    // arrow3 (muted) + node4 "feedback loop" comp 24.7 → offset 16.70
+    tl.fromTo("#c2-a3", {scaleY:0}, {scaleY:1, duration:0.4, ease:"power2.out"}, 16.30);
+    tl.fromTo("#c2-n4", {opacity:0, y:20}, {opacity:1, y:0, duration:0.5, ease:"power3.out"}, 16.70);
+
+    // arrow4 (muted) + node5 frame appears just before the numbers tick (offset ~23.4)
+    tl.fromTo("#c2-a4", {scaleY:0}, {scaleY:1, duration:0.4, ease:"power2.out"}, 23.10);
+    tl.fromTo("#c2-n5", {opacity:0, scale:0.9}, {opacity:1, scale:1, duration:0.5, ease:"expo.out"}, 23.40);
+
+    // −60 / −70 / −80% tick into the node on their spoken cues, going cyan one by one.
+    // "60,"@comp31.90 → offset 23.90 | "70,"@32.40 → 24.40 | "80%."@32.78 → 24.78
+    tl.to("#c2-p1", {color:"#00d4ff", duration:0.18, ease:"power2.out"}, 23.90);
+    tl.to("#c2-p2", {color:"#00d4ff", duration:0.18, ease:"power2.out"}, 24.40);
+    tl.to("#c2-p3", {color:"#00d4ff", duration:0.22, ease:"power2.out"}, 24.78);
+    // Final accent glow on node5 as the outcome lands (cyan stays contained to node5)
+    tl.to("#c2-n5", {boxShadow:"0 0 46px rgba(0,212,255,0.32)", duration:0.3, ease:"power2.out"}, 24.78);
+
+    // Exit whole diagram ~comp 33.0 → offset 25.0 (clears before V2 expand at 33.6)
+    tl.to(".c2-inner, .c2-reg", {opacity:0, duration:0.45, ease:"power2.in"}, 25.0);
+
+    window.__timelines["beat-c4b2"] = tl;
+  })();
+  </script>
+</div>
+</template>

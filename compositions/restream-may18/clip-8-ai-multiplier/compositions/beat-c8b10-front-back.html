@@ -1,0 +1,127 @@
+<template id="beat-c8b10-template">
+<!--
+  c8b10 — FRONT-END vs BACK-END swiss-grid split · MODE-A (left zone; S4 settled @81.0)
+  comp 81.3–102.0 · src 1758.50–1779.20 · beat offset = comp − 81.3
+    eyebrow WHERE AI FITS         @81.72 (offset 0.42)  EDITORIAL chrome, lands with FRONT header
+    LEFT header FRONT END         @81.72 (offset 0.42)  ("on the front end" 1758.92)
+    LEFT body Intent · expressing risk @82.58 (offset 1.28) ("intent…of risk" 1759.78)
+    LEFT tag YOU GUYS
+    RIGHT tag US (Wintermute)     @94.08 (offset 12.78) ("For us" 1771.28)
+    RIGHT header BACK END         @97.60 (offset 16.30) ("on the back end" 1774.80)
+    divider rule                  @97.80 (offset 16.50) cyan — the single accent
+    RIGHT body Market infrastructure @98.46 (offset 17.16) ("market infrastructure" 1775.66)
+  Columns fill ~16s apart so the grid literally fills as he contrasts (active ~20s hold).
+-->
+<div data-composition-id="beat-c8b10" data-width="1920" data-height="1080" data-duration="20.7">
+
+  <div class="b10-backdrop" data-layout-ignore></div>
+  <div class="b10-reg b10-tl" data-layout-ignore></div>
+  <div class="b10-reg b10-bl" data-layout-ignore></div>
+
+  <div class="b10-zone">
+    <div class="b10-inner">
+      <div id="b10-eye" class="b10-eye">WHERE AI FITS</div>
+      <div id="b10-erule" class="b10-erule"></div>
+
+      <div class="b10-cols">
+        <div id="b10-colL" class="b10-col">
+          <div class="b10-tag">YOU GUYS</div>
+          <div class="b10-hdr">FRONT END</div>
+          <div class="b10-body">Intent &middot; expressing risk</div>
+        </div>
+
+        <div id="b10-div" class="b10-div"></div>
+
+        <div class="b10-col">
+          <div id="b10-tagR" class="b10-tag">US (WINTERMUTE)</div>
+          <div id="b10-hdrR" class="b10-hdr">BACK END</div>
+          <div id="b10-bodyR" class="b10-body">Market infrastructure</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c8b10"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c8b10"] .b10-backdrop {
+      position: absolute; top: 0; left: 0; width: 1160px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(8,11,16,0.90) 0%, rgba(8,11,16,0.72) 60%, rgba(8,11,16,0.22) 82%, transparent 100%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-c8b10"] .b10-reg { position: absolute; width: 26px; height: 26px; opacity: 0; }
+    [data-composition-id="beat-c8b10"] .b10-tl { top: 30px; left: 30px; border-top: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c8b10"] .b10-bl { bottom: 30px; left: 30px; border-bottom: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c8b10"] .b10-zone {
+      position: absolute; top: 0; left: 0; width: 1120px; height: 1080px;
+      display: flex; align-items: center;
+    }
+    [data-composition-id="beat-c8b10"] .b10-inner { padding: 0 80px; width: 100%; }
+    [data-composition-id="beat-c8b10"] .b10-eye {
+      font-family: "Inter", sans-serif; font-size: 34px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.16em; text-transform: uppercase;
+      margin-bottom: 16px; opacity: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+    [data-composition-id="beat-c8b10"] .b10-erule { width: 0; height: 2px; background: #2a2a2a; margin-bottom: 40px; }
+    [data-composition-id="beat-c8b10"] .b10-cols { display: flex; align-items: stretch; gap: 0; }
+    [data-composition-id="beat-c8b10"] .b10-col { min-width: 380px; }
+    [data-composition-id="beat-c8b10"] #b10-colL { opacity: 0; }
+    [data-composition-id="beat-c8b10"] .b10-tag {
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px;
+      color: #f0f0f0; letter-spacing: 0.05em; text-transform: uppercase;
+      margin-bottom: 14px; opacity: 1;
+    }
+    [data-composition-id="beat-c8b10"] #b10-tagR, [data-composition-id="beat-c8b10"] #b10-hdrR,
+    [data-composition-id="beat-c8b10"] #b10-bodyR { opacity: 0; }
+    [data-composition-id="beat-c8b10"] .b10-hdr {
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 64px;
+      color: #B6BEC6; letter-spacing: 0.02em; text-transform: uppercase;
+      margin-bottom: 16px; line-height: 1.0;
+    }
+    [data-composition-id="beat-c8b10"] .b10-body {
+      font-family: "Inter", sans-serif; font-size: 30px; font-weight: 600;
+      color: #f0f0f0; line-height: 1.3; max-width: 360px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+    }
+    [data-composition-id="beat-c8b10"] .b10-div {
+      width: 2px; background: #00d4ff; margin: 0 56px; align-self: stretch;
+      transform: scaleY(0); transform-origin: top center;
+      box-shadow: 0 0 18px rgba(0,212,255,0.5);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    const S = '[data-composition-id="beat-c8b10"]';
+
+    tl.fromTo(S + " .b10-reg", {opacity:0}, {opacity:1, duration:0.25, ease:"power1.out"}, 0.2);
+    // eyebrow + LEFT column reveal together @81.72 (offset 0.42), after the Mode-A settle
+    tl.fromTo(S + " #b10-eye", {opacity:0, y:12}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 0.42);
+    tl.fromTo(S + " #b10-erule", {width:"0px"}, {width:"360px", duration:0.5, ease:"power3.inOut"}, 0.55);
+    tl.fromTo(S + " #b10-colL", {opacity:0, x:-20}, {opacity:1, x:0, duration:0.44, ease:"power3.out"}, 0.42);
+    // (LEFT body is inside colL; it reveals with the column — its spoken cue 1.28 is within the reveal window)
+
+    // RIGHT side fills ~16s later as he names "us" / "back end"
+    // US tag @94.08 (offset 12.78)
+    tl.fromTo(S + " #b10-tagR", {opacity:0, x:18}, {opacity:1, x:0, duration:0.36, ease:"power2.out"}, 12.78);
+    // BACK END header @97.60 (offset 16.30)
+    tl.fromTo(S + " #b10-hdrR", {opacity:0, y:14}, {opacity:1, y:0, duration:0.4, ease:"expo.out"}, 16.30);
+    // cyan divider @97.80 (offset 16.50)
+    tl.fromTo(S + " .b10-div", {scaleY:0}, {scaleY:1, duration:0.6, ease:"power4.out"}, 16.50);
+    // RIGHT body @98.46 (offset 17.16)
+    tl.fromTo(S + " #b10-bodyR", {opacity:0, y:12}, {opacity:1, y:0, duration:0.36, ease:"power2.out"}, 17.16);
+
+    // Build-and-stay; exit before c8b11 enters (offset ~20.3)
+    tl.to(S + " .b10-inner, " + S + " .b10-reg", {opacity:0, duration:0.4, ease:"power2.in"}, 20.3);
+
+    window.__timelines["beat-c8b10"] = tl;
+  })();
+  </script>
+</div>
+</template>

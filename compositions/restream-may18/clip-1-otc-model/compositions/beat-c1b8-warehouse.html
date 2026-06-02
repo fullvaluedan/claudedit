@@ -1,0 +1,133 @@
+<template id="beat-c1b8-warehouse-template">
+<!--
+  c1b8 — FLOWCHART (3-node decay/cause→effect chain) · comp 100.0–106.5 · src 339.10–345.60 · MODE A · WORD-SYNCED
+  Catalog `flowchart` block re-skinned dark-finance, laid out as a LEFT→RIGHT cause→effect chain (EDL directive e —
+  v2 was a 4-bar data-chart). Distinct from c1b5's split and c1b7's columns — it is the PAYOFF of the comparison,
+  showing WHY principal incentives align.
+  Jasper: "We warehouse that risk and then we trade on it very gradually… a lot of people generally APPRECIATES that ALIGNMENT."
+  WAREHOUSE THE RISK → WORK OFF GRADUALLY → PRICE IMPACT MINIMIZED (final node = single cyan).
+  Final node reveals on "appreciates" comp 103.44 → 3.44 (held; "alignment" comp 104.70 → 4.70 lands during its glow).
+  Eyebrow @ 100.2 → 0.20. (local offsets = comp − 100.0)
+-->
+<div data-composition-id="beat-c1b8-warehouse" data-width="1920" data-height="1080" data-duration="6.5">
+
+  <!-- Feathered backdrop for legibility over Mode-A video -->
+  <div id="b8-backdrop" data-layout-ignore></div>
+
+  <div class="b8-reg b8-tl" data-layout-ignore></div>
+  <div class="b8-reg b8-tr" data-layout-ignore></div>
+  <div class="b8-reg b8-bl" data-layout-ignore></div>
+  <div class="b8-reg b8-br" data-layout-ignore></div>
+
+  <div class="b8-zone">
+    <div class="b8-inner">
+      <div id="b8-eye">WHY IT ALIGNS</div>
+      <div id="b8-rule"></div>
+
+      <!-- 3-node left→right chain -->
+      <div class="b8-chain">
+        <div id="b8-n1" class="b8-node">
+          <div class="b8-node-title">WAREHOUSE THE RISK</div>
+        </div>
+        <div id="b8-arr1" class="b8-arrow">→</div>
+        <div id="b8-n2" class="b8-node">
+          <div class="b8-node-title">WORK OFF GRADUALLY</div>
+        </div>
+        <div id="b8-arr2" class="b8-arrow b8-arrow-accent">→</div>
+        <div id="b8-n3" class="b8-node b8-accent">
+          <div class="b8-node-title">PRICE IMPACT MINIMIZED</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c1b8-warehouse"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c1b8-warehouse"] #b8-backdrop {
+      position: absolute; top: 0; left: 0; width: 1200px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(12,16,22,0.88) 0%, rgba(12,16,22,0.82) 45%,
+        rgba(12,16,22,0.30) 72%, transparent 92%);
+      pointer-events: none; z-index: 0;
+    }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-reg { position: absolute; width: 26px; height: 26px; opacity: 0; z-index: 1; }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-tl { top: 30px; left: 30px; border-top: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-tr { top: 30px; left: 1094px; border-top: 2px solid #2a2a2a; border-right: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-bl { bottom: 30px; left: 30px; border-bottom: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-br { bottom: 30px; left: 1094px; border-bottom: 2px solid #2a2a2a; border-right: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center; z-index: 1;
+      mask-image: linear-gradient(to right, black 84%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 84%, transparent 100%);
+    }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-inner { padding: 0 72px; width: 100%; }
+    [data-composition-id="beat-c1b8-warehouse"] #b8-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 400;
+      color: #B6BEC6; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 14px; opacity: 0;
+    }
+    [data-composition-id="beat-c1b8-warehouse"] #b8-eye {
+      font-family: "JetBrains Mono", monospace; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 22px; opacity: 0;
+    }
+    [data-composition-id="beat-c1b8-warehouse"] #b8-rule { width: 0; height: 2px; background: #2a2a2a; margin-bottom: 40px; }
+    /* horizontal chain */
+    [data-composition-id="beat-c1b8-warehouse"] .b8-chain {
+      display: flex; align-items: center; gap: 0; max-width: 1000px;
+    }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-node {
+      background: rgba(20,26,34,0.92); border: 1px solid #2a2a2a;
+      border-radius: 4px; padding: 26px 22px; opacity: 0;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      min-height: 132px; flex: 1;
+    }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-accent {
+      border-color: #00d4ff; box-shadow: 0 0 28px rgba(0,212,255,0.16);
+    }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-node-title {
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 30px;
+      color: #f0f0f0; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1.18;
+    }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-accent .b8-node-title {
+      color: #00d4ff; text-shadow: 0 0 30px rgba(0,212,255,0.4);
+    }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-arrow {
+      font-size: 40px; color: #3a3f47; opacity: 0; flex-shrink: 0; padding: 0 14px;
+    }
+    [data-composition-id="beat-c1b8-warehouse"] .b8-arrow-accent { color: #00d4ff; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // local offsets = comp − 100.0
+    tl.fromTo(".b8-reg", {opacity:0}, {opacity:1, duration:0.22, ease:"power1.out"}, 0.12);
+    // eyebrow @ comp 100.2 → 0.20
+    tl.fromTo("#b8-eye", {opacity:0, y:10}, {opacity:1, y:0, duration:0.3, ease:"power3.out"}, 0.20);
+    tl.fromTo("#b8-rule", {width:"0px"}, {width:"360px", duration:0.45, ease:"power3.inOut"}, 0.40);
+
+    // Node 1 WAREHOUSE THE RISK @ comp 100.6 → 0.60
+    tl.fromTo("#b8-n1", {opacity:0, scale:0.9, y:18}, {opacity:1, scale:1, y:0, duration:0.45, ease:"back.out(1.4)"}, 0.60);
+    // Connector → Node 2 WORK OFF GRADUALLY @ comp 101.4 → 1.40
+    tl.fromTo("#b8-arr1", {opacity:0, x:-12}, {opacity:1, x:0, duration:0.3, ease:"expo.out"}, 1.20);
+    tl.fromTo("#b8-n2", {opacity:0, scale:0.9, y:18}, {opacity:1, scale:1, y:0, duration:0.45, ease:"back.out(1.4)"}, 1.40);
+    // Connector → Node 3 PRICE IMPACT MINIMIZED (accent, payoff) — "appreciates" comp 103.44 → 3.44
+    tl.fromTo("#b8-arr2", {opacity:0, x:-12}, {opacity:1, x:0, duration:0.3, ease:"expo.out"}, 3.24);
+    tl.fromTo("#b8-n3", {opacity:0, scale:0.86}, {opacity:1, scale:1, duration:0.5, ease:"expo.out"}, 3.44);
+
+    // Exit before c1b9 close stack (eyebrow @ comp 106.9); this beat ends comp 106.5 → local 6.5
+    tl.to(".b8-inner, .b8-reg, #b8-backdrop", {opacity:0, duration:0.45, ease:"power2.out"}, 6.0);
+
+    window.__timelines["beat-c1b8-warehouse"] = tl;
+  })();
+  </script>
+</div>
+</template>

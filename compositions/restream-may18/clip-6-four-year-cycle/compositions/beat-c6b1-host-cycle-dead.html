@@ -1,0 +1,74 @@
+<template id="beat-c6b1-template">
+<!--
+  c6b1 — HOST QUESTION kinetic · FULL-FRAME (both speakers) · comp 0.0–3.0
+  WORD-SYNCED (not editorial). Cold open IS the spoken host question. No "HOST" label (DESIGN.md).
+  3-phrase build, each phrase STAYS (no dim). Whole stack exits upward ~2.74 before the Mode-A switch (3.0).
+    "WOULD YOU SAY"        fires comp 0.12  → "Would" src 1420.42  (1420.42 - 1420.30)
+    "THE FOUR-YEAR CYCLE"  fires comp 0.94  → "four"  src 1421.24  (1421.24 - 1420.30)
+    "IS DEAD?"             fires comp 2.02  → "dead?" src 1422.32  (1422.32 - 1420.30)  CYAN payoff
+-->
+<div data-composition-id="beat-c6b1" data-width="1920" data-height="1080" data-duration="3.0">
+
+  <div class="b1-backdrop" data-layout-ignore></div>
+
+  <div class="b1-zone">
+    <div class="b1-words">
+      <div id="b1-l1" class="b1-line">WOULD YOU SAY</div>
+      <div id="b1-l2" class="b1-line">THE FOUR-YEAR CYCLE</div>
+      <div id="b1-l3" class="b1-line"><span class="b1-cyan">IS DEAD?</span></div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c6b1"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c6b1"] .b1-backdrop {
+      position: absolute; top: 0; left: 0; width: 1000px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.56) 60%, transparent 100%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-c6b1"] .b1-zone {
+      position: absolute; top: 0; left: 0; width: 1070px; height: 1080px;
+      display: flex; align-items: center; padding-left: 80px;
+    }
+    [data-composition-id="beat-c6b1"] .b1-words {
+      display: flex; flex-direction: column; gap: 14px; width: 100%;
+    }
+    [data-composition-id="beat-c6b1"] .b1-line {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 94px;
+      color: #f0f0f0; line-height: 1.0; letter-spacing: -0.035em;
+      text-transform: uppercase; opacity: 0; white-space: nowrap;
+      text-shadow: 0 4px 22px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.85);
+    }
+    [data-composition-id="beat-c6b1"] .b1-cyan {
+      color: #00d4ff;
+      text-shadow:
+        0 0 80px rgba(0,212,255,0.95), 0 0 40px rgba(0,212,255,0.75),
+        0 0 18px rgba(0,212,255,0.55), 0 4px 22px rgba(0,0,0,0.85);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // "Would" src 1420.42 → comp 0.12
+    tl.fromTo("#b1-l1", {opacity:0, y:28}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 0.12);
+    // "four" src 1421.24 → comp 0.94
+    tl.fromTo("#b1-l2", {opacity:0, y:28}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 0.94);
+    // "dead?" src 1422.32 → comp 2.02 (cyan payoff)
+    tl.fromTo("#b1-l3", {opacity:0, y:28, scale:0.92}, {opacity:1, y:0, scale:1, duration:0.32, ease:"expo.out"}, 2.02);
+
+    // Whole stack exits upward before the Mode-A switch at comp 3.0
+    tl.to(".b1-line", {y:-32, opacity:0, duration:0.26, ease:"power2.in"}, 2.74);
+
+    window.__timelines["beat-c6b1"] = tl;
+  })();
+  </script>
+</div>
+</template>

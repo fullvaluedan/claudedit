@@ -1,0 +1,159 @@
+<template id="beat-c6b4-template">
+<!--
+  c6b4 — nyt-graph BLOCK-REWARD DECAY — HERO (DEVICE #2) · MODE-A (speaker right) · comp 25.4–40.4
+  Reuses the nyt-graph descending-bar pattern (init lineage --example nyt-graph). Bars collapse on
+  "block rewards half... doesn't even matter." 6 bars on a shared baseline: 50 → 25 → 12.5 → 6.25 → 3.125 → 1.56 BTC.
+  scaleY 0→1 bottom-up, power3.out (no bounce). The 2028 / 1.56 bar = the single cyan (D7 target bar).
+  Date note: 2009/2012/2016/2020/2024/2028 are historical/scheduled halving dates (absolute) → permitted.
+
+  data-start 25.4, data-duration 15.0 → enters comp 25.4 (overlaps c6b3 which runs to 25.9), the 2028
+  timeline tick lighting at 25.68 cross-dissolves into the chart inside the shared 25.4–25.9 window.
+  Internal offsets (= comp fire-time − 25.4):
+    Eyebrow "BLOCK REWARD · BTC ISSUANCE"  offset 0.64 → comp 26.04 → "halving," src 1446.34 (EDITORIAL label)
+      (says "BLOCK REWARD" not "HALVING" → no shared word with c6b3's "HALVING CADENCE"; "BTC ISSUANCE"
+       removes a second "BLOCK" so no notable word repeats within the label)
+    Bars draw offsets 0.6 / 1.3 / 2.1 / 3.2 / 4.4 / 5.92 → 2028 bar at comp 31.32 ("doesn't even matter")
+    Annotation "INCREASINGLY MEANINGLESS"  offset 2.76 → comp 28.16 → "meaningless" src 1448.46 (WORD-SYNCED)
+    Chart HOLDS comp ~32–40 under "entire dynamic with miners..."; .b4-inner exits offset 14.6 → comp 40.0.
+-->
+<div data-composition-id="beat-c6b4" data-width="1920" data-height="1080" data-duration="15.0">
+
+  <div class="b4-zone">
+    <div class="b4-inner">
+
+      <div id="b4-eye">BLOCK REWARD · BTC ISSUANCE</div>
+      <div id="b4-rule"></div>
+
+      <div class="b4-chart">
+        <div class="b4-col" id="b4-c1">
+          <div class="b4-val" id="b4-v1">50</div>
+          <div class="b4-bar" id="b4-b1" style="height:340px"></div>
+          <div class="b4-yr" id="b4-y1">2009</div>
+        </div>
+        <div class="b4-col" id="b4-c2">
+          <div class="b4-val" id="b4-v2">25</div>
+          <div class="b4-bar" id="b4-b2" style="height:190px"></div>
+          <div class="b4-yr" id="b4-y2">2012</div>
+        </div>
+        <div class="b4-col" id="b4-c3">
+          <div class="b4-val" id="b4-v3">12.5</div>
+          <div class="b4-bar" id="b4-b3" style="height:120px"></div>
+          <div class="b4-yr" id="b4-y3">2016</div>
+        </div>
+        <div class="b4-col" id="b4-c4">
+          <div class="b4-val" id="b4-v4">6.25</div>
+          <div class="b4-bar" id="b4-b4" style="height:76px"></div>
+          <div class="b4-yr" id="b4-y4">2020</div>
+        </div>
+        <div class="b4-col" id="b4-c5">
+          <div class="b4-val" id="b4-v5">3.125</div>
+          <div class="b4-bar" id="b4-b5" style="height:48px"></div>
+          <div class="b4-yr" id="b4-y5">2024</div>
+        </div>
+        <div class="b4-col b4-col-accent" id="b4-c6">
+          <div class="b4-val b4-val-accent" id="b4-v6">1.56</div>
+          <div class="b4-bar b4-bar-accent" id="b4-b6" style="height:28px"></div>
+          <div class="b4-yr b4-yr-accent" id="b4-y6">2028</div>
+        </div>
+      </div>
+
+      <div id="b4-annot" class="b4-annot">INCREASINGLY MEANINGLESS</div>
+
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c6b4"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c6b4"] .b4-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center;
+    }
+    [data-composition-id="beat-c6b4"] .b4-inner { padding: 0 80px; width: 100%; }
+    [data-composition-id="beat-c6b4"] #b4-eye {
+      font-family: "JetBrains Mono", monospace; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.16em; text-transform: uppercase;
+      margin-bottom: 18px; opacity: 0;
+    }
+    [data-composition-id="beat-c6b4"] #b4-rule {
+      width: 0; height: 2px; background: #2a2a2a; margin-bottom: 44px;
+    }
+    /* Chart — bars sit on a shared baseline, value above, year below */
+    [data-composition-id="beat-c6b4"] .b4-chart {
+      display: flex; align-items: flex-end; gap: 34px; height: 400px;
+    }
+    [data-composition-id="beat-c6b4"] .b4-col {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: flex-end; width: 116px;
+    }
+    [data-composition-id="beat-c6b4"] .b4-val {
+      font-family: "JetBrains Mono", monospace; font-size: 34px; font-weight: 500;
+      color: #f0f0f0; margin-bottom: 12px; opacity: 0; letter-spacing: -0.01em;
+    }
+    [data-composition-id="beat-c6b4"] .b4-val-accent {
+      color: #00d4ff; text-shadow: 0 0 28px rgba(0,212,255,0.6);
+    }
+    [data-composition-id="beat-c6b4"] .b4-bar {
+      width: 86px; background: #3a4452; border-radius: 4px 4px 0 0;
+      transform: scaleY(0); transform-origin: bottom center;
+    }
+    [data-composition-id="beat-c6b4"] .b4-bar-accent {
+      background: #00d4ff;
+      box-shadow: 0 0 30px rgba(0,212,255,0.6), 0 0 60px rgba(0,212,255,0.28);
+    }
+    [data-composition-id="beat-c6b4"] .b4-yr {
+      font-family: "Inter", sans-serif; font-size: 30px; font-weight: 600;
+      color: #f0f0f0; margin-top: 14px; letter-spacing: 0.02em; opacity: 0;
+    }
+    [data-composition-id="beat-c6b4"] .b4-yr-accent { color: #00d4ff; }
+    [data-composition-id="beat-c6b4"] .b4-annot {
+      font-family: "Inter", sans-serif; font-size: 40px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.04em; text-transform: uppercase;
+      margin-top: 48px; opacity: 0;
+      /* Neutral accent bar (#2a2a2a) — the 2028 chart bar is the sole cyan (D7) */
+      border-left: 4px solid #2a2a2a; padding-left: 18px;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Eyebrow + rule — eyebrow word-synced to "halving" (comp 26.04 → offset 0.64)
+    tl.fromTo("#b4-eye",  {opacity:0, y:10}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 0.64);
+    tl.fromTo("#b4-rule", {width:"0px"}, {width:"720px", duration:0.45, ease:"power3.inOut"}, 0.80);
+
+    // Bars draw bottom-up, descending stagger across comp 26.0→31.32 (offsets 0.6→5.92).
+    // The 2028 / 1.56 cyan bar lands last on "doesn't even matter" (comp 31.32).
+    const cols = [
+      {b:"#b4-b1", v:"#b4-v1", y:"#b4-y1", t:0.60},
+      {b:"#b4-b2", v:"#b4-v2", y:"#b4-y2", t:1.30},
+      {b:"#b4-b3", v:"#b4-v3", y:"#b4-y3", t:2.10},
+      {b:"#b4-b4", v:"#b4-v4", y:"#b4-y4", t:3.20},
+      {b:"#b4-b5", v:"#b4-v5", y:"#b4-y5", t:4.40},
+      {b:"#b4-b6", v:"#b4-v6", y:"#b4-y6", t:5.92}   // 2028 accent — last, lands on "doesn't even matter"
+    ];
+    cols.forEach(function(c, i){
+      const last = (i === cols.length - 1);
+      const dur = last ? 0.55 : 0.45;
+      const ease = last ? "expo.out" : "power3.out";
+      tl.fromTo(c.b, {scaleY:0}, {scaleY:1, duration:dur, ease:ease}, c.t);
+      tl.fromTo(c.v, {opacity:0, y:8}, {opacity:1, y:0, duration:0.24, ease:"power2.out"}, c.t + 0.12);
+      tl.fromTo(c.y, {opacity:0}, {opacity:1, duration:0.24, ease:"power2.out"}, c.t + 0.06);
+    });
+
+    // Annotation "INCREASINGLY MEANINGLESS" — word-synced to "meaningless" (comp 28.16 → offset 2.76)
+    tl.fromTo("#b4-annot", {opacity:0, x:-12}, {opacity:1, x:0, duration:0.38, ease:"power2.out"}, 2.76);
+
+    // Chart HOLDS through comp ~40; .b4-inner exits at offset 14.6 (comp 40.0) before c6b5 / full-frame.
+    tl.to(".b4-inner", {opacity:0, duration:0.38, ease:"power2.out"}, 14.6);
+
+    window.__timelines["beat-c6b4"] = tl;
+  })();
+  </script>
+</div>
+</template>

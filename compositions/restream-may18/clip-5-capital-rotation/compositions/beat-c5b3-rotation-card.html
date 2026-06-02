@@ -1,0 +1,143 @@
+<template id="beat-c5b3-template">
+<!--
+  b3 — ROTATION before->after CARD · distinct PRIMARY device pt1 (HAND-BUILD, dark left zone)
+  beat data-start = 15.5 → internal offset = comp_t - 15.5  (all elements [EDITORIAL])
+    index 05            @15.7 -> offset 0.20   ** #F0F0F0 @20px (QA FIX: never #B6BEC6) **
+    eyebrow CAPITAL ROTATION @15.9 -> offset 0.40
+    cyan rule *CYAN     @16.3 -> offset 0.80
+    from CRYPTO/ALTCOINS (struck, 0.45) @17.0 -> offset 1.50
+    arrow + EQUITIES    @17.8 -> offset 2.30
+    timeline chips NOV·DEC·JAN·FEB @18.8 -> offset 3.30
+    footer 2025 -> 2026 @19.6 -> offset 4.10
+  Distinct motif: struck from-state -> down-arrow -> to-state -> 4-chip dwindle timeline.
+  CYAN = the rule only (EQUITIES stays white). No blur, no grain. Feathered mask into video.
+-->
+<div data-composition-id="beat-c5b3" data-width="1920" data-height="1080" data-duration="4.9">
+
+  <div class="c5b3-panel" data-layout-ignore></div>
+
+  <div class="c5b3-zone">
+    <div class="c5b3-inner">
+
+      <div id="c5b3-eye">CAPITAL ROTATION</div>
+      <div id="c5b3-rule"></div>
+
+      <!-- before -> after motif -->
+      <div class="c5b3-flow">
+        <div id="c5b3-from" class="c5b3-from">CRYPTO / ALTCOINS</div>
+        <div id="c5b3-arrow" class="c5b3-arrow">&#8595;</div>
+        <div id="c5b3-to" class="c5b3-to">EQUITIES</div>
+      </div>
+
+      <!-- dwindle timeline chips -->
+      <div id="c5b3-chips" class="c5b3-chips">
+        <span class="c5b3-chip">NOV</span>
+        <span class="c5b3-chipsep">&#183;</span>
+        <span class="c5b3-chip">DEC</span>
+        <span class="c5b3-chipsep">&#183;</span>
+        <span class="c5b3-chip">JAN</span>
+        <span class="c5b3-chipsep">&#183;</span>
+        <span class="c5b3-chip">FEB</span>
+      </div>
+
+      <div id="c5b3-foot" class="c5b3-foot">2025 &#8594; 2026</div>
+
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c5b3"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    /* Feathered backing gradient (no blur) — fades into video on the right */
+    [data-composition-id="beat-c5b3"] .c5b3-panel {
+      position: absolute; top: 0; left: 0; width: 1200px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(10,14,20,0.90) 0%,
+        rgba(10,14,20,0.82) 48%,
+        rgba(10,14,20,0.30) 74%,
+        transparent 92%);
+      pointer-events: none; z-index: 0;
+    }
+    [data-composition-id="beat-c5b3"] .c5b3-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center; z-index: 1;
+      mask-image: linear-gradient(to right, black 82%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 82%, transparent 100%);
+    }
+    [data-composition-id="beat-c5b3"] .c5b3-inner { padding: 0 80px; width: 100%; }
+
+    /* index 05 — #F0F0F0 @20px, opacity:0.5 for de-emphasis (QA FIX: NEVER #B6BEC6 under 48px) */
+    [data-composition-id="beat-c5b3"] #c5b3-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 500;
+      color: #F0F0F0; opacity: 0; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    [data-composition-id="beat-c5b3"] #c5b3-eye {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 20px; opacity: 0;
+    }
+    [data-composition-id="beat-c5b3"] #c5b3-rule {
+      width: 0; height: 2px; background: #00d4ff; margin-bottom: 44px;
+      box-shadow: 0 0 16px rgba(0,212,255,0.5);
+    }
+    [data-composition-id="beat-c5b3"] .c5b3-flow {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+      margin-bottom: 44px;
+    }
+    [data-composition-id="beat-c5b3"] .c5b3-from {
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 76px;
+      color: #ffffff; text-transform: uppercase; letter-spacing: -0.01em;
+      line-height: 1.0; text-decoration: line-through;
+      text-decoration-thickness: 6px; text-decoration-color: #FF4D4F;
+      opacity: 0;
+    }
+    [data-composition-id="beat-c5b3"] .c5b3-arrow {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px;
+      color: #f0f0f0; line-height: 0.9; margin-left: 8px; opacity: 0;
+    }
+    [data-composition-id="beat-c5b3"] .c5b3-to {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 120px;
+      color: #F0F0F0; text-transform: uppercase; letter-spacing: -0.02em;
+      line-height: 0.95; opacity: 0;
+    }
+    [data-composition-id="beat-c5b3"] .c5b3-chips {
+      display: flex; align-items: center; gap: 22px; margin-bottom: 28px; opacity: 0;
+    }
+    [data-composition-id="beat-c5b3"] .c5b3-chip {
+      font-family: "JetBrains Mono", monospace; font-size: 32px; font-weight: 500;
+      color: #f0f0f0; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 8px 18px; border: 1px solid rgba(255,255,255,0.16); border-radius: 6px;
+    }
+    [data-composition-id="beat-c5b3"] .c5b3-chipsep { font-size: 28px; color: #555; }
+    [data-composition-id="beat-c5b3"] #c5b3-foot {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 600;
+      color: #f0f0f0; letter-spacing: 0.06em; opacity: 0;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    tl.fromTo("#c5b3-eye",   {opacity:0, y:10},  {opacity:1, y:0, duration:0.30, ease:"power3.out"}, 0.40);
+    tl.fromTo("#c5b3-rule",  {width:"0px"},      {width:"380px", duration:0.45, ease:"power3.inOut"}, 0.80);
+    // from-state struck
+    tl.fromTo("#c5b3-from",  {opacity:0, x:24},  {opacity:0.45, x:0, duration:0.34, ease:"power3.out"}, 1.50);
+    // arrow + to-state
+    tl.fromTo("#c5b3-arrow", {opacity:0, y:-10}, {opacity:1, y:0, duration:0.28, ease:"power2.out"}, 2.30);
+    tl.fromTo("#c5b3-to",    {opacity:0, scale:0.9, y:14}, {opacity:1, scale:1, y:0, duration:0.40, ease:"expo.out"}, 2.48);
+    // dwindle chips
+    tl.fromTo("#c5b3-chips", {opacity:0, y:12},  {opacity:1, y:0, duration:0.38, ease:"power2.out"}, 3.30);
+    // footer date
+    tl.fromTo("#c5b3-foot",  {opacity:0},        {opacity:1, duration:0.34, ease:"power2.out"}, 4.10);
+
+    window.__timelines["beat-c5b3"] = tl;
+  })();
+  </script>
+</div>
+</template>

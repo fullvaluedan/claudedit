@@ -1,0 +1,121 @@
+<template id="beat-c3b1-template">
+<!--
+  c3b1 — KINETIC TERM-REVEAL (opening, full-frame, both speakers visible)
+  comp 0.0–6.4 | src 718.20–724.60
+  Lines slam in, STAY (no dim). Term lines get heavier slam (0.04em tracking).
+  Cyan payoff = ACCELERATORS only.
+  Fire-times READ off clip3-words.txt (comp = src − 718.20):
+    you 718.20 → 0.00 | large 718.68 → 0.48 | issuing 719.92 → 1.72
+    autocallables 721.38 → 3.18 | accelerators 722.44 → 4.24
+  DESIGN D1 3rd element: index 03 + eyebrow STRUCTURED PRODUCTS · CRYPTO + neutral rule at comp 5.0/5.3.
+  Whole stack drifts up + fades at comp 6.2 as video begins Mode-A transition.
+-->
+<div data-composition-id="beat-c3b1" data-width="1920" data-height="1080" data-duration="6.4">
+
+  <!-- Dark gradient backdrop — left zone, text readable over full-frame video -->
+  <div class="b1-backdrop" data-layout-ignore></div>
+
+  <!-- Kinetic phrase stack (left zone, vertically centered) -->
+  <div class="b1-zone">
+    <div class="b1-words">
+      <div id="b1-l1" class="b1-line">YOU SEE</div>
+      <div id="b1-l2" class="b1-line">LARGE INSTITUTIONS</div>
+      <div id="b1-l3" class="b1-line">ISSUING</div>
+      <div id="b1-l4" class="b1-line b1-term">AUTOCALLABLES</div>
+      <div id="b1-l5" class="b1-line b1-term b1-cyan">ACCELERATORS</div>
+    </div>
+  </div>
+
+  <!-- D1 3rd element: index + eyebrow + neutral rule (top-left), hands off into c3b2 -->
+  <div class="b1-eyezone" data-layout-ignore>
+    <div id="b1-eye" class="b1-eye">STRUCTURED PRODUCTS · CRYPTO</div>
+    <div id="b1-rule" class="b1-rule"></div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c3b1"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", sans-serif;
+    }
+    [data-composition-id="beat-c3b1"] .b1-backdrop {
+      position: absolute; top: 0; left: 0; width: 1040px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(0,0,0,0.78) 0%,
+        rgba(0,0,0,0.58) 60%,
+        transparent 100%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-c3b1"] .b1-zone {
+      position: absolute; top: 0; left: 0;
+      width: 1040px; height: 1080px;
+      display: flex; align-items: center;
+      padding-left: 80px;
+    }
+    [data-composition-id="beat-c3b1"] .b1-words {
+      display: flex; flex-direction: column; gap: 10px; width: 100%;
+    }
+    [data-composition-id="beat-c3b1"] .b1-line {
+      font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #f0f0f0; line-height: 0.98;
+      letter-spacing: -0.03em; text-transform: uppercase; opacity: 0;
+      text-shadow: 0 4px 22px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.85);
+    }
+    /* Term words: bigger + slight POSITIVE tracking for a heavier slam */
+    [data-composition-id="beat-c3b1"] .b1-term {
+      font-size: 130px; letter-spacing: 0.01em;
+    }
+    [data-composition-id="beat-c3b1"] .b1-cyan {
+      color: #00d4ff;
+      text-shadow:
+        0 0 80px rgba(0,212,255,0.95),
+        0 0 40px rgba(0,212,255,0.72),
+        0 0 18px rgba(0,212,255,0.5),
+        0 4px 22px rgba(0,0,0,0.8);
+    }
+    /* D1 structural eyebrow */
+    [data-composition-id="beat-c3b1"] .b1-eyezone {
+      position: absolute; top: 64px; left: 80px;
+    }
+    [data-composition-id="beat-c3b1"] .b1-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 500;
+      color: #f0f0f0; letter-spacing: 0.1em; opacity: 0; margin-bottom: 12px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+    }
+    [data-composition-id="beat-c3b1"] .b1-eye {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.18em; text-transform: uppercase;
+      opacity: 0; margin-bottom: 14px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+    }
+    [data-composition-id="beat-c3b1"] .b1-rule {
+      width: 0; height: 2px; background: #2a2a2a;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Phrase build — each slams in and STAYS (no dim)
+    tl.fromTo("#b1-l1", {opacity:0, y:28}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 0.00);
+    tl.fromTo("#b1-l2", {opacity:0, y:28}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 0.48);
+    tl.fromTo("#b1-l3", {opacity:0, y:28}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 1.72);
+    // Term slam — heavier scale pop
+    tl.fromTo("#b1-l4", {opacity:0, y:30, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.34, ease:"expo.out"}, 3.18);
+    // Cyan payoff
+    tl.fromTo("#b1-l5", {opacity:0, y:30, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.40, ease:"expo.out"}, 4.24);
+
+    // D1 3rd element — index + eyebrow + neutral rule
+    tl.fromTo("#b1-eye", {opacity:0, y:12}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 5.10);
+    tl.fromTo("#b1-rule", {width:"0px"}, {width:"420px", duration:0.5, ease:"power3.inOut"}, 5.30);
+
+    // Whole stack drifts up + fades as video begins Mode-A transition
+    tl.to(".b1-line, .b1-eyezone", {y:-34, opacity:0, duration:0.30, ease:"power2.in"}, 6.10);
+
+    window.__timelines["beat-c3b1"] = tl;
+  })();
+  </script>
+</div>
+</template>

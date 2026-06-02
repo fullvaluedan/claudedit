@@ -1,0 +1,81 @@
+<template id="beat-c5b2-template">
+<!--
+  b2 — KINETIC "ALTCOIN SEASON / IS NOW HAPPENING / IN EQUITIES" (kinetic-type, NO DIM)
+  beat data-start = 12.0 → internal offset = comp_t - 12.0
+    L1 ALTCOIN SEASON    comp 12.30 ("altcoin" 27.80)  -> offset 0.30
+    L2 IS NOW HAPPENING  comp 13.66 ("now" 29.16)       -> offset 1.66
+    L3 IN EQUITIES *CYAN comp 14.62 ("equities" 30.12)  -> offset 2.62
+  Lines slam in and STAY. Drift out ~comp 14.9 (offset 2.9); video shrinks to Mode-A @comp 15.0 for b3.
+-->
+<div data-composition-id="beat-c5b2" data-width="1920" data-height="1080" data-duration="3.4">
+
+  <div class="c5b2-backdrop" data-layout-ignore></div>
+
+  <div class="c5b2-zone">
+    <div class="c5b2-words">
+      <div id="c5b2-l1" class="c5b2-line">ALTCOIN SEASON</div>
+      <div id="c5b2-l2" class="c5b2-line">IS NOW HAPPENING</div>
+      <div id="c5b2-l3" class="c5b2-line c5b2-cyan">IN EQUITIES</div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c5b2"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent;
+      font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c5b2"] .c5b2-backdrop {
+      position: absolute; top: 0; left: 0; width: 1000px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(0,0,0,0.78) 0%,
+        rgba(0,0,0,0.55) 60%,
+        transparent 100%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-c5b2"] .c5b2-zone {
+      position: absolute; top: 0; left: 0;
+      width: 1000px; height: 1080px;
+      display: flex; align-items: center;
+      padding-left: 80px;
+    }
+    [data-composition-id="beat-c5b2"] .c5b2-words {
+      display: flex; flex-direction: column; gap: 12px; width: 100%;
+    }
+    [data-composition-id="beat-c5b2"] .c5b2-line {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 130px;
+      color: #ffffff; line-height: 1.0; letter-spacing: -0.03em;
+      text-transform: uppercase; opacity: 0;
+      text-shadow: 0 4px 22px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.85);
+    }
+    [data-composition-id="beat-c5b2"] .c5b2-cyan {
+      color: #00d4ff;
+      text-shadow:
+        0 0 80px rgba(0,212,255,0.95),
+        0 0 40px rgba(0,212,255,0.75),
+        0 0 18px rgba(0,212,255,0.55),
+        0 4px 22px rgba(0,0,0,0.85);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // L1 "ALTCOIN SEASON" — comp 12.30 → offset 0.30
+    tl.fromTo("#c5b2-l1", {opacity:0, y:28}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 0.30);
+    // L2 "IS NOW HAPPENING" — comp 13.66 → offset 1.66
+    tl.fromTo("#c5b2-l2", {opacity:0, y:28}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 1.66);
+    // L3 "IN EQUITIES" *CYAN — comp 14.62 → offset 2.62
+    tl.fromTo("#c5b2-l3", {opacity:0, y:28, scale:0.92}, {opacity:1, y:0, scale:1, duration:0.32, ease:"expo.out"}, 2.62);
+
+    // Whole stack drifts out ~comp 14.9 → offset 2.9
+    tl.to(".c5b2-line", {y:-32, opacity:0, duration:0.28, ease:"power2.in"}, 2.9);
+
+    window.__timelines["beat-c5b2"] = tl;
+  })();
+  </script>
+</div>
+</template>

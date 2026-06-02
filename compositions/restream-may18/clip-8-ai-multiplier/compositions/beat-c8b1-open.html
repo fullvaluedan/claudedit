@@ -1,0 +1,142 @@
+<template id="beat-c8b1-template">
+<!--
+  c8b1 — OPEN kinetic phrase-build (COHERENT, R5) · FULL-FRAME
+  comp 0.0–7.0 · src 1677.20–1684.20 · beat offset = comp − 0.0
+  Reads top-to-bottom as ONE sentence; cyan payoff is a real noun phrase.
+    08 + THE AI MULTIPLIER (editorial chrome) @0.08, grey rule @0.5
+    L1 THE WORK I DO TODAY      @1.78  ("work" 1678.98)
+    L2 WOULD REQUIRE            @3.44  ("require" 1680.64)
+    L3 A TEAM OF 2–3 ANALYSTS   @4.80  (cyan; "two" 1682.00 / "three" 1683.68 / "people" 1683.90)
+        shimmer-sweep across L3  @6.50
+  Index 08 = #F0F0F0 (NOT #B6BEC6); cyan ONLY on L3.
+-->
+<div data-composition-id="beat-c8b1" data-width="1920" data-height="1080" data-duration="7.0">
+
+  <!-- Dark left-gradient backdrop — text reads over full-frame video, both speakers visible -->
+  <div class="b1-backdrop" data-layout-ignore></div>
+
+  <div class="b1-zone">
+    <div class="b1-inner">
+      <div class="b1-chrome">
+        <div id="b1-eye" class="b1-eye">THE AI MULTIPLIER</div>
+      </div>
+      <div id="b1-rule" class="b1-rule"></div>
+
+      <div class="b1-words">
+        <div id="b1-l1" class="b1-line">THE WORK I DO TODAY</div>
+        <div id="b1-l2" class="b1-line">WOULD REQUIRE</div>
+        <div id="b1-l3" class="b1-line b1-cyan">
+          <span class="shimmer-sweep-target">A TEAM OF 2&#8211;3 ANALYSTS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c8b1"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c8b1"] .b1-backdrop {
+      position: absolute; top: 0; left: 0; width: 1080px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.60) 58%, rgba(0,0,0,0.22) 82%, transparent 100%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-c8b1"] .b1-zone {
+      position: absolute; top: 0; left: 0; width: 1000px; height: 1080px;
+      display: flex; align-items: center;
+    }
+    [data-composition-id="beat-c8b1"] .b1-inner { padding: 0 80px; width: 100%; }
+    [data-composition-id="beat-c8b1"] .b1-chrome {
+      display: flex; align-items: baseline; gap: 22px; margin-bottom: 14px;
+    }
+    [data-composition-id="beat-c8b1"] .b1-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 24px; font-weight: 500;
+      color: #f0f0f0; letter-spacing: 0.1em; opacity: 0;
+    }
+    [data-composition-id="beat-c8b1"] .b1-eye {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.85);
+    }
+    [data-composition-id="beat-c8b1"] .b1-rule {
+      width: 0; height: 2px; background: #2a2a2a; margin-bottom: 34px;
+    }
+    [data-composition-id="beat-c8b1"] .b1-words {
+      display: flex; flex-direction: column; gap: 10px; width: 100%;
+    }
+    [data-composition-id="beat-c8b1"] .b1-line {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 118px;
+      color: #f0f0f0; line-height: 0.98; letter-spacing: -0.03em; text-transform: uppercase;
+      opacity: 0; text-shadow: 0 4px 22px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.85);
+    }
+    [data-composition-id="beat-c8b1"] .b1-cyan { color: #00d4ff; }
+    [data-composition-id="beat-c8b1"] .b1-cyan .shimmer-sweep-target {
+      text-shadow:
+        0 0 80px rgba(0,212,255,0.92), 0 0 40px rgba(0,212,255,0.70),
+        0 0 18px rgba(0,212,255,0.52), 0 4px 22px rgba(0,0,0,0.85);
+    }
+
+    /* shimmer-sweep component (catalog) — drives --shimmer-pos across the target */
+    [data-composition-id="beat-c8b1"] .shimmer-sweep-target {
+      position: relative; display: inline-block;
+    }
+    [data-composition-id="beat-c8b1"] .shimmer-sweep-target .shimmer-mask {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      background: linear-gradient(
+        var(--shimmer-angle, 115deg),
+        transparent 0%,
+        transparent calc(var(--shimmer-pos, -20%) - var(--shimmer-width, 22%) / 2),
+        var(--shimmer-color, rgba(255,255,255,0.55)) var(--shimmer-pos, -20%),
+        transparent calc(var(--shimmer-pos, -20%) + var(--shimmer-width, 22%) / 2),
+        transparent 100%
+      );
+      mix-blend-mode: overlay;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    const S = '[data-composition-id="beat-c8b1"]';
+
+    // Auto-inject the shimmer mask into the target (catalog component pattern)
+    document.querySelectorAll(S + " .shimmer-sweep-target").forEach((el) => {
+      if (!el.querySelector(".shimmer-mask")) {
+        const mask = document.createElement("div");
+        mask.className = "shimmer-mask";
+        el.appendChild(mask);
+      }
+    });
+
+    // Chrome — editorial index + eyebrow so first text lands by ~0.3s (QA item 3)
+    tl.fromTo(S + " #b1-eye", {opacity:0, y:12}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 0.18);
+    tl.fromTo(S + " #b1-rule", {width:"0px"}, {width:"520px", duration:0.5, ease:"power3.inOut"}, 0.50);
+
+    // L1 "THE WORK I DO TODAY" @1.78 ("work")
+    tl.fromTo(S + " #b1-l1", {opacity:0, y:30}, {opacity:1, y:0, duration:0.30, ease:"expo.out"}, 1.78);
+    // L2 "WOULD REQUIRE" @3.44 ("require")
+    tl.fromTo(S + " #b1-l2", {opacity:0, y:28}, {opacity:1, y:0, duration:0.30, ease:"power3.out"}, 3.44);
+    // L3 cyan payoff "A TEAM OF 2–3 ANALYSTS" @4.80 ("two")
+    tl.fromTo(S + " #b1-l3", {opacity:0, y:30, scale:0.92}, {opacity:1, y:0, scale:1, duration:0.36, ease:"expo.out"}, 4.80);
+
+    // shimmer-sweep runs once across the cyan payoff @6.50 (AI-premium accent)
+    tl.fromTo(S + " .shimmer-sweep-target",
+      { "--shimmer-pos": "-25%" },
+      { "--shimmer-pos": "125%", duration: 1.15, ease: "power2.inOut" },
+      6.50);
+
+    // All lines STAY full opacity (build-and-stay). Whole stack drifts up/out at beat end
+    // (video does NOT shrink here — it holds full-frame for c8b2).
+    tl.to(S + " .b1-words", {y:-30, opacity:0, duration:0.30, ease:"power2.in"}, 6.74);
+    tl.to(S + " .b1-chrome, " + S + " #b1-rule", {opacity:0, duration:0.30, ease:"power2.in"}, 6.74);
+
+    window.__timelines["beat-c8b1"] = tl;
+  })();
+  </script>
+</div>
+</template>

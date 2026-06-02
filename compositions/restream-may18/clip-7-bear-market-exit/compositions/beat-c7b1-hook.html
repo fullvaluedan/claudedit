@@ -1,0 +1,106 @@
+<template id="beat-c7b1-hook-template">
+<!--
+  c7b1 — KINETIC opener (kinetic-type) · view V1 full-frame (both speakers)
+  Beat starts comp 0.0; offsets = comp_t (beat data-start = 0.0).
+  3-phrase sentence build — each line slams in and STAYS (no dim). R5 coherent:
+    WE ALWAYS EXIT / BEAR MARKETS / IN AN INTERESTING WAY
+  comp = src - 1530.50 (re-based from clip7-words.txt comp = src - 1515):
+    L1 "we always exit"          we    src1530.76 / comp 0.26 / offset 0.26  #F0F0F0
+    L2 "bear markets"            bear  src1532.66 / comp 2.16 / offset 2.16  #F0F0F0
+    L3 "in an interesting way"   interesting src1535.02 / comp 4.52 / offset 4.52  CYAN payoff
+  L3 condenses spoken "in a very interesting fashion" → on-screen IN AN INTERESTING WAY,
+  fired on "interesting" (literal-word match, not anticipatory). Cyan: L3 only.
+  Stack drifts up & out at ~5.6 (before the Mode-A shrink at master comp 6.0).
+-->
+<div data-composition-id="beat-c7b1-hook" data-width="1920" data-height="1080" data-duration="6.0">
+
+  <!-- Dark gradient — text reads over full-frame video (both speakers visible) -->
+  <div class="b1-backdrop" data-layout-ignore></div>
+
+  <!-- 3-phrase stack — vertically centered, left zone so faces visible right -->
+  <div class="b1-zone">
+    <div class="b1-words">
+      <div id="b1-l1" class="b1-line">WE ALWAYS EXIT</div>
+      <div id="b1-l2" class="b1-line">BEAR MARKETS</div>
+      <div id="b1-l3" class="b1-line b1-cyan">IN AN INTERESTING WAY</div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c7b1-hook"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent;
+      font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c7b1-hook"] .b1-backdrop {
+      position: absolute; top: 0; left: 0; width: 1040px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(0,0,0,0.78) 0%,
+        rgba(0,0,0,0.55) 60%,
+        transparent 100%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-c7b1-hook"] .b1-zone {
+      position: absolute; top: 0; left: 0;
+      width: 1040px; height: 1080px;
+      display: flex; align-items: center;
+      padding-left: 80px;
+    }
+    [data-composition-id="beat-c7b1-hook"] .b1-words {
+      display: flex; flex-direction: column; gap: 12px;
+      width: 100%;
+    }
+    [data-composition-id="beat-c7b1-hook"] .b1-line {
+      font-family: "Inter", sans-serif;
+      font-weight: 900;
+      font-size: 108px;
+      color: #ffffff;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      opacity: 0;
+      text-shadow: 0 4px 22px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.85);
+    }
+    [data-composition-id="beat-c7b1-hook"] .b1-cyan {
+      color: #00d4ff;
+      text-shadow:
+        0 0 80px rgba(0,212,255,0.95),
+        0 0 40px rgba(0,212,255,0.75),
+        0 0 18px rgba(0,212,255,0.55),
+        0 4px 22px rgba(0,0,0,0.85);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // L1 "WE ALWAYS EXIT" — offset 0.26 (Jasper "we" @ comp 0.26)
+    tl.fromTo("#b1-l1",
+      {opacity:0, y:28},
+      {opacity:1, y:0, duration:0.28, ease:"expo.out"},
+      0.26
+    );
+    // L2 "BEAR MARKETS" — offset 2.16 (Jasper "bear" @ comp 2.16)
+    tl.fromTo("#b1-l2",
+      {opacity:0, y:28},
+      {opacity:1, y:0, duration:0.28, ease:"expo.out"},
+      2.16
+    );
+    // L3 "IN AN INTERESTING WAY" — offset 4.52 (Jasper "interesting" @ comp 4.52) — CYAN payoff
+    tl.fromTo("#b1-l3",
+      {opacity:0, y:28, scale:0.92},
+      {opacity:1, y:0, scale:1, duration:0.32, ease:"expo.out"},
+      4.52
+    );
+
+    // Full 3-line sentence holds, then exits upward together before Mode-A shrink at master 6.0
+    tl.to(".b1-line", {y:-32, opacity:0, duration:0.28, ease:"power2.in"}, 5.6);
+
+    window.__timelines["beat-c7b1-hook"] = tl;
+  })();
+  </script>
+</div>
+</template>

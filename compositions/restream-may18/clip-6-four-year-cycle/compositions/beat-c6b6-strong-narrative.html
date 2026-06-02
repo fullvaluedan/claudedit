@@ -1,0 +1,90 @@
+<template id="beat-c6b6-template">
+<!--
+  c6b6 — KICKER kinetic + caption-neon-glow payoff → clean tail · FULL-FRAME (both speakers) · comp 46.4–50.7
+  D4: clip ENDS on a content kinetic + clean speaker tail — NOT a name card / outro.
+  Lines 1–2 standard phrase-build (Inter 900, STAY); the PAYOFF word uses an adapted caption-neon-glow.
+  data-start 46.4, data-duration 4.3 → offsets = comp − 46.4.
+    "BUT IT IS STILL"  fires comp 46.62 (offset 0.22) → "But"  src 1466.92 (1466.92 - 1420.30)
+    "A VERY STRONG"    fires comp 48.06 (offset 1.66) → "very" src 1468.36 (1468.36 - 1420.30)
+    "NARRATIVE" (neon) fires comp 48.48 (offset 2.08) → "narrative," src 1468.78 (1468.78 - 1420.30)  CYAN neon
+
+  caption-neon-glow ADAPTATION (the component default is off-brand — applied here):
+    1. Color → brand cyan #00D4FF (component's #00FFF0 replaced; pink #FF0099 / KEYWORDS branch DELETED).
+    2. No dim-back: once "NARRATIVE" lights it STAYS lit (the upstream per-word karaoke dim is Remotion-only; removed).
+    3. Single payoff word, positioned IN the stack under LINES 1–2 (left-justified column), not bottom-center.
+    4. Inter 900 (brand default) instead of the component's Outfit 900.
+  Lines hold ~1s, then drift up/out ~comp 49.7 → ~1s clean full-frame speaker tail to clip end (50.7).
+-->
+<div data-composition-id="beat-c6b6" data-width="1920" data-height="1080" data-duration="4.3">
+
+  <div class="b6k-backdrop" data-layout-ignore></div>
+
+  <div class="b6k-zone">
+    <div class="b6k-words">
+      <div id="b6k-l1" class="b6k-line">BUT IT IS STILL</div>
+      <div id="b6k-l2" class="b6k-line">A VERY STRONG</div>
+      <!-- PAYOFF: adapted caption-neon-glow single word -->
+      <div id="b6k-l3" class="b6k-line"><span id="b6k-neon" class="b6k-neon">NARRATIVE</span></div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c6b6"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c6b6"] .b6k-backdrop {
+      position: absolute; top: 0; left: 0; width: 1000px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.56) 60%, transparent 100%);
+      pointer-events: none;
+    }
+    [data-composition-id="beat-c6b6"] .b6k-zone {
+      position: absolute; top: 0; left: 0; width: 1070px; height: 1080px;
+      display: flex; align-items: center; padding-left: 80px;
+    }
+    [data-composition-id="beat-c6b6"] .b6k-words {
+      display: flex; flex-direction: column; gap: 14px; width: 100%;
+    }
+    [data-composition-id="beat-c6b6"] .b6k-line {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 100px;
+      color: #f0f0f0; line-height: 1.0; letter-spacing: -0.035em;
+      text-transform: uppercase; opacity: 0; white-space: nowrap;
+      text-shadow: 0 4px 22px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.85);
+    }
+    /* adapted neon-glow word — Inter 900, brand cyan, starts dim then locks lit (no dim-back) */
+    [data-composition-id="beat-c6b6"] .b6k-neon {
+      font-family: "Inter", sans-serif; font-weight: 900;
+      color: rgba(0,212,255,0.16); display: inline-block; letter-spacing: -0.035em;
+      text-shadow: none;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // "But" src 1466.92 → comp 46.62 → offset 0.22
+    tl.fromTo("#b6k-l1", {opacity:0, y:28}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 0.22);
+    // "very" src 1468.36 → comp 48.06 → offset 1.66
+    tl.fromTo("#b6k-l2", {opacity:0, y:28}, {opacity:1, y:0, duration:0.28, ease:"expo.out"}, 1.66);
+
+    // PAYOFF line container slams in (offset 2.08 = comp 48.48); the neon word ignites within it and STAYS lit.
+    tl.fromTo("#b6k-l3", {opacity:0, y:28, scale:0.92}, {opacity:1, y:0, scale:1, duration:0.30, ease:"expo.out"}, 2.08);
+    // caption-neon-glow ignite (brand cyan #00D4FF, no dim-back — stays lit through the beat)
+    tl.to("#b6k-neon", {
+      color: "#00d4ff",
+      textShadow: "0 0 10px #00d4ff, 0 0 35px #00d4ff, 0 0 90px #00d4ff, 0 4px 22px rgba(0,0,0,0.85)",
+      duration: 0.18, ease: "power2.out"
+    }, 2.10);
+
+    // Lines hold ~1s, then drift up/out at offset 3.3 (comp 49.7) → clean speaker tail to clip end (50.7).
+    tl.to(".b6k-line", {y:-32, opacity:0, duration:0.30, ease:"power2.in"}, 3.3);
+
+    window.__timelines["beat-c6b6"] = tl;
+  })();
+  </script>
+</div>
+</template>

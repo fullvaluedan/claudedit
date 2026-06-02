@@ -1,0 +1,146 @@
+<template id="beat-c5b8-template">
+<!--
+  b8 — 2021 EXUBERANCE flowchart · 3-node causal chain (HAND-BUILT dark flowchart; distinct from swiss-grid)
+  NOTE: catalog `flowchart` block is a white-bg "learn to code" decision tree (cursor/emoji, 7 nodes,
+  scale(1.2)@960px) — does not fit a dark left-zone 3-node vertical causal chain. Hand-built a DISTINCT
+  equivalent: vertical node chain + SVG connector draw (strokeDashoffset) + node pop back.out(1.5).
+  beat data-start = 83.0 → internal offset = comp_t - 83.0
+    eyebrow WHAT RETAIL CALLS "ALT SEASON" comp 83.30 ("season" 98.80) -> offset 0.30 ("alt season" corrected)
+    node1 EXTREME EXUBERANCE       comp 84.66 ("exuberance" 100.16) -> offset 1.66
+    node2 MASSIVE CAPITAL INJECTION comp 89.50 ("capital injection" 105.00) -> offset 6.50
+    node3 ALL RISK ASSETS UP *CYAN  comp 91.92 ("...up" 107.42) -> offset 8.92
+    annotation THE 2021 BENCHMARK [EDITORIAL] comp 94.62 ("the benchmark" 110.12) -> offset 11.62
+  CYAN = node 3 only.
+-->
+<div data-composition-id="beat-c5b8" data-width="1920" data-height="1080" data-duration="38.0">
+
+  <div class="c5b8-panel" data-layout-ignore></div>
+
+  <div class="c5b8-zone">
+    <div class="c5b8-inner">
+      <div id="c5b8-eye">WHAT RETAIL CALLS &ldquo;ALT SEASON&rdquo;</div>
+      <div id="c5b8-rule"></div>
+
+      <div class="c5b8-flow">
+        <!-- connectors drawn behind the nodes -->
+        <svg class="c5b8-conn" width="640" height="500" viewBox="0 0 640 500" preserveAspectRatio="none">
+          <path id="c5b8-c1" class="c5b8-path" d="M 40 86 L 40 168" fill="none" stroke="#3a4350" stroke-width="4" />
+          <path id="c5b8-c2" class="c5b8-path" d="M 40 250 L 40 332" fill="none" stroke="#3a4350" stroke-width="4" />
+        </svg>
+
+        <div id="c5b8-n1" class="c5b8-node">
+          <span class="c5b8-tick"></span>EXTREME EXUBERANCE
+        </div>
+        <div id="c5b8-n2" class="c5b8-node">
+          <span class="c5b8-tick"></span>MASSIVE CAPITAL INJECTION
+        </div>
+        <div id="c5b8-n3" class="c5b8-node c5b8-node-accent">
+          <span class="c5b8-tick c5b8-tick-accent"></span>ALL RISK ASSETS UP
+        </div>
+      </div>
+
+      <div id="c5b8-annot" class="c5b8-annot">THE 2021 BENCHMARK</div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c5b8"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c5b8"] .c5b8-panel {
+      position: absolute; top: 0; left: 0; width: 1200px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(10,14,20,0.90) 0%, rgba(10,14,20,0.82) 48%,
+        rgba(10,14,20,0.30) 74%, transparent 92%);
+      pointer-events: none; z-index: 0;
+    }
+    [data-composition-id="beat-c5b8"] .c5b8-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center; z-index: 1;
+      mask-image: linear-gradient(to right, black 82%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 82%, transparent 100%);
+    }
+    [data-composition-id="beat-c5b8"] .c5b8-inner { padding: 0 80px; width: 100%; }
+    [data-composition-id="beat-c5b8"] #c5b8-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 500;
+      color: #F0F0F0; opacity: 0; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    [data-composition-id="beat-c5b8"] #c5b8-eye {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.14em; text-transform: uppercase;
+      margin-bottom: 18px; opacity: 0;
+    }
+    [data-composition-id="beat-c5b8"] #c5b8-rule {
+      width: 0; height: 2px; background: rgba(255,255,255,0.18); margin-bottom: 40px;
+    }
+    /* node chain */
+    [data-composition-id="beat-c5b8"] .c5b8-flow { position: relative; margin-bottom: 32px; }
+    [data-composition-id="beat-c5b8"] .c5b8-conn {
+      position: absolute; left: 0; top: 0; z-index: 0; pointer-events: none;
+    }
+    [data-composition-id="beat-c5b8"] .c5b8-path {
+      stroke-dasharray: 120; stroke-dashoffset: 120;
+    }
+    [data-composition-id="beat-c5b8"] .c5b8-node {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; gap: 22px;
+      background: rgba(20,26,34,0.92);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 22px 32px; margin-bottom: 28px;
+      max-width: 760px; opacity: 0; transform-origin: left center;
+      box-shadow: 0 6px 28px rgba(0,0,0,0.5);
+      font-family: "Inter", sans-serif; font-size: 52px; font-weight: 800;
+      color: #f0f0f0; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.0;
+    }
+    [data-composition-id="beat-c5b8"] .c5b8-node:last-of-type { margin-bottom: 0; }
+    [data-composition-id="beat-c5b8"] .c5b8-tick {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #3a4350; flex-shrink: 0;
+    }
+    [data-composition-id="beat-c5b8"] .c5b8-node-accent {
+      border-color: rgba(0,212,255,0.5);
+      box-shadow: 0 0 44px rgba(0,212,255,0.16), 0 6px 28px rgba(0,0,0,0.5);
+      color: #00d4ff;
+    }
+    [data-composition-id="beat-c5b8"] .c5b8-tick-accent {
+      background: #00d4ff; box-shadow: 0 0 16px rgba(0,212,255,0.7);
+    }
+    [data-composition-id="beat-c5b8"] #c5b8-annot {
+      font-family: "Inter", sans-serif; font-size: 34px; font-weight: 600;
+      color: #f0f0f0; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Chrome (Mode-A established by master shrink @comp 83.2; eyebrow fires mid/after shrink)
+    // eyebrow — comp 83.30 -> offset 0.30
+    tl.fromTo("#c5b8-eye",  {opacity:0, y:10}, {opacity:1, y:0, duration:0.30, ease:"power3.out"}, 0.30);
+    tl.fromTo("#c5b8-rule", {width:"0px"}, {width:"480px", duration:0.5, ease:"power3.inOut"}, 0.48);
+
+    // node 1 — comp 84.66 -> offset 1.66
+    tl.fromTo("#c5b8-n1", {opacity:0, scale:0.6}, {opacity:1, scale:1, duration:0.45, ease:"back.out(1.5)"}, 1.66);
+    // connector 1 draws after node1
+    tl.to("#c5b8-c1", {strokeDashoffset:0, duration:0.4, ease:"power1.inOut"}, 2.1);
+
+    // node 2 — comp 89.50 -> offset 6.50
+    tl.to("#c5b8-c2", {strokeDashoffset:0, duration:0.4, ease:"power1.inOut"}, 6.1);
+    tl.fromTo("#c5b8-n2", {opacity:0, scale:0.6}, {opacity:1, scale:1, duration:0.45, ease:"back.out(1.5)"}, 6.50);
+
+    // node 3 *CYAN — comp 91.92 -> offset 8.92
+    tl.fromTo("#c5b8-n3", {opacity:0, scale:0.6}, {opacity:1, scale:1, duration:0.48, ease:"back.out(1.5)"}, 8.92);
+
+    // annotation [EDITORIAL] — comp 94.62 -> offset 11.62
+    tl.fromTo("#c5b8-annot", {opacity:0, y:10}, {opacity:1, y:0, duration:0.36, ease:"power2.out"}, 11.62);
+
+    window.__timelines["beat-c5b8"] = tl;
+  })();
+  </script>
+</div>
+</template>

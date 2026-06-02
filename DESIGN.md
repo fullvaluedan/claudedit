@@ -51,11 +51,61 @@ If the EDL beat map does not show the speaker present from t=0 AND 3+ different 
 - **Never use `repeat: -1`** — calculate exact repeat count from scene duration.
 - **Never use `Math.random()`** — all motion must be deterministic.
 - **Always init from a Hyperframes template** using `npx hyperframes init --example <name>`. Never build from blank.
-- **Minimum eyebrow weight: Inter 700, #F0F0F0.** Never use muted grey (#888888) for any text smaller than 48px.
+- **Minimum eyebrow weight: Inter 700, #F0F0F0.** Muted secondary text uses **#B6BEC6** (readable ~7:1 on dark); **#888888 is retired** (too dim — never use it). Body/primary text is #F0F0F0.
 - **Minimum font size for any visible label: 32px.**
 - **No film grain.** Never add `grain-overlay` / fractal-noise texture overlays. The user rejects them.
 - **No `backdrop-filter: blur()` over video.** It renders muddy and was rejected twice. Get the "liquid glass" look from a solid/translucent dark fill + cyan accent bar + glow instead (see Cards & Panels).
 - **Overlay z-index.** In `index.html` the video frame `#short_mag_cut_frame` is `z-index: 2`. EVERY overlay beat's `#id` MUST be listed in the `z-index: 3` rule or it renders BEHIND the full-frame video and is invisible. When a NEW beat is added, add its id to that rule. When an overlay "doesn't appear," check this FIRST.
+- **No view flip-flopping (R1).** A view (full-frame OR Mode-A) holds ≥8s, and the video NEVER returns to a view it just left within ~12s (no A-B-A). Group consecutive graphic beats into the same view. Quick changes only in the 0–6s intro. See "View-Switching Discipline" below.
+- **Template variety (R2).** ≤2 kinetic word-stacks in a row; each clip gets a DISTINCT primary device; use the catalog (`npx hyperframes add data-chart|flowchart|shimmer-sweep|caption-neon-glow|caption-kinetic-slam`). Don't hand-build the same swiss-grid every time. See "Template Variety" below.
+- **Jargon corrected (R3).** Every on-screen term passes `timing/_JARGON.md` (DePIN not "deep in", perps not "burp", grunt work not "graft", take rate not "stake rate", etc.). Transcript = timing, NOT spelling.
+- **No duplicate words in a beat (R4).** The same notable word must not appear in two text elements of one beat (eyebrow vs sublabel/title).
+- **Opening must be coherent (R5).** Opening kinetic lines parse as a complete thought; the cyan payoff is a real noun, not a dangling number/fragment.
+- **No index/clip-number on screen (R6).** NEVER render the internal clip number ("01"…"08") or a beat index as on-screen text — it is an internal artifact, meaningless to a viewer. Eyebrow editorial labels (e.g. "WINTERMUTE OTC MODEL", "ADL CASCADE") are fine; the bare number is not.
+- **View MUST match content (R7).** Mode-A (speaker cropped to the right 40%) is ONLY valid when a graphic occupies the LEFT zone. NEVER show Mode-A with a blank left zone. A clean/breath moment (no graphic) is ALWAYS full-frame (both speakers talking). No no-graphic gap may sit inside a Mode-A segment. See View-Switching Discipline.
+
+> **Companion files (read before building):** `timing/_QA-CHECKLIST.md` (the graded gate, every build) and `timing/_JARGON.md` (term spellings).
+
+---
+
+## View-Switching Discipline (Hard Rule — R1)
+
+The source is a SIDE-BY-SIDE (host left, guest right). Beats play in one of two views: **FULL-FRAME** (both speakers, kinetic over them) or **MODE-A** (guest framed right 40%, graphic in left 60%). The video must feel STABLE, not bounce between views.
+
+- **Minimum dwell ≥8s per view** (outside the 0–6s intro). A 4–5s view wedged between others reads as a twitch — banned.
+- **No A-B-A within ~12s.** Never return to a view you just left within 12s (full→ModeA→full or ModeA→full→ModeA in a short span). This was the clip-7 (41–49s) and clip-8 (11–16s) defect.
+- **View follows content (R7) — the foundational rule.** Classify every beat: a LEFT-ZONE GRAPHIC (card/chart/tree/swiss-grid) → Mode-A; a kinetic-over-video OR a clean breath → full-frame. The video view at any instant MUST equal the current beat's class. **Mode-A with a blank left zone is forbidden** — if there is no graphic, the video is full-frame (both speakers). A "breath" is just full-frame talking, never a cropped speaker with an empty half.
+- **Group beats by view.** SEQUENCE so graphic beats are contiguous (one Mode-A block) and kinetic/breath beats are contiguous (one full-frame block); never wedge a clean/kinetic beat inside a Mode-A block (that forces either a flip-flop or a blank-left). Each block ≥8s. Plan the view-timeline first; a Mode-A block must have a graphic on screen for its ENTIRE duration.
+- The intro may switch quickly (full hook → Mode-A by ~t=3) but even then never loops back.
+- **Every EDL must include a view-timeline table** (segment → dwell seconds) proving the above.
+
+---
+
+## Template Variety / Use the Catalog (Hard Rule — R2)
+
+There are 9 `--example` templates and ~85 catalog blocks. Do NOT make every clip a stack of kinetic word-stacks (that is why clips "all looked like clip 2"). 
+
+- **≤2 kinetic word-stacks in a row.** 3+ consecutive kinetics = FAIL.
+- **Each clip leads with a DISTINCT primary device.** Match the device to the content; reach for a catalog block before hand-building:
+  - Stats / metrics / count-ups → `data-chart`, `caption-kinetic-slam`, `apple-money-count`
+  - Flows / cascades / pipelines → `flowchart` / decision-tree
+  - Time-series / decay / trends → `nyt-graph`
+  - Premium reveal on a key word → `shimmer-sweep`, `caption-neon-glow`
+  - Comparison / before-after → swiss-grid two-column
+  - Quote / punchline → kinetic-type
+- Install with `npx hyperframes add <name>` and wire as a sub-comp (see hyperframes-registry skill).
+
+**Per-clip distinct primary device (this project):**
+
+| Clip | Primary device |
+|---|---|
+| 1 OTC model | Agency-vs-Principal comparison (swiss-grid two-col) + `shimmer-sweep` |
+| 3 Structured products | `data-chart` (demand/adoption) + term-reveal |
+| 4 Oct-10 crash | `flowchart` ADL cascade as cold open + `caption-kinetic-slam` on 25× |
+| 5 Capital rotation | before/after + `data-chart` vol profile |
+| 6 4-year cycle | `nyt-graph` halving decay + halving timeline + `caption-neon-glow` |
+| 7 Bear-market exit | narrative timeline (DeFi→Ordinals→DePIN→AI agents) |
+| 8 AI multiplier | productivity comparison + agent-pipeline flow |
 
 ---
 
@@ -184,7 +234,7 @@ The "liquid glass" / card look the user wants, with the blur removed:
 --surface:      #141A22;   /* dark blue-grey cards */
 --border:       #2A2A2A;   /* subtle grid lines / dividers */
 --text:         #F0F0F0;   /* warm white body text */
---text-muted:   #888888;   /* labels, subtitles, eyebrows */
+--text-muted:   #B6BEC6;   /* muted secondary labels — readable on dark (~7:1). #888888 RETIRED (too dim) */
 --accent:       #00D4FF;   /* electric cyan — ONE element only per frame */
 --accent-bg:    rgba(0, 212, 255, 0.12);
 --grid-line:    #181818;   /* 96px repeating grid */

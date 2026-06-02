@@ -1,0 +1,119 @@
+<template id="beat-c5b10-template">
+<!--
+  b10 — VOL COMPARISON crypto down vs equity rising (swiss-grid two-column; HAND-BUILD) · absorbs "became equal"
+  beat data-start = 143.4 → internal offset = comp_t - 143.4
+    eyebrow THE VOL TRADE MOVED [EDITORIAL] @143.5 -> offset 0.10
+    col-L CRYPTO  ↓ DOWN (red)  [EDITORIAL build] @143.6 -> offset 0.20
+    col-R EQUITY  ↑ RISING (green) comp 143.98 ("equity market became more volatile" 159.48) -> offset 0.58
+    cyan divider draws *CYAN @144.4 -> offset 1.0
+    footer PROFILES NOW EQUAL  comp 147.20 ("volatility profile became quite equal" 162.70) -> offset 3.80
+  CYAN = the divider rule (red/green are directional indicators per D7).
+-->
+<div data-composition-id="beat-c5b10" data-width="1920" data-height="1080" data-duration="10.8">
+
+  <div class="c5b10-panel" data-layout-ignore></div>
+
+  <div class="c5b10-zone">
+    <div class="c5b10-inner">
+      <div id="c5b10-eye">THE VOL TRADE MOVED</div>
+      <div id="c5b10-rule"></div>
+
+      <div class="c5b10-cols">
+        <div id="c5b10-colL" class="c5b10-col">
+          <div class="c5b10-label c5b10-red">CRYPTO</div>
+          <div class="c5b10-dir c5b10-red">&#8595; DOWN</div>
+        </div>
+        <div id="c5b10-div" class="c5b10-div"></div>
+        <div id="c5b10-colR" class="c5b10-col">
+          <div class="c5b10-label c5b10-green">EQUITY</div>
+          <div class="c5b10-dir c5b10-green">&#8593; RISING</div>
+        </div>
+      </div>
+
+      <div id="c5b10-foot" class="c5b10-foot">PROFILES NOW EQUAL</div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c5b10"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c5b10"] .c5b10-panel {
+      position: absolute; top: 0; left: 0; width: 1200px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(10,14,20,0.90) 0%, rgba(10,14,20,0.82) 48%,
+        rgba(10,14,20,0.30) 74%, transparent 92%);
+      pointer-events: none; z-index: 0;
+    }
+    [data-composition-id="beat-c5b10"] .c5b10-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center; z-index: 1;
+      mask-image: linear-gradient(to right, black 82%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 82%, transparent 100%);
+    }
+    [data-composition-id="beat-c5b10"] .c5b10-inner { padding: 0 80px; width: 100%; }
+    [data-composition-id="beat-c5b10"] #c5b10-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 500;
+      color: #F0F0F0; opacity: 0; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    [data-composition-id="beat-c5b10"] #c5b10-eye {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 18px; opacity: 0;
+    }
+    [data-composition-id="beat-c5b10"] #c5b10-rule {
+      width: 0; height: 2px; background: rgba(255,255,255,0.18); margin-bottom: 48px;
+    }
+    [data-composition-id="beat-c5b10"] .c5b10-cols {
+      display: flex; align-items: center; gap: 0; margin-bottom: 44px;
+    }
+    [data-composition-id="beat-c5b10"] .c5b10-col {
+      display: flex; flex-direction: column; gap: 16px;
+      min-width: 300px; opacity: 0;
+    }
+    [data-composition-id="beat-c5b10"] .c5b10-label {
+      font-family: "Inter", sans-serif; font-size: 40px; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.0;
+    }
+    [data-composition-id="beat-c5b10"] .c5b10-dir {
+      font-family: "Inter", sans-serif; font-size: 92px; font-weight: 900;
+      letter-spacing: -0.02em; text-transform: uppercase; line-height: 0.95;
+    }
+    [data-composition-id="beat-c5b10"] .c5b10-red { color: #FF4D4F; }
+    [data-composition-id="beat-c5b10"] .c5b10-green { color: #16C784; }
+    [data-composition-id="beat-c5b10"] .c5b10-div {
+      width: 4px; height: 168px; background: #00d4ff; border-radius: 3px;
+      margin: 0 56px; transform-origin: center top; transform: scaleY(0);
+      box-shadow: 0 0 22px rgba(0,212,255,0.55);
+    }
+    [data-composition-id="beat-c5b10"] #c5b10-foot {
+      font-family: "Inter", sans-serif; font-size: 44px; font-weight: 600;
+      color: #f0f0f0; letter-spacing: 0.03em; text-transform: uppercase; opacity: 0;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // eyebrow [EDITORIAL] @143.5 -> offset 0.10
+    tl.fromTo("#c5b10-eye",  {opacity:0, y:10}, {opacity:1, y:0, duration:0.30, ease:"power3.out"}, 0.10);
+    tl.fromTo("#c5b10-rule", {width:"0px"}, {width:"420px", duration:0.45, ease:"power3.inOut"}, 0.28);
+    // col-L crypto down [EDITORIAL build] @143.6 -> offset 0.20
+    tl.fromTo("#c5b10-colL", {opacity:0, x:-20}, {opacity:1, x:0, duration:0.4, ease:"power3.out"}, 0.20);
+    // col-R equity rising — comp 143.98 -> offset 0.58
+    tl.fromTo("#c5b10-colR", {opacity:0, x:20}, {opacity:1, x:0, duration:0.4, ease:"power3.out"}, 0.58);
+    // cyan divider draws *CYAN @144.4 -> offset 1.0
+    tl.fromTo("#c5b10-div", {scaleY:0}, {scaleY:1, duration:0.5, ease:"power4.out"}, 1.0);
+    // footer PROFILES NOW EQUAL — comp 147.20 -> offset 3.80
+    tl.fromTo("#c5b10-foot", {opacity:0, y:10}, {opacity:1, y:0, duration:0.4, ease:"power2.out"}, 3.80);
+
+    window.__timelines["beat-c5b10"] = tl;
+  })();
+  </script>
+</div>
+</template>

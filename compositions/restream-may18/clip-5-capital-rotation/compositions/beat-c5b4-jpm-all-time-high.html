@@ -1,0 +1,115 @@
+<template id="beat-c5b4-template">
+<!--
+  b4 — JP MORGAN ALL-TIME-HIGH stat (swiss-grid; HAND-BUILD) · absorbs old "retail moved"
+  beat data-start = 20.5 → internal offset = comp_t - 20.5
+    eyebrow JP MORGAN PRIME BROKERAGE · MAY 2026  comp 20.88 ("JP" 36.38) -> offset 0.38 (date suffix [EDITORIAL])
+    stat   ALL-TIME HIGH (200px, NOT a number)    comp 28.34 ("all..high" 43.84) -> offset 7.84
+    footer BY A MEANINGFUL MARGIN                  comp 29.38 ("meaningful margin" 44.88) -> offset 8.88
+    sublabel RETAIL MOVED INTO EQUITIES (folded c5b5) comp 31.70 ("retail moved" 47.20) -> offset 11.20
+  CYAN = a short rule beneath the stat (stat reads white). #B6BEC6-free.
+-->
+<div data-composition-id="beat-c5b4" data-width="1920" data-height="1080" data-duration="12.5">
+
+  <div class="c5b4-panel" data-layout-ignore></div>
+
+  <div class="c5b4-reg c5b4-tl" data-layout-ignore></div>
+  <div class="c5b4-reg c5b4-bl" data-layout-ignore></div>
+
+  <div class="c5b4-zone">
+    <div class="c5b4-inner">
+      <div id="c5b4-eye">JP MORGAN PRIME BROKERAGE &#183; MAY 2026</div>
+      <div id="c5b4-eyerule"></div>
+
+      <div id="c5b4-stat" class="c5b4-stat">ALL-TIME HIGH</div>
+      <div id="c5b4-statrule" class="c5b4-statrule"></div>
+
+      <div id="c5b4-foot" class="c5b4-foot">BY A MEANINGFUL MARGIN</div>
+      <div id="c5b4-sub" class="c5b4-sub">RETAIL MOVED INTO EQUITIES</div>
+    </div>
+  </div>
+
+  <style>
+    [data-composition-id="beat-c5b4"] {
+      width: 1920px; height: 1080px; position: relative; overflow: hidden;
+      background: transparent; font-family: "Inter", "Helvetica", sans-serif;
+    }
+    [data-composition-id="beat-c5b4"] .c5b4-panel {
+      position: absolute; top: 0; left: 0; width: 1200px; height: 1080px;
+      background: linear-gradient(to right,
+        rgba(10,14,20,0.90) 0%,
+        rgba(10,14,20,0.82) 48%,
+        rgba(10,14,20,0.30) 74%,
+        transparent 92%);
+      pointer-events: none; z-index: 0;
+    }
+    [data-composition-id="beat-c5b4"] .c5b4-reg { position: absolute; width: 26px; height: 26px; opacity: 0; z-index: 1; }
+    [data-composition-id="beat-c5b4"] .c5b4-tl { top: 30px; left: 30px; border-top: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c5b4"] .c5b4-bl { bottom: 30px; left: 30px; border-bottom: 2px solid #2a2a2a; border-left: 2px solid #2a2a2a; }
+    [data-composition-id="beat-c5b4"] .c5b4-zone {
+      position: absolute; top: 0; left: 0; width: 1152px; height: 1080px;
+      display: flex; align-items: center; z-index: 1;
+      mask-image: linear-gradient(to right, black 82%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 82%, transparent 100%);
+    }
+    [data-composition-id="beat-c5b4"] .c5b4-inner { padding: 0 80px; width: 100%; }
+    [data-composition-id="beat-c5b4"] #c5b4-idx {
+      font-family: "JetBrains Mono", monospace; font-size: 20px; font-weight: 500;
+      color: #F0F0F0; opacity: 0; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    [data-composition-id="beat-c5b4"] #c5b4-eye {
+      font-family: "Inter", sans-serif; font-size: 32px; font-weight: 700;
+      color: #f0f0f0; letter-spacing: 0.16em; text-transform: uppercase;
+      margin-bottom: 18px; opacity: 0;
+    }
+    [data-composition-id="beat-c5b4"] #c5b4-eyerule {
+      width: 0; height: 2px; background: rgba(255,255,255,0.18); margin-bottom: 40px;
+    }
+    [data-composition-id="beat-c5b4"] .c5b4-stat {
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 168px;
+      color: #f0f0f0; line-height: 0.9; letter-spacing: -0.04em;
+      text-transform: uppercase; opacity: 0; max-width: 980px;
+    }
+    [data-composition-id="beat-c5b4"] .c5b4-statrule {
+      width: 0; height: 6px; background: #00d4ff; border-radius: 3px;
+      margin-top: 24px; margin-bottom: 28px;
+      box-shadow: 0 0 22px rgba(0,212,255,0.55);
+    }
+    [data-composition-id="beat-c5b4"] .c5b4-foot {
+      font-family: "Inter", sans-serif; font-size: 40px; font-weight: 600;
+      color: #f0f0f0; letter-spacing: 0.02em; text-transform: uppercase;
+      margin-bottom: 18px; opacity: 0;
+    }
+    [data-composition-id="beat-c5b4"] .c5b4-sub {
+      font-family: "Inter", sans-serif; font-size: 34px; font-weight: 600;
+      color: #f0f0f0; letter-spacing: 0.02em; text-transform: uppercase; opacity: 0;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Chrome — appears at beat start (Mode-A already established by master @comp 15)
+    tl.fromTo(".c5b4-reg",   {opacity:0}, {opacity:1, duration:0.22, ease:"power1.out"}, 0.10);
+    // eyebrow slam — comp 20.88 ("JP") -> offset 0.38
+    tl.fromTo("#c5b4-eye",   {opacity:0, y:10}, {opacity:1, y:0, duration:0.30, ease:"power3.out"}, 0.38);
+    tl.fromTo("#c5b4-eyerule",{width:"0px"}, {width:"560px", duration:0.5, ease:"power3.inOut"}, 0.55);
+
+    // stat ALL-TIME HIGH — comp 28.34 -> offset 7.84
+    tl.fromTo("#c5b4-stat",  {opacity:0, scale:0.9}, {opacity:1, scale:1, duration:0.5, ease:"expo.out"}, 7.84);
+    tl.fromTo("#c5b4-statrule",{width:"0px"}, {width:"420px", duration:0.45, ease:"power3.inOut"}, 8.20);
+
+    // footer BY A MEANINGFUL MARGIN — comp 29.38 -> offset 8.88
+    tl.fromTo("#c5b4-foot",  {opacity:0, y:10}, {opacity:1, y:0, duration:0.36, ease:"power2.out"}, 8.88);
+
+    // sublabel RETAIL MOVED INTO EQUITIES (folded c5b5) — comp 31.70 -> offset 11.20
+    tl.fromTo("#c5b4-sub",   {opacity:0, x:18}, {opacity:1, x:0, duration:0.38, ease:"power2.out"}, 11.20);
+
+    window.__timelines["beat-c5b4"] = tl;
+  })();
+  </script>
+</div>
+</template>
