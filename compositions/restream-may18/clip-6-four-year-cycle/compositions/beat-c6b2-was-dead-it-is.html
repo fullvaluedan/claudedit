@@ -102,8 +102,9 @@
     tl.to("#b2-rule", {backgroundColor:"#2a2a2a", duration:0.6, ease:"power2.inOut"}, 1.6);
 
     // ── Answer kinetic (WORD-SYNCED) ──
-    // "was" src 1429.32 → comp 9.02 → offset 6.02
-    tl.fromTo("#b2-l1", {opacity:0, y:28}, {opacity:1, y:0, duration:0.30, ease:"expo.out"}, 6.02);
+    // SPARSE-HOLD FIX: was +6.02 -> "THE BULL-CASE" eyebrow alone for ~5.8s. Land line 1 ~1s sooner
+    // so the eyebrow->content gap is under the sparse threshold (the line leads "was" by ~1s, fine).
+    tl.fromTo("#b2-l1", {opacity:0, y:28}, {opacity:1, y:0, duration:0.30, ease:"expo.out"}, 5.00);
     // "is." src 1433.46 → comp 13.16 → offset 10.16 (cyan payoff)
     tl.fromTo("#b2-l2", {opacity:0, y:28, scale:0.94}, {opacity:1, y:0, scale:1, duration:0.34, ease:"expo.out"}, 10.16);
 

@@ -3,7 +3,7 @@
 This directory holds the podcast social clips. We have an established house style, hard-won across
 several review rounds. **Read `PROCESS.md` first — it is the production SOP (pipeline + the gate + the revisions-to-zero loop).**
 
-**THE GATE (non-negotiable):** a clip is NOT done until `python3 timing/check-render.py <clip-dir>` prints PASS. It measures the RENDERED pixels (blank-left coverage, lint, z-index, no-index, jargon), not the EDL. Run it on a draft before HQ render; nothing ships until green AND a human has eyeballed the beat-START of every Mode-A beat.
+**THE GATES (non-negotiable):** a clip is NOT done until ALL THREE print PASS — `timing/check-edl.py` (pre-render blank-left prediction), `timing/check-render.py` (rendered-pixel blank-left + lint/z-index/index/jargon), and `timing/check-content.py` (EMPTY-BOX: a container/card on screen with no content inside it — the brightness gate CANNOT see this, a glowing empty card passes check-render). Run check-edl + check-content (instant, no render) first; render gate on a draft; nothing ships until all green AND a human has eyeballed every Mode-A beat-START + every previously-flagged window. Design rule: a container never appears emptier than it will be a frame later — full-frame the talky lead-in, then enter Mode-A + container + first content together.
 
 **Before building, QA'ing, or planning ANY clip here, READ these files and grade against them — they are the source of truth and override generic instincts:**
 

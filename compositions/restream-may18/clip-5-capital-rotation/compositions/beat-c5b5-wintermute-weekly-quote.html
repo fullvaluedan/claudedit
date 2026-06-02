@@ -91,12 +91,14 @@
     tl.fromTo("#c5b5-card", {opacity:0, x:60}, {opacity:1, x:0, duration:0.5, ease:"expo.out"}, 0.06);
     // eyebrow — comp 40.34 -> offset 1.44
     tl.fromTo("#c5b5-eye",  {opacity:0, y:10}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 1.44);
-    // pull-quote fades in — comp 54.50 -> offset 15.60 (card holds while Nic reads the line)
-    tl.fromTo("#c5b5-quote",{opacity:0, y:14}, {opacity:1, y:0, duration:0.5, ease:"power3.out"}, 15.60);
-    // "not crypto" flips CYAN — comp 57.94 -> offset 19.04
-    tl.to("#c5b5-notcrypto", {color:"#00d4ff", textShadow:"0 0 26px rgba(0,212,255,0.7)", duration:0.3, ease:"power2.out"}, 19.04);
-    // attribution [EDITORIAL] @58.6 -> offset 19.70
-    tl.fromTo("#c5b5-attr", {opacity:0}, {opacity:1, duration:0.34, ease:"power2.out"}, 19.70);
+    // EMPTY-BOX FIX: the pull-quote is an attributed CITATION, not a transcript of his speech — it
+    // doesn't have to wait for +15.60 (which left a hollow card 38.9-54.5 = ~15.5s). Show it WITH the
+    // card as a standing reference; "not crypto" still flips cyan a beat later as the emphasis.
+    tl.fromTo("#c5b5-quote",{opacity:0, y:14}, {opacity:1, y:0, duration:0.5, ease:"power3.out"}, 2.20);
+    // attribution rides in just after the quote
+    tl.fromTo("#c5b5-attr", {opacity:0}, {opacity:1, duration:0.34, ease:"power2.out"}, 2.90);
+    // "not crypto" flips CYAN — kept as a later emphasis beat
+    tl.to("#c5b5-notcrypto", {color:"#00d4ff", textShadow:"0 0 26px rgba(0,212,255,0.7)", duration:0.3, ease:"power2.out"}, 5.00);
 
     window.__timelines["beat-c5b5"] = tl;
   })();

@@ -266,7 +266,7 @@
         // ── S2a (16–33): MODE-A — c8b4 kinetic+chips · c8b5 swiss (graphic fills the left) ──
         // ── breath (33–45): c8b6 has NO graphic → FULL-FRAME both speakers (R7: never blank-left Mode-A) ──
         toFull(33.0, 0.4);
-        toModeA(45.0, 0.5);
+        toModeA(51.0, 0.5);   // was 45.0 — full-frame 33-51 so c8b7's eyebrow-only lead isn't a sparse Mode-A
         // ── S2b (45–69): MODE-A — c8b7 flow (graphic fills the left) ──
 
         // ── S2b→S3 (68.7): expand → FULL FRAME for the "IT KNOWS…" climax + host-Q ──
@@ -286,10 +286,12 @@
 
         // ── S5 (116.5–139): FULL FRAME holds — c8b12 BLUE WAVE two-phase kinetic ──
 
-        // ── S5→S6 (138.7): return → Mode A (risk metrics card) ──
-        toModeA(138.7, 0.5);
+        // ── S5→S6 (152.8): return → Mode A WHEN the risk panel builds (was 138.7 → left a
+        //    hollow card 139.7-155 = ~16s empty box). Full-frame breather 116.2-152.8 (both
+        //    speakers) while he sets up; Mode-A + card + first row enter together on "beta". ──
+        toModeA(152.8, 0.5);
 
-        // ── S6 (139–164.6): MODE-A — c8b13 risk card (graphic fills the left) ──
+        // ── S6 (152.8–164.6): MODE-A — c8b13 risk panel builds (card never empty) ──
         // ── close (164.6–167.8): c8b14 has NO graphic → FULL-FRAME both speakers (R7: never blank-left Mode-A) ──
         toFull(164.6, 0.4);
 
