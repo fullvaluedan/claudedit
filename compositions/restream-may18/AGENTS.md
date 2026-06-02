@@ -1,8 +1,11 @@
 # restream-may18 clips — agent instructions
 
 This directory holds the podcast social clips. We have an established house style, hard-won across
-several review rounds. **Before building, QA'ing, or planning ANY clip here, READ these three files and
-grade against them — they are the source of truth and override generic instincts:**
+several review rounds. **Read `PROCESS.md` first — it is the production SOP (pipeline + the gate + the revisions-to-zero loop).**
+
+**THE GATE (non-negotiable):** a clip is NOT done until `python3 timing/check-render.py <clip-dir>` prints PASS. It measures the RENDERED pixels (blank-left coverage, lint, z-index, no-index, jargon), not the EDL. Run it on a draft before HQ render; nothing ships until green AND a human has eyeballed the beat-START of every Mode-A beat.
+
+**Before building, QA'ing, or planning ANY clip here, READ these files and grade against them — they are the source of truth and override generic instincts:**
 
 1. **`../../DESIGN.md`** — brand (dark charcoal + electric cyan `#00D4FF` + Inter), hard rules (R1–R5), per-clip device map.
 2. **`timing/_QA-CHECKLIST.md`** — the graded PASS/FAIL gate. Every clip must pass every item before render.

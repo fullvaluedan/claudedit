@@ -179,28 +179,29 @@
 
         // ════════════════════════════════════════════════════════════════════
         //  V3 GROUPED VIEW-TIMELINE (every non-intro view ≥12.3s, no A-B-A <12s)
-        //  V0 full   0.0 → 3.5  (3.5s intro, exempt)        c4b1
-        //  V1 ModeA  3.5 → 33.6 (30.1s)                     c4b2 cascade
+        //  V0 full   0.0 → 8.0  (c4b1 cold-open kinetic, full-frame)  c4b1
+        //  V1 ModeA  8.0 → 33.6 (25.6s)                     c4b2 cascade
         //  V2 full   33.6 → 46.0 (12.4s)                    c4b3 + live tail
         //  V3 ModeA  46.0 → 58.3 (12.3s)                    live + c4b4 card
         //  V4 full   58.3 → 88.2 (29.9s)                    c4b5 → live → c4b6 → c4b8
         //  Switches happen ONLY at 3.5 / 33.6 / 46.0 / 58.3 — video never bounces.
         // ════════════════════════════════════════════════════════════════════
 
-        // ── V0 → V1: comp 3.5 — shrink FULL → Mode A as he continues "…delta neutral…" ──
+        // ── V0 → V1: comp 8.0 — shrink FULL → Mode A EXACTLY as the c4b2 cascade enters ──
+        // (was 3.5 → left 3.5-8.0 blank in Mode-A while c4b1 cold-open played; R7 fix.)
         masterTL.to(v, {
           left: MODE_A.left, top: MODE_A.top,
           width: MODE_A.width, height: MODE_A.height,
           borderRadius: "6px",
           duration: 0.7, ease: "expo.inOut"
-        }, 3.5);
-        masterTL.to(gr, { opacity: 1, duration: 0.5, ease: "power2.out" }, 3.8);
-        masterTL.fromTo(zr, { scaleY: 0, opacity: 1 }, { scaleY: 1, duration: 0.6, ease: "power4.out" }, 3.9);
+        }, 8.0);
+        masterTL.to(gr, { opacity: 1, duration: 0.5, ease: "power2.out" }, 8.3);
+        masterTL.fromTo(zr, { scaleY: 0, opacity: 1 }, { scaleY: 1, duration: 0.6, ease: "power4.out" }, 8.4);
         // Slow Ken-Burns across the clip (1.0 → 1.04)
         masterTL.fromTo(vid,
           { scale: 1.0, transformOrigin: "center center" },
-          { scale: 1.04, duration: 84, ease: "none" },
-          4.2
+          { scale: 1.04, duration: 80, ease: "none" },
+          8.5
         );
 
         // ── V1: c4b2 cascade plays 8.0–33.4 in Mode A (glow + rule already in) ──

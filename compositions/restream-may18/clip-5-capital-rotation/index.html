@@ -110,7 +110,7 @@
       <div id="beat-c5b4" class="overlay-layer clip"
         data-composition-id="beat-c5b4"
         data-composition-src="compositions/beat-c5b4-jpm-all-time-high.html"
-        data-start="20.5" data-duration="12.5" data-track-index="3"></div>
+        data-start="20.5" data-duration="18.4" data-track-index="3"></div>
 
       <!-- b5 — WINTERMUTE WEEKLY + "marginal risk dollar" QUOTE CARD (liquid-glass) — Mode-A -->
       <div id="beat-c5b5" class="overlay-layer clip"
@@ -140,7 +140,7 @@
       <div id="beat-c5b9" class="overlay-layer clip"
         data-composition-id="beat-c5b9"
         data-composition-src="compositions/beat-c5b9-vol-profile-chart.html"
-        data-start="121.0" data-duration="16.5" data-track-index="3"></div>
+        data-start="121.0" data-duration="22.4" data-track-index="3"></div>
 
       <!-- b10 — VOL COMPARISON crypto down vs equity rising (swiss-grid two-col) — Mode-A -->
       <div id="beat-c5b10" class="overlay-layer clip"
@@ -188,12 +188,14 @@
 
         // ── PHASE 1: 15.5–64.9 — Mode-A holds across b3, b4, b5 (one stable frame) ──
 
-        // ── TOGGLE 2: 64.4 — Mode-A → FULL (expand) for b6 host-Q over both speakers ──
-        masterTL.to([gr, zr], { opacity: 0, duration: 0.3, ease: "power2.in" }, 64.2);
+        // ── TOGGLE 2: 59.2 — Mode-A → FULL (expand) over both speakers ──
+        // R7: moved 64.4→59.2 so the 59–64.4 stretch (c5b5 ended, b6 not yet in) is full-frame
+        // (both speakers) instead of a blank-left Mode-A. Mode-A held 15→59.2 (≥8s, R1 ok).
+        masterTL.to([gr, zr], { opacity: 0, duration: 0.3, ease: "power2.in" }, 59.0);
         masterTL.to(v, {
           left: 0, top: 0, width: 1920, height: 1080,
           borderRadius: "0px", duration: 0.45, ease: "expo.inOut"
-        }, 64.4);
+        }, 59.2);
 
         // ── PHASE 2: 64.9–84.1 — FULL holds across b6, b7 (Q/A exchange) ──
 

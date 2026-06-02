@@ -7,6 +7,11 @@ ANY single FAIL = the clip fails and must be fixed before render. New failure mo
 
 ---
 
+## 0. THE GATES (mandatory — nothing ships until both green). See `PROCESS.md`.
+- [ ] **Pre-render (instant, no render):** `python3 timing/check-edl.py <clip-dir>` prints **PASS** — predicts blank-left from the source (view-timeline vs each beat's first-content time) and names late-firing Mode-A beats. Fix here before rendering.
+- [ ] **Render (authoritative backstop):** `python3 timing/check-render.py <clip-dir>` prints **PASS** — measures the rendered pixels (blank-left coverage, lint, z-index, no-index, jargon). Immune to what the EDL claims.
+- A clip is NOT done until BOTH are green. This is why revisions trend to zero. The items below are how you make them pass on the first try.
+
 ## 1. View-switching discipline (R1) + view-follows-content (R7)
 - [ ] **R7 — NO blank-left Mode-A.** Every Mode-A segment has a left-zone GRAPHIC on screen for its ENTIRE duration. A clean/breath beat (no graphic) MUST be full-frame (both speakers) — never a speaker cropped right with an empty left half. A no-graphic gap inside a Mode-A block = FAIL (the clip-8 0:33–0:52 bug). Classify each beat (graphic→Mode-A, kinetic/breath→full-frame); the view must match.
 - [ ] **R6 — NO index/clip-number on screen.** No "01".."08" or beat index rendered anywhere. Eyebrow editorial labels are fine; the bare number is a FAIL.

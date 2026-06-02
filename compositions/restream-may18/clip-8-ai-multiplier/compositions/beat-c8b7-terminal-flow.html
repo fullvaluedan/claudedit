@@ -111,10 +111,10 @@
     const tl = gsap.timeline({ paused: true });
     const S = '[data-composition-id="beat-c8b7"]';
 
-    tl.fromTo(S + " .b7-reg", {opacity:0}, {opacity:1, duration:0.25, ease:"power1.out"}, 5.7);
-    // eyebrow @51.00 (offset 6.00)
-    tl.fromTo(S + " #b7-eye", {opacity:0, y:12}, {opacity:1, y:0, duration:0.3, ease:"power3.out"}, 6.00);
-    tl.fromTo(S + " #b7-rule", {width:"0px"}, {width:"520px", duration:0.5, ease:"power3.inOut"}, 6.18);
+    // R7 FRAME-AT-START: frame fills the zone the instant Mode-A begins (was +5.7-6.2 -> ~18s blank). Nodes stay word-synced below.
+    tl.fromTo(S + " .b7-reg", {opacity:0}, {opacity:1, duration:0.25, ease:"power1.out"}, 0.15);
+    tl.fromTo(S + " #b7-eye", {opacity:0, y:12}, {opacity:1, y:0, duration:0.3, ease:"power3.out"}, 0.30);
+    tl.fromTo(S + " #b7-rule", {width:"0px"}, {width:"520px", duration:0.5, ease:"power3.inOut"}, 0.50);
 
     // Nodes pop on the spoken beat; connectors draw between
     // node1 @54.32 (offset 9.32)

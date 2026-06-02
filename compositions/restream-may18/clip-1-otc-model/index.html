@@ -127,7 +127,7 @@
       <div id="beat-c1b5-two-sides" class="overlay-layer clip"
         data-composition-id="beat-c1b5-two-sides"
         data-composition-src="compositions/beat-c1b5-two-sides.html"
-        data-start="33.0" data-duration="15.5" data-track-index="3"></div>
+        data-start="33.0" data-duration="17.0" data-track-index="3"></div>
 
       <!--
         c1b6 — liquid-glass card (Jasper name) · comp 50.0–60.0 · src 289.10–299.10 · MODE A
@@ -147,7 +147,7 @@
       <div id="beat-c1b6b-edge" class="overlay-layer clip"
         data-composition-id="beat-c1b6b-edge"
         data-composition-src="compositions/beat-c1b6b-edge.html"
-        data-start="69.5" data-duration="6.5" data-track-index="3"></div>
+        data-start="69.5" data-duration="11.0" data-track-index="3"></div>
 
       <!--
         c1b7 — swiss-grid TWO-COLUMN (CENTERPIECE) + shimmer-sweep · comp 80.5–99.0 · src 319.60–338.10 · MODE A · WORD-SYNCED
@@ -157,7 +157,7 @@
       <div id="beat-c1b7-agency-principal" class="overlay-layer clip"
         data-composition-id="beat-c1b7-agency-principal"
         data-composition-src="compositions/beat-c1b7-agency-principal.html"
-        data-start="80.5" data-duration="18.5" data-track-index="3"></div>
+        data-start="80.5" data-duration="19.5" data-track-index="3"></div>
 
       <!--
         c1b8 — flowchart (3-node decay chain) · comp 100.0–106.5 · src 339.10–345.60 · MODE A · WORD-SYNCED
@@ -196,28 +196,36 @@
         // c1b1 cold open (0–6) → c1b3 kinetic (9.4–15.4) → c1b4 clean host-Q breath (15.4–30.2, NO overlay).
         // Both early kinetics stay FULL together (R1 grouping). No Mode-A between them.
 
-        // ── PHASE 1  comp 30.2 — the SINGLE view transition: FULL FRAME → Mode A. ──
-        // (expo.inOut, 0.7s) on the natural pivot into Jasper's structured answer.
-        masterTL.to(v, {
-          left: MODE_A.left, top: MODE_A.top,
-          width: MODE_A.width, height: MODE_A.height,
-          borderRadius: "6px", duration: 0.7, ease: "expo.inOut"
-        }, 30.2);
-        // Glow + rule appear with Mode A
-        masterTL.to(gr, { opacity: 1, duration: 0.5, ease: "power2.out" }, 30.5);
-        masterTL.fromTo(zr, { scaleY: 0, opacity: 1 }, { scaleY: 1, duration: 0.6, ease: "power4.out" }, 30.6);
-        // Ken Burns 1.0 → 1.03 across the ENTIRE Mode-A hold (comp 30.2 → 111.3 ≈ 81.1s).
-        // Gentle — no hard zoom (1.08 clipped the name).
+        // helpers (clip-2 pattern): toModeA / toFull keep view in lock-step with the graphic clusters.
+        const FULL = { left: 0, top: 0, width: 1920, height: 1080, borderRadius: "0px" };
+        const toModeA = (t) => {
+          masterTL.to(v, { left: MODE_A.left, top: MODE_A.top, width: MODE_A.width, height: MODE_A.height,
+            borderRadius: "6px", duration: 0.7, ease: "expo.inOut" }, t);
+          masterTL.to(gr, { opacity: 1, duration: 0.5, ease: "power2.out" }, t + 0.3);
+          masterTL.to(zr, { scaleY: 1, opacity: 1, duration: 0.6, ease: "power4.out" }, t + 0.4);
+        };
+        const toFull = (t) => {
+          masterTL.to(v, { ...FULL, duration: 0.7, ease: "expo.inOut" }, t);
+          masterTL.to(gr, { opacity: 0, duration: 0.4, ease: "power2.in" }, t);
+          masterTL.to(zr, { scaleY: 0, duration: 0.4, ease: "power2.in" }, t);
+        };
+
+        // ── VIEW TIMELINE (R1/R7: view in lock-step with graphic clusters — no blank-left, no <8s segment). ──
+        //   FULL 0–33  → MODE-A 33–60 (c1b5+c1b6) → FULL 60–69.5 (9.5s talking gap, both speakers)
+        //   → MODE-A 69.5–111.3 (c1b6b→c1b7→c1b8→c1b9).
+        masterTL.set(zr, { scaleY: 0, opacity: 1 }, 0);
+        toModeA(33.0);   // boundary moved 30.2→33.0 so Mode-A opens exactly with c1b5 (no 3s blank)
+        toFull(60.0);    // full-frame the 9.5s c1b6→c1b6b talking gap (≥8s; was blank-left)
+        toModeA(69.5);   // back to Mode-A exactly as c1b6b enters
+
+        // Ken Burns 1.0 → 1.03 across comp 33 → 111.3 (~78.3s). Scale on inner; position on frame (no conflict).
         masterTL.fromTo(vid,
           { scale: 1.0, transformOrigin: "center center" },
-          { scale: 1.03, duration: 81.1, ease: "none" },
-          30.2
+          { scale: 1.03, duration: 78.3, ease: "none" },
+          33.0
         );
 
-        // ── PHASE 2  comp 30.9–111.3 — MODE A holds the entire OTC explanation. ──
-        // c1b5 (33.0–48.5) → c1b6 (50.0–60.0) → c1b6b (69.5–76.0) → c1b7 centerpiece (80.5–99.0)
-        //   → c1b8 (100.0–106.5) → c1b9 close (106.7–111.3). No view switch — frame is stable.
-        // Variety comes from the device-beats INSIDE Mode A. Ends in Mode A. (R1: one transition, zero flip-flop.)
+        // Variety comes from the device-beats INSIDE Mode A. Ends in Mode A.
 
         window.__timelines["master"] = masterTL;
       </script>

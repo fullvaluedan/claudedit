@@ -78,8 +78,9 @@
       0.48
     );
 
-    // Both lines hold (build & STAY, no dim). Whole stack drifts up before the 3.5 shrink.
-    tl.to(".c1-line", {y:-32, opacity:0, duration:0.30, ease:"power2.in"}, 3.10);
+    // Both lines hold (build & STAY, no dim) through the full-frame cold open; drift out just
+    // before c4b2 enters at comp 8.0 (was 3.10 — left a dark backdrop with no text 4-7.5 = blank-left).
+    tl.to(".c1-line", {y:-32, opacity:0, duration:0.30, ease:"power2.in"}, 7.2);
 
     window.__timelines["beat-c4b1"] = tl;
   })();

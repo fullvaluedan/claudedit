@@ -77,10 +77,9 @@
     const tl = gsap.timeline({ paused: true });
     const S = '[data-composition-id="beat-c8b4"]';
 
-    tl.fromTo(S + " .b4-reg", {opacity:0}, {opacity:1, duration:0.25, ease:"power1.out"}, 1.2);
-
-    // L1 @17.46 (offset 1.46)
-    tl.fromTo(S + " #b4-l1", {opacity:0, y:28}, {opacity:1, y:0, duration:0.30, ease:"expo.out"}, 1.46);
+    // R7 FRAME-AT-START: reg + first line fill the zone immediately (was +1.2/1.46). L2 stays word-synced.
+    tl.fromTo(S + " .b4-reg", {opacity:0}, {opacity:1, duration:0.25, ease:"power1.out"}, 0.15);
+    tl.fromTo(S + " #b4-l1", {opacity:0, y:28}, {opacity:1, y:0, duration:0.30, ease:"expo.out"}, 0.35);
     // L2 @19.72 (offset 3.72) — GRUNT WORK cyan
     tl.fromTo(S + " #b4-l2", {opacity:0, y:28}, {opacity:1, y:0, duration:0.30, ease:"power3.out"}, 3.72);
 

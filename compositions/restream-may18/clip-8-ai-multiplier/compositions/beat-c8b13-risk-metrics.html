@@ -110,11 +110,12 @@
 
     // Long clean breather 139–151 (Mode-A, no graphic). Card appears on "control risk".
     // eyebrow @151.14 (offset 12.14)
-    tl.fromTo(S + " .b13-glass", {opacity:0}, {opacity:1, duration:0.45, ease:"power2.out"}, 11.9);
-    tl.fromTo(S + " .b13-reg", {opacity:0}, {opacity:1, duration:0.25, ease:"power1.out"}, 12.0);
-    tl.fromTo(S + " #b13-eye", {opacity:0, y:12}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 12.14);
-    tl.fromTo(S + " #b13-rule", {width:"0px"}, {width:"480px", duration:0.5, ease:"power3.inOut"}, 12.30);
-    tl.fromTo(S + " #b13-card", {opacity:0, x:50}, {opacity:1, x:0, duration:0.45, ease:"expo.out"}, 12.45);
+    // R7 FRAME-AT-START: card+eyebrow fill the zone the instant Mode-A begins (was +11.9-12.5 -> ~12s blank). Data bars stay word-synced below.
+    tl.fromTo(S + " .b13-glass", {opacity:0}, {opacity:1, duration:0.45, ease:"power2.out"}, 0.20);
+    tl.fromTo(S + " .b13-reg", {opacity:0}, {opacity:1, duration:0.25, ease:"power1.out"}, 0.25);
+    tl.fromTo(S + " #b13-eye", {opacity:0, y:12}, {opacity:1, y:0, duration:0.32, ease:"power3.out"}, 0.40);
+    tl.fromTo(S + " #b13-rule", {width:"0px"}, {width:"480px", duration:0.5, ease:"power3.inOut"}, 0.55);
+    tl.fromTo(S + " #b13-card", {opacity:0, x:50}, {opacity:1, x:0, duration:0.45, ease:"expo.out"}, 0.70);
 
     // row1 BETA @155.44 (offset 16.44) — bar grows
     tl.fromTo(S + " #b13-r1", {opacity:0, x:20}, {opacity:1, x:0, duration:0.34, ease:"power2.out"}, 16.44);

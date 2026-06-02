@@ -10,7 +10,7 @@
   Equal-height headers (both single-line 48px). Bullet rows use min-width:0; flex:1 so wraps align under first char.
   Eyebrow @ 80.7 → 0.20 (deliberately NOT "AGENCY"/"PRINCIPAL" — those are column headers; R4). (local = comp − 80.5)
 -->
-<div data-composition-id="beat-c1b7-agency-principal" data-width="1920" data-height="1080" data-duration="18.5">
+<div data-composition-id="beat-c1b7-agency-principal" data-width="1920" data-height="1080" data-duration="19.5">
 
   <!-- Feathered backdrop for legibility over Mode-A video -->
   <div id="b7-backdrop" data-layout-ignore></div>
@@ -212,7 +212,7 @@
     tl.fromTo("#b7-p3", {opacity:0, x:18}, {opacity:1, x:0, duration:0.4, ease:"power3.out"}, 15.80);
 
     // Exit fade @ comp 98.5 → local 18.0 (beat ends comp 99.0 → local 18.5)
-    tl.to(".b7-inner, .b7-reg, #b7-backdrop", {opacity:0, duration:0.5, ease:"power2.out"}, 18.0);
+    tl.to(".b7-inner, .b7-reg, #b7-backdrop", {opacity:0, duration:0.5, ease:"power2.out"}, 19.3);  /* hold to comp ~99.8 (tiles 98.5-100 gap before c1b8) */
 
     window.__timelines["beat-c1b7-agency-principal"] = tl;
   })();
