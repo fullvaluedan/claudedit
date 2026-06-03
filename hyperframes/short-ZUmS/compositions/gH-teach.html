@@ -1,0 +1,48 @@
+<template id="gH-template">
+  <div data-composition-id="gH" data-width="1080" data-height="1920">
+    <style>
+      [data-composition-id="gH"]{
+        --ink:#14110D; --ink2:#4A463E; --red:#BC1C08; --paper:#F6F4EE;
+        --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+        position:absolute; inset:0; font-family:'Inter',system-ui,sans-serif;
+      }
+      [data-composition-id="gH"] .panel{
+        position:absolute; left:48px; top:262px; width:600px; padding:30px 34px 30px;
+        background:#F6F4EE; border:2px solid var(--ink);
+        box-shadow:10px 10px 0 rgba(20,17,13,0.20);
+      }
+      [data-composition-id="gH"] .kick{ font-family:'JetBrains Mono',ui-monospace,Menlo,monospace; font-weight:700; font-size:30px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink2); }
+      [data-composition-id="gH"] .rule{ height:3px; background:var(--ink); margin:14px 0 24px; transform-origin:left center; }
+      [data-composition-id="gH"] .flow{ display:flex; align-items:center; gap:18px; }
+      [data-composition-id="gH"] .node{ flex:1; border:2px solid var(--ink); padding:18px 10px; text-align:center; font-weight:900; letter-spacing:.06em; color:var(--ink); }
+      [data-composition-id="gH"] .node.num{ font-size:54px; font-variant-numeric:tabular-nums; }
+      [data-composition-id="gH"] .node.ai{ font-size:50px; background:var(--ink); color:var(--paper); }
+      [data-composition-id="gH"] .arr{ font-weight:900; font-size:54px; color:var(--red); }
+      [data-composition-id="gH"] .cap{ font-family:'JetBrains Mono',ui-monospace,Menlo,monospace; font-weight:600; font-size:28px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink2); text-align:center; margin-top:20px; }
+    </style>
+    <div class="panel">
+      <div class="kick">Teaching the model</div>
+      <div class="rule"></div>
+      <div class="flow">
+        <span class="node num">0243</span>
+        <span class="arr">→</span>
+        <span class="node ai">AI</span>
+      </div>
+      <div class="cap">input: one sentence</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo(".panel", { opacity:0, x:-36 }, { opacity:1, x:0, duration:0.32, ease:"power3.out" }, 0.1);
+      tl.fromTo(".kick", { opacity:0, y:10 }, { opacity:1, y:0, duration:0.32, ease:"power2.out" }, 0.08);
+      tl.fromTo(".rule", { scaleX:0 }, { scaleX:1, duration:0.45, ease:"expo.out" }, 0.34);
+      tl.fromTo(".node.num", { opacity:0, x:-20 }, { opacity:1, x:0, duration:0.42, ease:"back.out(1.8)" }, 0.26);
+      tl.fromTo(".arr", { opacity:0, scale:0.4 }, { opacity:1, scale:1, duration:0.34, ease:"back.out(3)" }, 0.42);
+      tl.fromTo(".node.ai", { opacity:0, x:20 }, { opacity:1, x:0, duration:0.42, ease:"back.out(1.8)" }, 0.52);
+      tl.fromTo(".cap", { opacity:0, y:10 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 0.66);
+      tl.to(".panel", { opacity:0, x:-24, duration:0.32, ease:"power2.in" }, 2.66);
+      window.__timelines["gH"] = tl;
+    </script>
+  </div>
+</template>

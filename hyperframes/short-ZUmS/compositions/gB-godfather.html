@@ -1,0 +1,47 @@
+<template id="gB-template">
+  <div data-composition-id="gB" data-width="1080" data-height="1920">
+    <style>
+      [data-composition-id="gB"]{
+        --ink:#14110D; --ink2:#4A463E; --red:#BC1C08; --paper:#F6F4EE;
+        --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+        position:absolute; inset:0; font-family:'Inter',system-ui,sans-serif;
+      }
+      [data-composition-id="gB"] .panel{
+        position:absolute; left:48px; top:236px; width:620px; padding:30px 34px 32px;
+        background:#F6F4EE; border:2px solid var(--ink);
+        box-shadow:10px 10px 0 rgba(20,17,13,0.20);
+      }
+      [data-composition-id="gB"] .top{ display:flex; justify-content:space-between; align-items:center; }
+      [data-composition-id="gB"] .kick{ font-family:'JetBrains Mono',ui-monospace,Menlo,monospace; font-weight:700; font-size:30px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink2); }
+      [data-composition-id="gB"] .fig{ font-family:'JetBrains Mono',ui-monospace,Menlo,monospace; font-weight:600; font-size:28px; color:var(--red); }
+      [data-composition-id="gB"] .rule{ height:3px; background:var(--ink); margin:16px 0 18px; transform-origin:left center; }
+      [data-composition-id="gB"] .han{ font-weight:800; font-size:52px; color:var(--ink2); letter-spacing:.06em; }
+      [data-composition-id="gB"] .name{ font-weight:900; font-size:86px; line-height:0.92; letter-spacing:-0.02em; color:var(--ink); margin:2px 0 16px; }
+      [data-composition-id="gB"] .tag{ display:inline-block; background:var(--red); color:var(--paper); font-weight:800; font-size:38px; letter-spacing:.02em; padding:8px 18px; }
+      [data-composition-id="gB"] .role{ font-weight:600; font-size:34px; color:var(--ink2); margin-top:18px; }
+    </style>
+    <div class="panel">
+      <div class="top"><span class="kick">The Source</span><span class="fig">FIG.02</span></div>
+      <div class="rule"></div>
+      <div class="han">黃志華</div>
+      <div class="name">Wong<br>Chi-wah</div>
+      <span class="tag">THE 0243 GODFATHER</span>
+      <div class="role">Cantopop lyricist · originated the system</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo(".panel", { opacity:0, x:-40 }, { opacity:1, x:0, duration:0.32, ease:"power3.out" }, 0.1);
+      tl.fromTo(".kick", { opacity:0, y:10 }, { opacity:1, y:0, duration:0.35, ease:"power2.out" }, 0.08);
+      tl.fromTo(".fig", { opacity:0 }, { opacity:1, duration:0.3 }, 0.34);
+      tl.fromTo(".rule", { scaleX:0 }, { scaleX:1, duration:0.45, ease:"expo.out" }, 0.4);
+      tl.fromTo(".han", { opacity:0, x:-14 }, { opacity:1, x:0, duration:0.4, ease:"power2.out" }, 0.5);
+      tl.fromTo(".name", { opacity:0, y:18 }, { opacity:1, y:0, duration:0.5, ease:"power3.out" }, 0.34);
+      tl.fromTo(".tag", { opacity:0, scale:0.7, transformOrigin:"left center" }, { opacity:1, scale:1, duration:0.4, ease:"back.out(2)" }, 0.9);
+      tl.fromTo(".role", { opacity:0, y:10 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 1.08);
+      tl.to(".panel", { opacity:0, x:-26, duration:0.32, ease:"power2.in" }, 2.66);
+      window.__timelines["gB"] = tl;
+    </script>
+  </div>
+</template>

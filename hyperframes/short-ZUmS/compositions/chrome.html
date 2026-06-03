@@ -1,0 +1,65 @@
+<template id="chrome-template">
+  <div data-composition-id="chrome" data-width="1080" data-height="1920">
+    <style>
+      [data-composition-id="chrome"]{
+        --ink:#14110D; --red:#BC1C08; --paper:#F6F4EE;
+        position:absolute; inset:0; font-family:'Inter',system-ui,sans-serif;
+        --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+      }
+      [data-composition-id="chrome"] .id{
+        position:absolute; left:48px; top:40px; display:flex; align-items:center; gap:12px;
+        background:#F6F4EE; border:2px solid var(--ink); padding:8px 16px;
+        box-shadow:6px 6px 0 rgba(20,17,13,0.18);
+      }
+      [data-composition-id="chrome"] .id .dot{ width:16px; height:16px; background:var(--red); }
+      [data-composition-id="chrome"] .id .nm{
+        font-family:'JetBrains Mono',ui-monospace,Menlo,monospace; font-weight:700; font-size:28px; letter-spacing:.10em;
+        text-transform:uppercase; color:var(--ink);
+      }
+      [data-composition-id="chrome"] .id .ep{
+        font-family:'JetBrains Mono',ui-monospace,Menlo,monospace; font-weight:600; font-size:26px; letter-spacing:.14em;
+        color:var(--red);
+      }
+      [data-composition-id="chrome"] .ptrack{
+        position:absolute; left:48px; top:96px; width:984px; height:4px;
+        background:rgba(246,244,238,.32);
+      }
+      [data-composition-id="chrome"] .prog{
+        position:absolute; left:0; top:0; width:100%; height:100%;
+        background:var(--red); transform-origin:left center;
+      }
+      /* corner registration crosshairs */
+      [data-composition-id="chrome"] .reg{ position:absolute; width:34px; height:34px; }
+      [data-composition-id="chrome"] .reg::before,[data-composition-id="chrome"] .reg::after{
+        content:""; position:absolute; background:rgba(246,244,238,.85);
+        box-shadow:0 0 6px rgba(0,0,0,.5);
+      }
+      [data-composition-id="chrome"] .reg::before{ left:50%; top:0; width:2px; height:100%; transform:translateX(-50%); }
+      [data-composition-id="chrome"] .reg::after{ top:50%; left:0; height:2px; width:100%; transform:translateY(-50%); }
+      [data-composition-id="chrome"] .tr{ right:40px; top:40px; }
+      [data-composition-id="chrome"] .bl{ left:40px; bottom:40px; }
+      [data-composition-id="chrome"] .br{ right:40px; bottom:40px; }
+    </style>
+
+    <div class="id">
+      <span class="dot"></span>
+      <span class="nm">Hong Kong AI Podcast</span>
+      <span class="ep">EP.11</span>
+    </div>
+    <div class="ptrack"><div class="prog"></div></div>
+    <div class="reg tr"></div>
+    <div class="reg bl"></div>
+    <div class="reg br"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo(".id", { opacity:0, x:-24 }, { opacity:1, x:0, duration:0.6, ease:"power3.out" }, 0.15);
+      tl.fromTo(".ptrack", { opacity:0 }, { opacity:1, duration:0.5, ease:"power1.out" }, 0.3);
+      tl.fromTo(".prog", { scaleX:0 }, { scaleX:1, duration:40.1, ease:"none" }, 0);
+      tl.fromTo(".reg", { opacity:0, scale:0.4 }, { opacity:1, scale:1, duration:0.5, stagger:0.08, ease:"back.out(2)" }, 0.5);
+      window.__timelines["chrome"] = tl;
+    </script>
+  </div>
+</template>

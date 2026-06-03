@@ -1,0 +1,54 @@
+<template id="gK-template">
+  <div data-composition-id="gK" data-width="1080" data-height="1920">
+    <style>
+      [data-composition-id="gK"]{
+        --ink:#14110D; --ink2:#4A463E; --red:#BC1C08; --paper:#F6F4EE;
+        --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+        position:absolute; inset:0; font-family:'Inter',system-ui,sans-serif;
+      }
+      [data-composition-id="gK"] .panel{
+        position:absolute; left:48px; top:250px; width:660px; padding:32px 36px 30px;
+        background:#F6F4EE; border:2px solid var(--ink);
+        box-shadow:10px 10px 0 rgba(20,17,13,0.20);
+      }
+      [data-composition-id="gK"] .top{ display:flex; align-items:center; gap:18px; }
+      [data-composition-id="gK"] svg{ width:84px; height:64px; flex:none; overflow:visible; }
+      [data-composition-id="gK"] .kick{ font-family:'JetBrains Mono',ui-monospace,Menlo,monospace; font-weight:700; font-size:28px; letter-spacing:.12em; text-transform:uppercase; color:var(--red); }
+      [data-composition-id="gK"] .rule{ height:3px; background:var(--ink); margin:16px 0 16px; transform-origin:left center; }
+      [data-composition-id="gK"] .wm{ font-weight:900; font-size:84px; line-height:0.92; letter-spacing:-0.03em; color:var(--ink); }
+      [data-composition-id="gK"] .wm em{ font-style:normal; color:var(--red); }
+      [data-composition-id="gK"] .tag{ font-weight:600; font-size:36px; color:var(--ink2); margin-top:12px; }
+      [data-composition-id="gK"] .ct{ fill:none; stroke:var(--red); stroke-width:6; stroke-linejoin:round; stroke-linecap:round; }
+      [data-composition-id="gK"] .cd{ fill:var(--ink); }
+    </style>
+    <div class="panel">
+      <div class="top">
+        <svg viewBox="0 0 84 64" aria-hidden="true">
+          <path class="ct" d="M 8 56 L 30 40 L 52 8 L 76 26"/>
+          <circle class="cd" cx="8" cy="56" r="6"/><circle class="cd" cx="30" cy="40" r="6"/>
+          <circle class="cd" cx="52" cy="8" r="6"/><circle class="cd" cx="76" cy="26" r="6"/>
+        </svg>
+        <span class="kick">Now live</span>
+      </div>
+      <div class="rule"></div>
+      <div class="wm">Cantolyrics<em>.ai</em></div>
+      <div class="tag">Cantonese lyrics, written by AI</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const root = document.querySelector('[data-composition-id="gK"]');
+      const path = root.querySelector('.ct');
+      const len = path.getTotalLength(); path.style.strokeDasharray = len; path.style.strokeDashoffset = len;
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo(".panel", { opacity:0, x:-40 }, { opacity:1, x:0, duration:0.32, ease:"power3.out" }, 0.1);
+      tl.to(path, { strokeDashoffset:0, duration:0.7, ease:"power1.inOut" }, 0.16);
+      tl.fromTo(".cd", { opacity:0, scale:0.2, transformOrigin:"center center" }, { opacity:1, scale:1, duration:0.3, stagger:0.1, ease:"back.out(2.5)" }, 0.45);
+      tl.fromTo(".kick", { opacity:0, x:-10 }, { opacity:1, x:0, duration:0.34, ease:"power2.out" }, 0.08);
+      tl.fromTo(".rule", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"expo.out" }, 0.7);
+      tl.fromTo(".wm", { opacity:0, y:18 }, { opacity:1, y:0, duration:0.55, ease:"power3.out" }, 0.85);
+      tl.fromTo(".tag", { opacity:0, y:10 }, { opacity:1, y:0, duration:0.45, ease:"power2.out" }, 1.15);
+      window.__timelines["gK"] = tl;
+    </script>
+  </div>
+</template>

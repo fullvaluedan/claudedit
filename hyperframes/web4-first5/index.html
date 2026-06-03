@@ -1,77 +1,23 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
-      #bgvideo { width: 1920px; height: 1080px; object-fit: cover; }
-      /* Overlay sub-comps sit above the video via z-index (track-index does NOT layer) */
-      [data-composition-src] { position: absolute; inset: 0; z-index: 10; }
-    </style>
-  </head>
-  <body>
-    <div
-      id="root"
-      data-composition-id="main"
-      data-start="0"
-      data-duration="68"
-      data-width="1920"
-      data-height="1080"
-    >
-      <!-- BASE VIDEO (muted) — track 0. DO NOT change this element. -->
-      <video
-        id="bgvideo"
-        class="clip"
-        data-start="0"
-        data-duration="68"
-        data-track-index="0"
-        src="video.mp4"
-        muted
-        playsinline
-        crossorigin="anonymous"
-      ></video>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=1920, height=1080"/>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+#bgvideo{width:1920px;height:1080px;object-fit:cover}[data-composition-src]{position:absolute;inset:0;z-index:10}</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="489.0" data-width="1920" data-height="1080">
+  <video id="bgvideo" class="clip" data-start="0" data-duration="489.0" data-track-index="0" src="video.mp4" muted playsinline crossorigin="anonymous"></video>
+  <audio id="bgaudio" class="clip" data-start="0" data-duration="489.0" data-track-index="9" src="video.mp4" data-volume="1" crossorigin="anonymous"></audio>
 
-      <!-- AUDIO from the same file — separate element. DO NOT change this element. -->
-      <audio
-        id="bgaudio"
-        class="clip"
-        data-start="0"
-        data-duration="68"
-        data-track-index="9"
-        src="video.mp4"
-        data-volume="1"
-        crossorigin="anonymous"
-      ></audio>
-
-      <!-- OVERLAY SUB-COMPOSITIONS (transparent bg; video shows through) -->
-      <div class="clip" data-composition-id="hook"
-           data-composition-src="compositions/hook.html"
-           data-start="0" data-duration="14" data-track-index="1"></div>
-
-      <div class="clip" data-composition-id="notebooklm-card"
-           data-composition-src="compositions/notebooklm-card.html"
-           data-start="14.6" data-duration="8.4" data-track-index="2"></div>
-
-      <div class="clip" data-composition-id="book-reveal"
-           data-composition-src="compositions/book-reveal.html"
-           data-start="23" data-duration="23" data-track-index="1"></div>
-
-      <div class="clip" data-composition-id="web-evolution"
-           data-composition-src="compositions/web-evolution.html"
-           data-start="45.8" data-duration="3.8" data-track-index="2"></div>
-
-      <div class="clip" data-composition-id="keypoints-list"
-           data-composition-src="compositions/keypoints-list.html"
-           data-start="57" data-duration="11" data-track-index="3"></div>
-    </div>
-
-    <script>
-      window.__timelines = window.__timelines || {};
-      // Root has no tweens of its own; sub-comp timelines auto-nest by the framework.
-      window.__timelines["main"] = gsap.timeline({ paused: true });
-    </script>
-  </body>
-</html>
+      <div class="clip" data-composition-id="gbeat-00" data-composition-src="compositions/gbeat-00.html" data-start="36.0" data-duration="9" data-track-index="2"></div>
+      <div class="clip" data-composition-id="gbeat-01" data-composition-src="compositions/gbeat-01.html" data-start="63.0" data-duration="12" data-track-index="2"></div>
+      <div class="clip" data-composition-id="gbeat-02" data-composition-src="compositions/gbeat-02.html" data-start="96.0" data-duration="10" data-track-index="2"></div>
+      <div class="clip" data-composition-id="gbeat-03" data-composition-src="compositions/gbeat-03.html" data-start="115.0" data-duration="8" data-track-index="2"></div>
+      <div class="clip" data-composition-id="gbeat-04" data-composition-src="compositions/gbeat-04.html" data-start="151.0" data-duration="10" data-track-index="2"></div>
+      <div class="clip" data-composition-id="gbeat-05" data-composition-src="compositions/gbeat-05.html" data-start="298.0" data-duration="8" data-track-index="2"></div>
+      <div class="clip" data-composition-id="gbeat-06" data-composition-src="compositions/gbeat-06.html" data-start="327.0" data-duration="22" data-track-index="2"></div>
+      <div class="clip" data-composition-id="gbeat-07" data-composition-src="compositions/gbeat-07.html" data-start="385.0" data-duration="9" data-track-index="2"></div>
+      <div class="clip" data-composition-id="gbeat-08" data-composition-src="compositions/gbeat-08.html" data-start="415.0" data-duration="16" data-track-index="2"></div>
+      <div class="clip" data-composition-id="gbeat-09" data-composition-src="compositions/gbeat-09.html" data-start="460.0" data-duration="29" data-track-index="2"></div>
+</div>
+<script>window.__timelines=window.__timelines||{};window.__timelines["main"]=gsap.timeline({paused:true});</script>
+</body></html>

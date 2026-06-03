@@ -31,44 +31,41 @@
     <style>
       [data-composition-id="book-reveal"] { position: absolute; inset: 0; background: transparent;
         font-family: 'Inter', system-ui, sans-serif; }
-      /* scrim is dark across the left+center (subdues the duplicate center-Anndy behind
-         the title) but stays a gradient (not flat) and clears at the far-right edge so a
-         hint of live footage remains; the framed panel is the clear live shot of him */
       [data-composition-id="book-reveal"] .br-bg { position: absolute; inset: 0;
-        background: linear-gradient(100deg, rgba(12,13,18,0.97) 0%, rgba(12,13,18,0.93) 60%, rgba(12,13,18,0.8) 74%, rgba(12,13,18,0.12) 88%, rgba(12,13,18,0) 96%); }
+        background: linear-gradient(100deg, rgba(244,242,236,0.97) 0%, rgba(244,242,236,0.93) 60%, rgba(244,242,236,0.8) 74%, rgba(244,242,236,0.12) 88%, rgba(244,242,236,0) 96%); }
       [data-composition-id="book-reveal"] .br-glow { position: absolute; left: 120px; top: 250px; width: 560px; height: 600px;
-        background: radial-gradient(50% 50% at 50% 50%, rgba(31,227,198,0.28), rgba(31,227,198,0)); filter: blur(8px); }
+        background: radial-gradient(50% 50% at 50% 50%, rgba(204,120,92,0.15), rgba(204,120,92,0)); filter: none; }
 
       [data-composition-id="book-reveal"] .br-book-wrap { position: absolute; left: 150px; top: 280px;
         width: 320px; height: 480px; perspective: 1700px; }
       [data-composition-id="book-reveal"] .br-book { position: absolute; inset: 0; width: 320px; height: 480px;
-        transform-origin: left center; box-shadow: 0 40px 80px rgba(0,0,0,0.55), 0 0 60px rgba(31,227,198,0.18); }
+        transform-origin: left center; box-shadow: 0 40px 80px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.06); }
       [data-composition-id="book-reveal"] .br-sweep { position: absolute; inset: 0; overflow: hidden; mix-blend-mode: screen;
         background: linear-gradient(105deg, rgba(255,255,255,0) 38%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 62%);
         background-size: 280% 100%; }
 
       [data-composition-id="book-reveal"] .br-title { position: absolute; left: 540px; top: 300px; width: 560px; }
       [data-composition-id="book-reveal"] .br-eyebrow { font-size: 28px; font-weight: 600; letter-spacing: 0.2em;
-        text-transform: uppercase; color: #1FE3C6; }
-      [data-composition-id="book-reveal"] .br-web4 { font-size: 176px; font-weight: 900; line-height: 0.92; color: #EEF1F4;
-        letter-spacing: -0.03em; margin-top: 6px; text-shadow: 0 0 50px rgba(31,227,198,0.25); }
-      [data-composition-id="book-reveal"] .br-sub { font-size: 36px; font-weight: 500; color: #C7CBD1; margin-top: 12px; }
-      [data-composition-id="book-reveal"] .br-rule { height: 3px; width: 200px; background: #1FE3C6; margin: 28px 0 26px;
-        transform-origin: left center; box-shadow: 0 0 18px rgba(31,227,198,0.6); }
+        text-transform: uppercase; color: #CC785C; }
+      [data-composition-id="book-reveal"] .br-web4 { font-size: 176px; font-weight: 900; line-height: 0.92; color: #1A1A18;
+        letter-spacing: -0.03em; margin-top: 6px; text-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+      [data-composition-id="book-reveal"] .br-sub { font-size: 36px; font-weight: 500; color: #6E6B63; margin-top: 12px; }
+      [data-composition-id="book-reveal"] .br-rule { height: 3px; width: 200px; background: #CC785C; margin: 28px 0 26px;
+        transform-origin: left center; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
       /* stacked vertically (#11 under #1) so they never reach the video panel */
       [data-composition-id="book-reveal"] .br-stats { display: flex; flex-direction: column; gap: 16px; }
       [data-composition-id="book-reveal"] .br-stat { display: flex; align-items: baseline; gap: 14px; }
-      [data-composition-id="book-reveal"] .br-num { font-size: 58px; font-weight: 800; color: #1FE3C6;
-        font-variant-numeric: tabular-nums; text-shadow: 0 0 24px rgba(31,227,198,0.45); min-width: 100px; }
+      [data-composition-id="book-reveal"] .br-num { font-size: 58px; font-weight: 800; color: #CC785C;
+        font-variant-numeric: tabular-nums; text-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 100px; }
       [data-composition-id="book-reveal"] .br-lbl { font-size: 24px; font-weight: 600; letter-spacing: 0.14em;
-        text-transform: uppercase; color: #969CA6; }
+        text-transform: uppercase; color: #6E6B63; }
 
       [data-composition-id="book-reveal"] .br-live-wrap { position: absolute; left: 1190px; top: 230px;
         width: 600px; height: 620px; border-radius: 14px; overflow: hidden;
-        box-shadow: 0 40px 90px rgba(0,0,0,0.6), 0 0 50px rgba(31,227,198,0.12); }
+        box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
       [data-composition-id="book-reveal"] #br-live { width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; }
       [data-composition-id="book-reveal"] .br-live-border { position: absolute; inset: 0; border-radius: 14px;
-        border: 1px solid rgba(31,227,198,0.35); pointer-events: none; }
+        border: 1px solid rgba(204,120,92,0.25); pointer-events: none; }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
