@@ -129,6 +129,31 @@ Add your own backgrounds to the cache from the command line:
 python library.py add path/to/image.jpg --subject "bitcoin chart" --tags "crypto,chart"
 ```
 
+## Editor shortcuts
+
+| Keys | Action |
+|---|---|
+| `Delete` / `Backspace` | delete selected object |
+| `Ctrl/Cmd + Z` · `Ctrl/Cmd + Shift + Z` (or `Ctrl+Y`) | undo · redo |
+| `Ctrl/Cmd + D` | duplicate selected object |
+| `← ↑ ↓ →` (hold `Shift` for 10px) | nudge selected object |
+
+The editor also shows a live **mobile preview** under the canvas — your
+thumbnail at YouTube-sidebar size (168px), which is where most CTR is won
+or lost.
+
+## Tests
+
+With the server running:
+
+```bash
+python tests_edge.py
+```
+
+runs a 20-case edge battery (bad URLs, missing keys, malformed exports,
+path-traversal names, minimal templates, no-face composes, extreme slider
+values, emoji/overflow text, …).
+
 ## Notes
 
 - The CTR rulebook lives in `references/thumbnail-ctr-guide.md` (vendored from

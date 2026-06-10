@@ -27,9 +27,13 @@ const ThumbEditor = (() => {
     return node;
   }
 
-  function status(msg, isError = false) {
+  function status(msg, isError = false, busy = false) {
     const bar = document.querySelector('#status-bar');
-    if (bar) { bar.textContent = msg; bar.className = isError ? 'error' : ''; }
+    if (!bar) return;
+    const text = bar.querySelector('#status-text');
+    if (text) text.textContent = msg; else bar.textContent = msg;
+    bar.className = 'show' + (isError ? ' error' : '') + (busy ? ' busy' : '');
+    if (!msg) bar.className = '';
   }
 
   async function api(path, body) {
@@ -62,33 +66,46 @@ const ThumbEditor = (() => {
     root.innerHTML = `
       <div class="ed-wrap">
         <div class="ed-toolbar">
-          <button data-act="text">+ Text</button>
-          <button data-act="circle">+ Circle</button>
-          <button data-act="arrow">+ Arrow</button>
-          <button data-act="badge">+ Badge</button>
-          <label class="btn">+ Image<input type="file" data-act="image" accept="image/*" hidden></label>
+          <button data-act="text" title="Add text">＋ Text</button>
+          <button data-act="circle" title="Add highlight circle">◯ Circle</button>
+          <button data-act="arrow" title="Add arrow">➜ Arrow</button>
+          <button data-act="badge" title="Add badge">🏷 Badge</button>
+          <label class="btn" title="Add an image layer">🖼 Image<input type="file" data-act="image" accept="image/*" hidden></label>
           <label><input type="checkbox" data-act="image-cutout" checked> remove bg on add</label>
           <span class="sep"></span>
-          <button data-act="undo">Undo</button>
-          <button data-act="redo">Redo</button>
-          <button data-act="fliph">Flip H</button>
-          <button data-act="delete">Delete</button>
+          <button data-act="undo" title="Ctrl+Z">↩ Undo</button>
+          <button data-act="redo" title="Ctrl+Shift+Z">↪ Redo</button>
+          <button data-act="duplicate" title="Ctrl+D">⧉ Duplicate</button>
+          <button data-act="fliph" title="Mirror the selected object">⇋ Flip H</button>
+          <button data-act="delete" title="Delete / Backspace">✕ Delete</button>
           <span class="sep"></span>
-          <button data-act="export" class="primary">Export PNG</button>
+          <button data-act="export" class="primary">⬇ Export PNG</button>
           <button data-act="save-template">Save Template</button>
           <button data-act="save-project">Save Project</button>
           <select data-act="projects"><option value="">Open project…</option></select>
         </div>
         <div class="ed-main">
-          <div class="ed-canvas-box"><canvas></canvas></div>
+          <div>
+            <div class="ed-canvas-box"><canvas></canvas></div>
+            <div class="mobile-preview">
+              <img alt="mobile preview">
+              <div class="cap">Mobile preview — how it looks in the YouTube sidebar (168px)</div>
+            </div>
+          </div>
           <div class="ed-side">
             <h4>Layers</h4>
             <ul class="ed-layers"></ul>
             <h4>Selected object</h4>
             <div class="ed-props">
               <label>Font <select data-prop="fontFamily"></select></label>
-              <label>Fill <input type="color" data-prop="fill" value="#ffffff"></label>
-              <label>Stroke <input type="color" data-prop="stroke" value="#000000"></label>
+              <div class="row2">
+                <label>Size <input type="number" min="8" max="400" data-prop="fontSize"></label>
+                <label>Opacity <input type="range" min="0" max="100" value="100" data-prop="opacity"></label>
+              </div>
+              <div class="row2">
+                <label>Fill <input type="color" data-prop="fill" value="#ffffff"></label>
+                <label>Stroke <input type="color" data-prop="stroke" value="#000000"></label>
+              </div>
               <label>Stroke width <input type="range" min="0" max="20" data-prop="strokeWidth"></label>
               <label><input type="checkbox" data-prop="allcaps"> ALL CAPS</label>
             </div>
@@ -127,6 +144,8 @@ const ThumbEditor = (() => {
     wireSnapGuides(ed);
     wireToolbar(ed);
     wireSidePanel(ed);
+    wireKeyboard(ed);
+    wireMobilePreview(ed);
     refreshProjects(ed);
 
     loadFonts().then(families => {
@@ -148,8 +167,9 @@ const ThumbEditor = (() => {
 
   function fitToContainer(ed) {
     const box = ed.root.querySelector('.ed-canvas-box');
-    const zoom = Math.min(1, (box.clientWidth - 4) / W);
-    ed.zoom = zoom || 1;
+    // box is 0-wide while its section is still hidden — keep zoom sane then.
+    const zoom = box.clientWidth > 50 ? Math.min(1, (box.clientWidth - 4) / W) : 1;
+    ed.zoom = zoom;
     ed.canvas.setZoom(ed.zoom);
     ed.canvas.setDimensions({ width: W * ed.zoom, height: H * ed.zoom });
   }
@@ -165,6 +185,7 @@ const ThumbEditor = (() => {
 
   async function loadLayers(ed, spec) {
     const c = ed.canvas;
+    fitToContainer(ed);  // the section may have just become visible
     ed.suspendHistory = true;
     c.clear();
     c.backgroundColor = '#101010';
@@ -290,6 +311,71 @@ const ThumbEditor = (() => {
       { x: x2 - head * Math.cos(angle + 0.45), y: y2 - head * Math.sin(angle + 0.45) },
     ], { fill });
     return new fabric.Group([line, tri], { meta: { kind: 'extra', shape: 'arrow' } });
+  }
+
+  // ---- keyboard shortcuts ---------------------------------------------------
+
+  function typingSomewhere(ed) {
+    const tag = document.activeElement?.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement?.isContentEditable
+      || ed.canvas.getActiveObject()?.isEditing;  // fabric inline text edit
+  }
+
+  function wireKeyboard(ed) {
+    document.addEventListener('keydown', e => {
+      if (typingSomewhere(ed)) return;
+      const obj = ed.canvas.getActiveObject();
+      const mod = e.ctrlKey || e.metaKey;
+      if (mod && e.key.toLowerCase() === 'z') {
+        e.preventDefault();
+        e.shiftKey ? redo(ed) : undo(ed);
+      } else if (mod && e.key.toLowerCase() === 'y') {
+        e.preventDefault(); redo(ed);
+      } else if (mod && e.key.toLowerCase() === 'd') {
+        e.preventDefault(); duplicate(ed);
+      } else if ((e.key === 'Delete' || e.key === 'Backspace') && obj) {
+        e.preventDefault();
+        ed.canvas.remove(obj); ed.canvas.discardActiveObject(); refreshLayers(ed);
+      } else if (e.key.startsWith('Arrow') && obj) {
+        e.preventDefault();
+        const step = e.shiftKey ? 10 : 1;
+        if (e.key === 'ArrowLeft') obj.left -= step;
+        if (e.key === 'ArrowRight') obj.left += step;
+        if (e.key === 'ArrowUp') obj.top -= step;
+        if (e.key === 'ArrowDown') obj.top += step;
+        obj.setCoords(); ed.canvas.renderAll();
+      }
+    });
+  }
+
+  function duplicate(ed) {
+    const obj = ed.canvas.getActiveObject();
+    if (!obj || obj.meta?.kind === 'background') return;
+    obj.clone(copy => {
+      copy.set({ left: obj.left + 24, top: obj.top + 24, meta: { ...(obj.meta || {}) } });
+      ed.canvas.add(copy);
+      ed.canvas.setActiveObject(copy);
+      refreshLayers(ed);
+    }, EXTRA_PROPS);
+  }
+
+  // ---- live mobile-size preview ----------------------------------------------
+
+  function wireMobilePreview(ed) {
+    const img = ed.root.querySelector('.mobile-preview img');
+    let pending = null;
+    ed.canvas.on('after:render', () => {
+      if (pending) return;            // throttle: at most ~2 updates/sec
+      pending = setTimeout(() => {
+        pending = null;
+        try {
+          img.src = ed.canvas.toDataURL({
+            format: 'jpeg', quality: 0.8,
+            multiplier: 336 / (W * ed.zoom),  // 2x of the 168px display size
+          });
+        } catch (e) { /* tainted canvas etc — preview is best-effort */ }
+      }, 450);
+    });
   }
 
   // ---- history (undo/redo) ------------------------------------------------
@@ -451,6 +537,7 @@ const ThumbEditor = (() => {
     };
     q('[data-act=undo]').onclick = () => undo(ed);
     q('[data-act=redo]').onclick = () => redo(ed);
+    q('[data-act=duplicate]').onclick = () => duplicate(ed);
     q('[data-act=fliph]').onclick = () => {
       const obj = ed.canvas.getActiveObject();
       if (obj) { obj.set('flipX', !obj.flipX); ed.canvas.renderAll(); }
@@ -595,9 +682,11 @@ const ThumbEditor = (() => {
     if (!obj) return;
     const q = sel => ed.root.querySelector(sel);
     if (obj.fontFamily) q('[data-prop=fontFamily]').value = obj.fontFamily;
+    if (obj.fontSize) q('[data-prop=fontSize]').value = Math.round(obj.fontSize);
     if (typeof obj.fill === 'string') q('[data-prop=fill]').value = toHex(obj.fill);
     if (typeof obj.stroke === 'string') q('[data-prop=stroke]').value = toHex(obj.stroke);
     q('[data-prop=strokeWidth]').value = obj.strokeWidth || 0;
+    q('[data-prop=opacity]').value = Math.round((obj.opacity ?? 1) * 100);
     refreshLayers(ed);
   }
 
@@ -617,6 +706,8 @@ const ThumbEditor = (() => {
       ed.canvas.renderAll();
     };
     q('[data-prop=fontFamily]').onchange = e => apply('fontFamily', e.target.value);
+    q('[data-prop=fontSize]').oninput = e => apply('fontSize', Number(e.target.value) || 12);
+    q('[data-prop=opacity]').oninput = e => apply('opacity', Number(e.target.value) / 100);
     q('[data-prop=fill]').oninput = e => apply('fill', e.target.value);
     q('[data-prop=stroke]').oninput = e => apply('stroke', e.target.value);
     q('[data-prop=strokeWidth]').oninput = e => apply('strokeWidth', Number(e.target.value));

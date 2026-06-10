@@ -57,8 +57,10 @@ async def generate(topic: str = Form(...), mode: str = Form("auto"),
                    transcript: str = Form(""), face: UploadFile | None = File(None)):
     """Full Auto: briefs -> backgrounds -> 10 composed thumbnails.
     Assisted: returns the editable briefs only (front end continues stepwise)."""
+    if not topic.strip():
+        raise ValueError("Enter a topic first — it drives every brief.")
     face_path = await _resolve_face_upload(face)
-    briefs = brief.make_briefs(topic, transcript)
+    briefs = brief.make_briefs(topic.strip(), transcript)
     if mode == "assisted":
         return {"briefs": briefs, "face": compose._to_url(face_path)}
 
@@ -128,6 +130,29 @@ async def compose_endpoint(request: Request):
         results.append({"style_id": b["style_id"], "style_name": style["name"],
                         "png": compose._to_url(png), "layers": spec})
     return {"thumbnails": results, "log": log}
+
+
+@app.get("/face/last")
+def face_last():
+    """The cutout that will be used by default (most recent one)."""
+    path = imagery.last_used_cutout()
+    return {"face": compose._to_url(path) if path else None}
+
+
+@app.post("/export/zip")
+async def export_zip(request: Request):
+    """Bundle a set of generated PNGs into one downloadable zip."""
+    import zipfile
+    body = await request.json()
+    files = [compose._from_url(f) for f in body.get("files", [])]
+    files = [f for f in files if f and os.path.exists(f)]
+    if not files:
+        raise ValueError("Nothing to download yet — generate thumbnails first.")
+    out = os.path.join(config.OUTPUTS_DIR, f"thumbnails_{int(time.time())}.zip")
+    with zipfile.ZipFile(out, "w") as zf:
+        for f in files:
+            zf.write(f, os.path.basename(f))
+    return {"file": compose._to_url(out)}
 
 
 @app.post("/cutout")
@@ -215,6 +240,8 @@ def projects_list():
 def projects_load(name: str):
     path = os.path.join(config.PROJECTS_DIR,
                         re.sub(r"[^A-Za-z0-9_-]", "_", name) + ".json")
+    if not os.path.exists(path):
+        raise ValueError(f'Project "{name}" not found.')
     with open(path) as f:
         return json.load(f)
 

@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 
 import config
@@ -33,15 +34,40 @@ def get_style(style_id):
     raise KeyError(f"Unknown style: {style_id}")
 
 
+# Defaults merged into saved styles so a minimal/partial template still
+# composes without KeyErrors.
+DEFAULT_STYLE = {
+    "description": "User template saved from the editor.",
+    "face": {"height_frac": 0.85, "anchor": "right", "x_bleed_px": 30,
+             "rim_light": True, "drop_shadow": True},
+    "text": {"position": "left", "max_words": 4, "case": "upper", "font": "Anton",
+             "start_size": 130, "max_lines": 2, "fill": "#FFFFFF",
+             "stroke": "#000000", "stroke_width": 8, "accent_bar": False},
+    "background": {"treatment": "darken_left", "darken": 0.5, "shift_x": 0,
+                   "saturation": 1.1,
+                   "prompt_style_suffix": "dramatic lighting, bold colors, high contrast"},
+    "extras": [],
+}
+
+
 def save_style(style):
-    """Save a user-created style. Ensures a user_ prefix so it sorts first."""
-    sid = style.get("id", "untitled").strip().lower().replace(" ", "_")
+    """Save a user-created style: sanitize the id, ensure a user_ prefix so it
+    sorts first, and fill any missing fields with safe defaults."""
+    sid = re.sub(r"[^a-z0-9_]+", "_", str(style.get("id", "untitled")).strip().lower())
+    sid = sid.strip("_") or "untitled"
     if not sid.startswith("user_"):
         sid = "user_" + sid
-    style["id"] = sid
+    merged = json.loads(json.dumps(DEFAULT_STYLE))  # deep copy
+    for key, value in style.items():
+        if isinstance(value, dict) and isinstance(merged.get(key), dict):
+            merged[key].update(value)
+        else:
+            merged[key] = value
+    merged["id"] = sid
+    merged.setdefault("name", sid)
     path = os.path.join(config.STYLES_DIR, sid + ".json")
     with open(path, "w") as f:
-        json.dump(style, f, indent=2)
+        json.dump(merged, f, indent=2)
     return sid
 
 
