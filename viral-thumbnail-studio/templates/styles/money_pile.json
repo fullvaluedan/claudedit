@@ -1,0 +1,32 @@
+{
+  "id": "money_pile",
+  "name": "Money Pile",
+  "description": "Cash, gold, or coins filling the frame; green accents; greedy/excited face.",
+  "face": {
+    "height_frac": 0.86,
+    "anchor": "right",
+    "x_bleed_px": 40,
+    "rim_light": true,
+    "drop_shadow": true
+  },
+  "text": {
+    "position": "left",
+    "max_words": 3,
+    "case": "upper",
+    "font": "Anton",
+    "start_size": 160,
+    "max_lines": 2,
+    "fill": "#3CFF6E",
+    "stroke": "#003300",
+    "stroke_width": 10,
+    "accent_bar": false
+  },
+  "background": {
+    "treatment": "darken_left",
+    "darken": 0.5,
+    "shift_x": 0,
+    "saturation": 1.3,
+    "prompt_style_suffix": "piles of cash and gold coins, dramatic green-tinted lighting, luxurious"
+  },
+  "extras": []
+}

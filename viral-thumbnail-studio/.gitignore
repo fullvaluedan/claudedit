@@ -1,0 +1,23 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+
+# generated output + saved sessions stay local
+outputs/*
+!outputs/.gitkeep
+projects/*
+!projects/.gitkeep
+
+# asset caches stay local (fonts are downloaded by the user, see README)
+assets/faces/*
+!assets/faces/.gitkeep
+assets/backgrounds/*
+!assets/backgrounds/.gitkeep
+assets/channels/*
+!assets/channels/.gitkeep
+assets/fonts/*
+!assets/fonts/.gitkeep
+
+# user-saved styles stay local
+templates/styles/user_*.json

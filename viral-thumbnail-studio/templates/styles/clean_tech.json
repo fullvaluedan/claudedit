@@ -1,0 +1,32 @@
+{
+  "id": "clean_tech",
+  "name": "Clean Tech",
+  "description": "Minimal, premium tech look: soft gradient, thin accent bar, calm face.",
+  "face": {
+    "height_frac": 0.8,
+    "anchor": "right",
+    "x_bleed_px": 20,
+    "rim_light": false,
+    "drop_shadow": true
+  },
+  "text": {
+    "position": "left",
+    "max_words": 4,
+    "case": "title",
+    "font": "Archivo Black",
+    "start_size": 110,
+    "max_lines": 2,
+    "fill": "#FFFFFF",
+    "stroke": "#000000",
+    "stroke_width": 0,
+    "accent_bar": true
+  },
+  "background": {
+    "treatment": "darken_left",
+    "darken": 0.5,
+    "shift_x": 0,
+    "saturation": 0.95,
+    "prompt_style_suffix": "minimal premium tech aesthetic, soft gradients, dark blue and silver"
+  },
+  "extras": []
+}

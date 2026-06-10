@@ -1,0 +1,83 @@
+/* Shared look for both tool pages + the editor. Dark, simple, no framework. */
+* { box-sizing: border-box; }
+body { margin: 0; background: #0d0f13; color: #e8e8e8;
+       font: 15px/1.45 system-ui, sans-serif; }
+header { display: flex; align-items: baseline; gap: 18px; padding: 14px 22px;
+         background: #14181f; border-bottom: 1px solid #262b33; }
+header h1 { font-size: 19px; margin: 0; }
+header a { color: #6db8ff; text-decoration: none; }
+section { padding: 14px 22px; }
+h2 { font-size: 16px; margin: 8px 0; }
+h3, h4 { font-size: 13px; margin: 10px 0 4px; color: #9aa3ad; text-transform: uppercase; }
+
+input, textarea, select, button {
+  background: #1b212b; color: #e8e8e8; border: 1px solid #313a47;
+  border-radius: 6px; padding: 7px 10px; font: inherit; }
+textarea { width: 100%; }
+button, .btn { cursor: pointer; }
+button:hover, .btn:hover { border-color: #5a6b82; }
+button.primary { background: #2563eb; border-color: #2563eb; font-weight: 600; }
+button:disabled { opacity: 0.5; cursor: wait; }
+label.btn { display: inline-block; background: #1b212b; border: 1px solid #313a47;
+            border-radius: 6px; padding: 7px 10px; }
+.muted { color: #8b95a1; font-size: 13px; }
+.error { color: #ff6b6b; }
+
+.topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+          background: #11151b; border-bottom: 1px solid #262b33; }
+.toggle label { margin-right: 10px; }
+
+#status-bar { min-height: 22px; padding: 6px 22px; font-size: 13px; color: #7ee07e; }
+#status-bar.error { color: #ff6b6b; }
+
+/* thumbnail grids */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.grid.small { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+.card { background: #161b22; border: 1px solid #2a313c; border-radius: 8px;
+        padding: 8px; cursor: pointer; }
+.card img { width: 100%; border-radius: 4px; display: block; }
+.card .label { margin-top: 6px; font-weight: 600; font-size: 13px; }
+.card .why { font-size: 12px; color: #9aa3ad; }
+.card.picked { outline: 3px solid #2563eb; }
+.card.checker img { background:
+  repeating-conic-gradient(#222 0% 25%, #333 0% 50%) 0 / 24px 24px; }
+
+/* assisted mode */
+#briefs-table { border-collapse: collapse; width: 100%; }
+#briefs-table th, #briefs-table td { border-bottom: 1px solid #262b33;
+  padding: 5px 8px; text-align: left; }
+#briefs-table input[type=text], #briefs-table input:not([type]) { width: 100%; }
+.bg-block { margin: 12px 0; padding: 10px; background: #161b22; border-radius: 8px; }
+.bg-block h3 { text-transform: none; color: #e8e8e8; font-size: 14px; }
+.cands img { height: 110px; margin: 4px; border-radius: 4px; cursor: pointer; }
+.cands img.picked { outline: 3px solid #2563eb; }
+.cands .genprompt { width: 70%; }
+
+/* analyze scorecard */
+.report-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 22px; }
+.bigthumb { width: 100%; border-radius: 8px; }
+.verdict { font-style: italic; color: #ffd166; margin-bottom: 6px; }
+.overall { font-size: 22px; margin-bottom: 10px; }
+.bar-row { display: grid; grid-template-columns: 130px 1fr 36px; gap: 8px;
+           align-items: center; margin: 4px 0; font-size: 13px; }
+.bar { background: #1b212b; border-radius: 4px; height: 12px; overflow: hidden; }
+.bar .fill { height: 100%; border-radius: 4px; }
+.bar .fill.high { background: #16c784; }
+.bar .fill.mid { background: #ffd166; }
+.bar .fill.low { background: #ff4d4f; }
+
+/* editor */
+.ed-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+              padding: 8px 0; }
+.ed-toolbar .sep { width: 1px; height: 22px; background: #313a47; }
+.ed-main { display: grid; grid-template-columns: 1fr 280px; gap: 16px; }
+.ed-canvas-box { background: #000; border-radius: 6px; overflow: hidden; }
+.ed-side label { display: block; margin: 4px 0; font-size: 13px; }
+.ed-side select, .ed-side textarea { width: 100%; }
+.ed-layers { list-style: none; margin: 0; padding: 0; }
+.ed-layers li { display: flex; align-items: center; gap: 4px; padding: 3px 6px;
+  border: 1px solid #262b33; border-radius: 4px; margin: 3px 0; cursor: grab;
+  background: #161b22; font-size: 13px; }
+.ed-layers li.active { border-color: #2563eb; }
+.ed-layers .lname { flex: 1; overflow: hidden; white-space: nowrap; }
+.ed-layers button { padding: 1px 5px; font-size: 12px; }

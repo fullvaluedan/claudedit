@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Viral Thumbnail Studio — Analyze</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+<script>/* offline fallback: use the vendored copy if the CDN is unreachable */
+if (!window.fabric) document.write('<script src="/static/vendor/fabric.min.js"><\/script>');</script>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>🔎 Viral Thumbnail Studio — Analyze</h1>
+  <a href="/static/create.html">→ Create thumbnails</a>
+</header>
+
+<section class="topbar">
+  <input id="url" placeholder="Paste a YouTube link…" size="55">
+  <button id="go" class="primary">Go</button>
+</section>
+
+<div id="status-bar"></div>
+
+<!-- Scorecard -->
+<section id="report" hidden>
+  <div class="report-grid">
+    <div>
+      <h2>Original thumbnail</h2>
+      <img id="orig-thumb" class="bigthumb">
+      <p id="video-meta" class="muted"></p>
+      <p id="transcript-note" class="muted"></p>
+    </div>
+    <div>
+      <h2>Scorecard</h2>
+      <div class="verdict" id="verdict"></div>
+      <div class="overall">Overall: <b id="overall"></b>/100</div>
+      <div id="score-bars"></div>
+      <h3>Strengths</h3><ul id="strengths"></ul>
+      <h3>Weaknesses</h3><ul id="weaknesses"></ul>
+    </div>
+    <div id="my-score" hidden>
+      <h2>My remake</h2>
+      <img id="my-thumb" class="bigthumb">
+      <div class="overall">Overall: <b id="my-overall"></b>/100</div>
+      <div id="my-score-bars"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Face candidates -->
+<section id="faces-section" hidden>
+  <h2>Host face — pick the best cutout (real photos from the channel, never AI)</h2>
+  <div id="face-grid" class="grid small"></div>
+  <button id="remake-btn" class="primary">Make 3 improved versions</button>
+</section>
+
+<!-- Remakes -->
+<section id="remakes-section" hidden>
+  <h2>Remakes</h2>
+  <div id="remakes" class="grid"></div>
+</section>
+
+<!-- Editor -->
+<section id="editor-section" hidden>
+  <h2>Editor</h2>
+  <div id="editor-root"></div>
+  <button id="rate-mine" hidden>Rate my remake</button>
+</section>
+
+<script src="/static/editor.js"></script>
+<script>
+const $ = sel => document.querySelector(sel);
+const status = ThumbEditor.status;
+let editor = null, analysis = null, chosenFace = null;
+
+function getEditor() {
+  if (!editor) {
+    editor = ThumbEditor.mount($('#editor-root'));
+    editor.onExport = file => {           // enable "Rate my remake" after export
+      $('#rate-mine').hidden = false;
+      $('#rate-mine').dataset.file = file;
+    };
+  }
+  $('#editor-section').hidden = false;
+  return editor;
+}
+
+$('#go').onclick = async () => {
+  const url = $('#url').value.trim();
+  if (!url) return status('Paste a YouTube URL first.', true);
+  status('Fetching video + rating thumbnail… (the rating is a Claude call, ~30-60s)');
+  $('#go').disabled = true;
+  try {
+    analysis = await ThumbEditor.api('/analyze', { url });
+    renderScorecard(analysis);
+    status('Rated. Building the channel face library…');
+    await loadFaces(analysis.meta.channel_id);
+  } catch (err) { status(err.message, true); }
+  $('#go').disabled = false;
+};
+
+function renderScorecard(a) {
+  $('#orig-thumb').src = a.thumbnail;
+  const m = a.meta;
+  $('#video-meta').textContent =
+    `${m.title} — ${m.channel} · ${Number(m.view_count || 0).toLocaleString()} views · uploaded ${m.upload_date || '?'}`;
+  $('#transcript-note').textContent = a.transcript_available
+    ? 'Transcript found and used for the rating.'
+    : '⚠ No transcript available — rating uses title + description only.';
+  $('#verdict').textContent = '“' + (a.rating.one_line_verdict || '') + '”';
+  $('#overall').textContent = a.rating.score_overall;
+  bars($('#score-bars'), a.rating.scores);
+  fillList('#strengths', a.rating.strengths);
+  fillList('#weaknesses', a.rating.weaknesses);
+  $('#report').hidden = false;
+}
+
+function bars(elBox, scores) {
+  elBox.innerHTML = '';
+  Object.entries(scores || {}).forEach(([k, v]) => {
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `<span>${k.replace(/_/g, ' ')}</span>
+      <div class="bar"><div class="fill ${v < 50 ? 'low' : v < 75 ? 'mid' : 'high'}"
+        style="width:${v}%"></div></div><b>${v}</b>`;
+    elBox.append(row);
+  });
+}
+
+function fillList(sel, items) {
+  $(sel).innerHTML = (items || []).map(s => `<li>${s}</li>`).join('');
+}
+
+async function loadFaces(channelId) {
+  try {
+    const data = await ThumbEditor.api('/analyze/face-candidates', { channel_id: channelId });
+    const grid = $('#face-grid');
+    grid.innerHTML = '';
+    if (!data.candidates.length) {
+      grid.innerHTML = '<p class="muted">No usable face cutouts found on this channel. ' +
+        'Remakes will be composed without a face layer.</p>';
+    }
+    data.candidates.forEach((c, i) => {
+      const card = document.createElement('div');
+      card.className = 'card checker';
+      card.innerHTML = `<img src="${c.cutout}"><div class="label">${Math.round(c.area * 100)}% of frame</div>`;
+      card.onclick = () => {
+        grid.querySelectorAll('.card').forEach(x => x.classList.remove('picked'));
+        card.classList.add('picked');
+        chosenFace = c.cutout;
+      };
+      grid.append(card);
+      if (i === 0) card.click();  // auto-pick the largest; user can override
+    });
+    $('#faces-section').hidden = false;
+    status('Pick a face cutout, then make the remakes.');
+  } catch (err) { status('Face library failed: ' + err.message, true); $('#faces-section').hidden = false; }
+}
+
+$('#remake-btn').onclick = async () => {
+  status('Picking 3 styles + composing remakes… (Claude + imagery, a few minutes)');
+  $('#remake-btn').disabled = true;
+  try {
+    const data = await ThumbEditor.api('/analyze/remake', {
+      title: analysis.meta.title,
+      transcript: analysis.transcript,
+      weaknesses: analysis.rating.weaknesses,
+      face: chosenFace,
+    });
+    const box = $('#remakes');
+    box.innerHTML = '';
+    data.remakes.forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `<img src="${r.png}">
+        <div class="label">${r.style_id}</div>
+        <p class="why">${r.what_changed}</p>
+        <button class="open">Open in Editor</button>
+        <a class="btn" href="${r.png}" download>Export</a>`;
+      card.querySelector('.open').onclick = async () => {
+        const ed = getEditor();
+        await ThumbEditor.loadLayers(ed, r.layers);
+        $('#editor-section').scrollIntoView({ behavior: 'smooth' });
+      };
+      box.append(card);
+    });
+    $('#remakes-section').hidden = false;
+    status('3 remakes ready.');
+  } catch (err) { status(err.message, true); }
+  $('#remake-btn').disabled = false;
+};
+
+$('#rate-mine').onclick = async () => {
+  status('Rating your remake… (~30-60s)');
+  try {
+    const data = await ThumbEditor.api('/analyze/rate-image', {
+      file: $('#rate-mine').dataset.file,
+      title: analysis?.meta.title || '',
+      transcript: analysis?.transcript || '',
+    });
+    $('#my-thumb').src = $('#rate-mine').dataset.file;
+    $('#my-overall').textContent = data.rating.score_overall;
+    bars($('#my-score-bars'), data.rating.scores);
+    $('#my-score').hidden = false;
+    const delta = data.rating.score_overall - (analysis?.rating.score_overall || 0);
+    status(`Your remake scored ${data.rating.score_overall}/100 (${delta >= 0 ? '+' : ''}${delta} vs original).`);
+    $('#report').scrollIntoView({ behavior: 'smooth' });
+  } catch (err) { status(err.message, true); }
+};
+</script>
+</body>
+</html>

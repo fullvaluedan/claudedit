@@ -1,0 +1,42 @@
+{
+  "id": "vs_split",
+  "name": "VS Split",
+  "description": "Two-sided comparison with a center VS badge. For matchups and head-to-heads.",
+  "face": {
+    "height_frac": 0.8,
+    "anchor": "left",
+    "x_bleed_px": 30,
+    "rim_light": true,
+    "drop_shadow": true
+  },
+  "text": {
+    "position": "bottom",
+    "max_words": 4,
+    "case": "upper",
+    "font": "Anton",
+    "start_size": 120,
+    "max_lines": 1,
+    "fill": "#FFFFFF",
+    "stroke": "#000000",
+    "stroke_width": 8,
+    "accent_bar": false
+  },
+  "background": {
+    "treatment": "darken_bottom",
+    "darken": 0.45,
+    "shift_x": 0,
+    "saturation": 1.25,
+    "prompt_style_suffix": "split composition, two contrasting halves, vivid complementary colors"
+  },
+  "extras": [
+    {
+      "type": "badge",
+      "label": "VS",
+      "x_frac": 0.5,
+      "y_frac": 0.42,
+      "size_frac": 0.16,
+      "fill": "#E60000",
+      "text_fill": "#FFFFFF"
+    }
+  ]
+}

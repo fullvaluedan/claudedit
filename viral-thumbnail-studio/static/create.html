@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Viral Thumbnail Studio — Create</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+<script>/* offline fallback: use the vendored copy if the CDN is unreachable */
+if (!window.fabric) document.write('<script src="/static/vendor/fabric.min.js"><\/script>');</script>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>🎬 Viral Thumbnail Studio — Create</h1>
+  <a href="/static/analyze.html">→ Analyze a YouTube video</a>
+</header>
+
+<section class="topbar">
+  <input id="topic" placeholder="Video topic, e.g. Claude Fable 5" size="40">
+  <details><summary>Transcript (optional)</summary>
+    <textarea id="transcript" rows="5" placeholder="Paste the video transcript here for sharper briefs"></textarea>
+  </details>
+  <label class="btn">Face photo<input type="file" id="face" accept="image/*" hidden></label>
+  <span id="face-note" class="muted">using last cutout</span>
+  <div class="toggle">
+    <label><input type="radio" name="mode" value="auto" checked> Full Auto</label>
+    <label><input type="radio" name="mode" value="assisted"> Assisted</label>
+  </div>
+  <button id="generate" class="primary">Generate</button>
+</section>
+
+<div id="status-bar"></div>
+
+<!-- Assisted step 1: editable briefs -->
+<section id="briefs-section" hidden>
+  <h2>Step 1 — Edit your briefs</h2>
+  <table id="briefs-table">
+    <thead><tr><th></th><th>Style</th><th>Text</th><th>Focus subject</th>
+      <th>Source</th><th>Query / Prompt</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <button id="briefs-continue" class="primary">Continue → choose backgrounds</button>
+</section>
+
+<!-- Assisted step 2: background candidates -->
+<section id="bg-section" hidden>
+  <h2>Step 2 — Pick a background per style</h2>
+  <div id="bg-blocks"></div>
+  <button id="bg-continue" class="primary">Continue → compose</button>
+</section>
+
+<!-- Result grid -->
+<section id="grid-section" hidden>
+  <h2>Thumbnails — click one to edit</h2>
+  <div id="grid" class="grid"></div>
+</section>
+
+<!-- Editor -->
+<section id="editor-section" hidden>
+  <h2>Editor</h2>
+  <div id="editor-root"></div>
+</section>
+
+<script src="/static/editor.js"></script>
+<script>
+const $ = sel => document.querySelector(sel);
+const status = ThumbEditor.status;
+let editor = null;
+let briefs = [], facePath = null, bgChoices = {};
+
+function getEditor() {
+  if (!editor) editor = ThumbEditor.mount($('#editor-root'));
+  $('#editor-section').hidden = false;
+  return editor;
+}
+
+$('#face').onchange = () => {
+  $('#face-note').textContent = $('#face').files[0]?.name || 'using last cutout';
+};
+
+$('#generate').onclick = async () => {
+  const topic = $('#topic').value.trim();
+  if (!topic) return status('Enter a topic first.', true);
+  const mode = document.querySelector('[name=mode]:checked').value;
+  const fd = new FormData();
+  fd.append('topic', topic);
+  fd.append('mode', mode);
+  fd.append('transcript', $('#transcript').value);
+  if ($('#face').files[0]) fd.append('face', $('#face').files[0]);
+
+  status(mode === 'auto'
+    ? 'Full Auto: briefs → backgrounds → composing 10 thumbnails… (this can take a few minutes)'
+    : 'Generating briefs…');
+  $('#generate').disabled = true;
+  try {
+    const resp = await fetch('/generate', { method: 'POST', body: fd });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error);
+    if (mode === 'auto') {
+      showGrid(data.thumbnails);
+      status(`Done. ${data.log.filter(l => l.includes('cache hit')).length} cache hits.`);
+    } else {
+      briefs = data.briefs;
+      facePath = data.face;
+      showBriefs();
+      status('Edit the briefs, untick styles you don\'t want, then Continue.');
+    }
+  } catch (err) { status(err.message, true); }
+  $('#generate').disabled = false;
+};
+
+// ---- Assisted step 1: briefs table ----
+function showBriefs() {
+  const tbody = $('#briefs-table tbody');
+  tbody.innerHTML = '';
+  briefs.forEach((b, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="checkbox" data-i="${i}" checked></td>
+      <td>${b.style_id}</td>
+      <td><input value="${esc(b.text)}" data-i="${i}" data-f="text"></td>
+      <td><input value="${esc(b.focus_subject)}" data-i="${i}" data-f="focus_subject"></td>
+      <td><select data-i="${i}" data-f="source">
+        <option ${b.source === 'search' ? 'selected' : ''}>search</option>
+        <option ${b.source === 'generate' ? 'selected' : ''}>generate</option></select></td>
+      <td><input value="${esc(b.source === 'search' ? b.query : b.prompt)}" size="44"
+        data-i="${i}" data-f="qp"></td>`;
+    tbody.append(tr);
+  });
+  tbody.oninput = e => {
+    const i = e.target.dataset.i, f = e.target.dataset.f;
+    if (i == null || !f) return;
+    if (f === 'qp') {
+      const key = briefs[i].source === 'search' ? 'query' : 'prompt';
+      briefs[i][key] = e.target.value;
+    } else briefs[i][f] = e.target.value;
+  };
+  $('#briefs-section').hidden = false;
+}
+
+function esc(s) { return (s || '').replace(/"/g, '&quot;'); }
+
+$('#briefs-continue').onclick = async () => {
+  const ticked = [...document.querySelectorAll('#briefs-table input[type=checkbox]:checked')]
+    .map(cb => briefs[cb.dataset.i]);
+  if (!ticked.length) return status('Tick at least one style.', true);
+  $('#bg-blocks').innerHTML = '';
+  $('#bg-section').hidden = false;
+  bgChoices = {};
+  status('Fetching background candidates…');
+  for (const b of ticked) {
+    const block = document.createElement('div');
+    block.className = 'bg-block';
+    block.innerHTML = `<h3>${b.style_id} — "${esc(b.text)}"</h3><div class="cands"></div>`;
+    $('#bg-blocks').append(block);
+    const cands = block.querySelector('.cands');
+    try {
+      const data = await ThumbEditor.api('/backgrounds/candidates', b);
+      if (data.mode === 'search') {
+        data.candidates.forEach(c => {
+          const img = document.createElement('img');
+          img.src = c.thumbnail;
+          img.title = c.url;
+          img.onclick = () => {
+            cands.querySelectorAll('img').forEach(x => x.classList.remove('picked'));
+            img.classList.add('picked');
+            bgChoices[b.style_id] = { brief: b, chosen_url: c.url };
+          };
+          cands.append(img);
+        });
+        // default pick: first result
+        cands.querySelector('img')?.click();
+      } else {
+        cands.innerHTML = `
+          <textarea rows="2" class="genprompt">${b.prompt || ''}</textarea>
+          <button class="gen">Generate</button><span class="muted">(uses GPT-Image-2)</span>
+          <div class="genout"></div>`;
+        bgChoices[b.style_id] = { brief: b };  // composes via cache/generate if not generated here
+        cands.querySelector('.gen').onclick = async ev => {
+          ev.target.disabled = true;
+          status(`Generating background for ${b.style_id}…`);
+          try {
+            b.prompt = cands.querySelector('.genprompt').value;
+            const out = await ThumbEditor.api('/backgrounds/generate',
+              { prompt: b.prompt, focus_subject: b.focus_subject });
+            cands.querySelector('.genout').innerHTML =
+              `<img src="${out.file}" class="picked" style="max-width:320px">`;
+            bgChoices[b.style_id] = { brief: b, chosen_file: out.file };
+            ev.target.textContent = 'Regenerate';
+            status('Generated. Regenerate if you want another take.');
+          } catch (err) { status(err.message, true); }
+          ev.target.disabled = false;
+        };
+      }
+    } catch (err) {
+      cands.innerHTML = `<span class="error">${err.message}</span>`;
+      bgChoices[b.style_id] = { brief: b };
+    }
+  }
+  status('Pick one background per style, then Continue.');
+};
+
+$('#bg-continue').onclick = async () => {
+  const items = Object.values(bgChoices);
+  if (!items.length) return status('Nothing selected.', true);
+  status('Composing…');
+  try {
+    const data = await ThumbEditor.api('/compose', { items, face: facePath });
+    showGrid(data.thumbnails);
+    status('Composed. Click a thumbnail to edit it.');
+  } catch (err) { status(err.message, true); }
+};
+
+// ---- result grid -> editor ----
+function showGrid(thumbs) {
+  const grid = $('#grid');
+  grid.innerHTML = '';
+  thumbs.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<img src="${t.png}"><div class="label">${t.style_name || t.style_id}</div>`;
+    card.onclick = async () => {
+      const ed = getEditor();
+      await ThumbEditor.loadLayers(ed, t.layers);
+      $('#editor-section').scrollIntoView({ behavior: 'smooth' });
+    };
+    grid.append(card);
+  });
+  $('#grid-section').hidden = false;
+}
+</script>
+</body>
+</html>

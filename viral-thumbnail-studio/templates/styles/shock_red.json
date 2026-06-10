@@ -1,0 +1,41 @@
+{
+  "id": "shock_red",
+  "name": "Shock Red",
+  "description": "Red-alert look: heavy red vignette, big warning words, shocked face.",
+  "face": {
+    "height_frac": 0.9,
+    "anchor": "right",
+    "x_bleed_px": 50,
+    "rim_light": true,
+    "drop_shadow": true
+  },
+  "text": {
+    "position": "left",
+    "max_words": 3,
+    "case": "upper",
+    "font": "Anton",
+    "start_size": 170,
+    "max_lines": 2,
+    "fill": "#FFFFFF",
+    "stroke": "#7A0000",
+    "stroke_width": 12,
+    "accent_bar": false
+  },
+  "background": {
+    "treatment": "red_vignette",
+    "darken": 0.55,
+    "shift_x": 0,
+    "saturation": 1.3,
+    "prompt_style_suffix": "ominous red and black tones, dramatic emergency atmosphere"
+  },
+  "extras": [
+    {
+      "type": "banner",
+      "label": "WARNING",
+      "y_frac": 0.04,
+      "height_frac": 0.11,
+      "fill": "#E60000",
+      "text_fill": "#FFFFFF"
+    }
+  ]
+}
