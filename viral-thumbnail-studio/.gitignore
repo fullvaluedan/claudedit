@@ -19,5 +19,6 @@ assets/channels/*
 assets/fonts/*
 !assets/fonts/.gitkeep
 
-# user-saved styles stay local
+# user-saved styles + brand kit stay local
 templates/styles/user_*.json
+templates/brand.json

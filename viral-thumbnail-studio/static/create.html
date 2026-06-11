@@ -16,10 +16,31 @@ if (!window.fabric) document.write('<script src="/static/vendor/fabric.min.js"><
   <nav class="tabs">
     <a href="/static/create.html" class="active">Create</a>
     <a href="/static/analyze.html">Analyze</a>
+    <a href="/static/gallery.html">Gallery</a>
   </nav>
   <div class="spacer"></div>
   <span class="kbd-hint">Editor: <kbd>⌫</kbd> delete · <kbd>Ctrl Z</kbd> undo · <kbd>Ctrl D</kbd> duplicate · <kbd>←↑↓→</kbd> nudge</span>
+  <button id="brand-btn" title="Lock your channel colors + font into every thumbnail">🎨 Brand Kit</button>
 </header>
+
+<dialog id="brand-dialog">
+  <form method="dialog" class="brand-form">
+    <h2 style="margin-top:0">🎨 Brand Kit</h2>
+    <p class="muted">When enabled, every composed thumbnail uses these colors and font —
+    text gets the headline fill + stroke, and circles/arrows/badges/banners use the accent.</p>
+    <label><input type="checkbox" id="bk-enabled"> Apply brand to all thumbnails</label>
+    <label>Headline font <input id="bk-font" placeholder="Anton"></label>
+    <div class="row3">
+      <label>Headline fill <input type="color" id="bk-fill"></label>
+      <label>Stroke <input type="color" id="bk-stroke"></label>
+      <label>Accent <input type="color" id="bk-accent"></label>
+    </div>
+    <div class="section-actions">
+      <button value="save" class="primary">Save</button>
+      <button value="cancel" class="ghost">Cancel</button>
+    </div>
+  </form>
+</dialog>
 
 <main>
 <section class="topbar">
@@ -106,6 +127,46 @@ function getEditor() {
 fetch('/face/last').then(r => r.json()).then(d => {
   if (d.face) setFaceChip(d.face, 'Last used cutout');
 }).catch(() => null);
+
+// ---- Brand Kit dialog ----
+$('#brand-btn').onclick = async () => {
+  try {
+    const { brand } = await (await fetch('/brand')).json();
+    $('#bk-enabled').checked = brand.enabled;
+    $('#bk-font').value = brand.font;
+    $('#bk-fill').value = brand.headline_fill;
+    $('#bk-stroke').value = brand.stroke;
+    $('#bk-accent').value = brand.accent;
+    $('#brand-dialog').showModal();
+  } catch (err) { status(err.message, true); }
+};
+$('#brand-dialog').addEventListener('close', async () => {
+  if ($('#brand-dialog').returnValue !== 'save') return;
+  try {
+    const { brand } = await ThumbEditor.api('/brand', { brand: {
+      enabled: $('#bk-enabled').checked,
+      font: $('#bk-font').value,
+      headline_fill: $('#bk-fill').value,
+      stroke: $('#bk-stroke').value,
+      accent: $('#bk-accent').value,
+    }});
+    $('#brand-btn').textContent = brand.enabled ? '🎨 Brand Kit · ON' : '🎨 Brand Kit';
+    status(brand.enabled
+      ? 'Brand kit saved — every new thumbnail will use your colors and font.'
+      : 'Brand kit saved (disabled — styles keep their own colors).');
+  } catch (err) { status(err.message, true); }
+});
+fetch('/brand').then(r => r.json()).then(({ brand }) => {
+  if (brand.enabled) $('#brand-btn').textContent = '🎨 Brand Kit · ON';
+}).catch(() => null);
+
+// ---- deep link from the Gallery: create.html?project=NAME ----
+const projectParam = new URLSearchParams(location.search).get('project');
+if (projectParam) {
+  $('#welcome').hidden = true;
+  const ed = getEditor();
+  ThumbEditor.openProject(ed, projectParam);
+}
 
 function setFaceChip(src, note) {
   $('#face-preview').src = src;

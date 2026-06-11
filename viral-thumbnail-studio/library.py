@@ -71,6 +71,44 @@ def save_style(style):
     return sid
 
 
+# --- brand kit ---------------------------------------------------------------
+
+BRAND_PATH = os.path.join(config.BASE_DIR, "templates", "brand.json")
+
+# Defaults seeded from the channel design system (DESIGN.md): white headlines,
+# near-black stroke, cyan accent used sparingly. Disabled until switched on.
+DEFAULT_BRAND = {
+    "enabled": False,
+    "font": "Anton",
+    "headline_fill": "#FFFFFF",
+    "stroke": "#0A0A0A",
+    "accent": "#00D4FF",
+}
+
+_HEX = re.compile(r"^#[0-9a-fA-F]{6}$")
+
+
+def load_brand():
+    if os.path.exists(BRAND_PATH):
+        with open(BRAND_PATH) as f:
+            return {**DEFAULT_BRAND, **json.load(f)}
+    return dict(DEFAULT_BRAND)
+
+
+def save_brand(brand):
+    """Validate + persist the brand kit. Bad colors fall back to defaults."""
+    clean = dict(DEFAULT_BRAND)
+    clean["enabled"] = bool(brand.get("enabled"))
+    clean["font"] = str(brand.get("font") or DEFAULT_BRAND["font"])[:40]
+    for key in ("headline_fill", "stroke", "accent"):
+        value = str(brand.get(key, "")).strip()
+        if _HEX.match(value):
+            clean[key] = value.upper()
+    with open(BRAND_PATH, "w") as f:
+        json.dump(clean, f, indent=2)
+    return clean
+
+
 # --- background cache manifest -------------------------------------------
 
 MANIFEST_PATH = os.path.join(config.BACKGROUNDS_DIR, "manifest.json")

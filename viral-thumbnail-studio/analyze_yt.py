@@ -105,6 +105,30 @@ Return JSON exactly in this shape:
     return rating
 
 
+def compare_thumbnails(path_a, path_b, title=""):
+    """A/B test two thumbnails in ONE claude -p call. Returns winner + scores."""
+    prompt = f"""Read these two YouTube thumbnail image files:
+A: {os.path.abspath(path_a)}
+B: {os.path.abspath(path_b)}
+
+{f'Video title: {title}' if title else 'No title provided — judge the thumbnails alone.'}
+
+Compare them strictly for click-through rate using these rules:
+{config.ctr_guide_rules(2500)}
+
+Judge especially at mobile sidebar size (168px wide) — that is where most
+impressions happen. Pick a winner even if it is close.
+
+Return JSON exactly in this shape:
+{{"winner": "A" or "B", "score_a": 0-100, "score_b": 0-100,
+ "reasoning": "2-3 sentences on why the winner wins",
+ "mobile_note": "one line about small-size legibility of each"}}"""
+    result = config.claude_json(prompt)
+    if str(result.get("winner", "")).upper() not in ("A", "B"):
+        result["winner"] = "A" if result.get("score_a", 0) >= result.get("score_b", 0) else "B"
+    return result
+
+
 # --- 3) HOST FACE LIBRARY --------------------------------------------------------
 
 def face_candidates(channel_id, channel_url=None):
@@ -224,7 +248,8 @@ def build_remakes(briefs, face_path):
             source=b.get("source", "search"),
             query=b.get("query", ""), prompt=b.get("prompt", ""),
             style_suffix=style["background"]["prompt_style_suffix"], log=log)
-        spec = compose.layers(style, b, {"background": bg, "face": face_path})
+        spec = compose.layers(style, b, {"background": bg, "face": face_path},
+                              brand=library.load_brand())
         png = compose.flatten(spec)
         results.append({
             "style_id": b["style_id"],

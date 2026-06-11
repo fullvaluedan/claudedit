@@ -129,6 +129,23 @@ Add your own backgrounds to the cache from the command line:
 python library.py add path/to/image.jpg --subject "bitcoin chart" --tags "crypto,chart"
 ```
 
+## Gallery, A/B testing, Brand Kit, Safe zones
+
+- **Gallery** (`/static/gallery.html`) — every composed/exported image, newest
+  first, with download/delete. Saved projects appear at the top and reopen
+  straight into the Create editor.
+- **A/B test** — tick any two thumbnails in the Gallery and hit
+  "A/B test with Claude": one Claude call reads both images and returns a
+  winner, scores, reasoning, and a mobile-legibility note. Both contenders are
+  shown at real 168px mobile size.
+- **Brand Kit** (🎨 button in the Create header) — lock your channel's headline
+  font, fill/stroke colors, and accent into every composed thumbnail. The
+  accent recolors circles, arrows, badges, and banners. Stored in
+  `templates/brand.json` (gitignored), disabled by default.
+- **Safe zones** (▦ button in the editor toolbar) — overlays the regions
+  YouTube's own UI covers (duration badge, watched-progress bar) plus a dashed
+  keep-text-inside margin. Overlays are never exported.
+
 ## Editor shortcuts
 
 | Keys | Action |
@@ -150,7 +167,7 @@ With the server running:
 python tests_edge.py
 ```
 
-runs a 20-case edge battery (bad URLs, missing keys, malformed exports,
+runs a 24-case edge battery (bad URLs, missing keys, malformed exports,
 path-traversal names, minimal templates, no-face composes, extreme slider
 values, emoji/overflow text, …).
 

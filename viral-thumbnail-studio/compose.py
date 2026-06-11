@@ -17,13 +17,17 @@ W, H = 1280, 720
 
 # --- layer description -------------------------------------------------------
 
-def layers(style, brief, assets):
+def layers(style, brief, assets, brand=None):
     """Build the layer stack for one thumbnail.
 
     style:  style JSON dict
     brief:  {"text": "...", "focus_subject": "..."} (text drives the text layer)
     assets: {"background": local path, "face": local path or None}
+    brand:  optional brand kit; when enabled it locks the text font/colors and
+            recolors decorative extras with the brand accent.
     """
+    if brand and brand.get("enabled"):
+        style = _apply_brand(style, brand)
     spec = {"canvas": {"width": W, "height": H}, "style_id": style["id"], "layers": []}
 
     bg = style["background"]
@@ -81,6 +85,25 @@ def layers(style, brief, assets):
         "accent_bar": txt.get("accent_bar", False),
     })
     return spec
+
+
+def _apply_brand(style, brand):
+    """Return a copy of the style with brand colors/font locked in."""
+    import copy
+    s = copy.deepcopy(style)
+    s["text"]["font"] = brand["font"]
+    s["text"]["fill"] = brand["headline_fill"]
+    s["text"]["stroke"] = brand["stroke"]
+    accent = brand["accent"]
+    for extra in s.get("extras", []):
+        if extra["type"] == "circle":
+            extra["stroke"] = accent
+        elif extra["type"] == "arrow":
+            extra["fill"] = accent
+        elif extra["type"] in ("badge", "banner"):
+            extra["fill"] = accent
+            extra["text_fill"] = brand["stroke"]
+    return s
 
 
 def _to_url(path):

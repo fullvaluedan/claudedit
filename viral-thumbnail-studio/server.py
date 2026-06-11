@@ -71,7 +71,8 @@ async def generate(topic: str = Form(...), mode: str = Form("auto"),
             b.get("focus_subject", ""), source=b.get("source", "search"),
             query=b.get("query", ""), prompt=b.get("prompt", ""),
             style_suffix=style["background"]["prompt_style_suffix"], log=log)
-        spec = compose.layers(style, b, {"background": bg, "face": face_path})
+        spec = compose.layers(style, b, {"background": bg, "face": face_path},
+                              brand=library.load_brand())
         png = compose.flatten(spec)
         results.append({"style_id": b["style_id"], "style_name": style["name"],
                         "png": compose._to_url(png), "layers": spec})
@@ -125,11 +126,61 @@ async def compose_endpoint(request: Request):
                 query=b.get("query", ""), prompt=b.get("prompt", ""),
                 style_suffix=style["background"]["prompt_style_suffix"],
                 chosen_url=item.get("chosen_url", ""), log=log)
-        spec = compose.layers(style, b, {"background": bg, "face": face_path})
+        spec = compose.layers(style, b, {"background": bg, "face": face_path},
+                              brand=library.load_brand())
         png = compose.flatten(spec)
         results.append({"style_id": b["style_id"], "style_name": style["name"],
                         "png": compose._to_url(png), "layers": spec})
     return {"thumbnails": results, "log": log}
+
+
+@app.get("/brand")
+def brand_get():
+    return {"brand": library.load_brand()}
+
+
+@app.post("/brand")
+async def brand_set(request: Request):
+    body = await request.json()
+    return {"brand": library.save_brand(body.get("brand", body))}
+
+
+@app.get("/outputs/list")
+def outputs_list():
+    """All exported/composed images, newest first (for the Gallery page)."""
+    items = []
+    for name in os.listdir(config.OUTPUTS_DIR):
+        if not name.lower().endswith((".png", ".jpg", ".jpeg")):
+            continue
+        path = os.path.join(config.OUTPUTS_DIR, name)
+        stat = os.stat(path)
+        items.append({"file": f"/outputs/{name}", "name": name,
+                      "mtime": stat.st_mtime, "size": stat.st_size})
+    items.sort(key=lambda i: i["mtime"], reverse=True)
+    return {"files": items}
+
+
+@app.post("/outputs/delete")
+async def outputs_delete(request: Request):
+    body = await request.json()
+    name = os.path.basename(body.get("file", ""))  # no path traversal
+    path = os.path.join(config.OUTPUTS_DIR, name)
+    if not name or not os.path.exists(path):
+        raise ValueError("File not found.")
+    os.remove(path)
+    return {"deleted": name}
+
+
+@app.post("/compare")
+async def compare(request: Request):
+    """A/B test two thumbnails (one Claude call reading both images)."""
+    body = await request.json()
+    path_a = compose._from_url(body.get("file_a", ""))
+    path_b = compose._from_url(body.get("file_b", ""))
+    for p, label in ((path_a, "A"), (path_b, "B")):
+        if not p or not os.path.exists(p):
+            raise ValueError(f"Thumbnail {label} not found — pick two images to compare.")
+    return analyze_yt.compare_thumbnails(path_a, path_b, body.get("title", ""))
 
 
 @app.get("/face/last")

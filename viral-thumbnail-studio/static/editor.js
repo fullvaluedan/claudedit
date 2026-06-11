@@ -79,6 +79,8 @@ const ThumbEditor = (() => {
           <button data-act="fliph" title="Mirror the selected object">⇋ Flip H</button>
           <button data-act="delete" title="Delete / Backspace">✕ Delete</button>
           <span class="sep"></span>
+          <button data-act="safezones" title="Show where YouTube UI covers the thumbnail">▦ Safe zones</button>
+          <span class="sep"></span>
           <button data-act="export" class="primary">⬇ Export PNG</button>
           <button data-act="save-template">Save Template</button>
           <button data-act="save-project">Save Project</button>
@@ -186,6 +188,7 @@ const ThumbEditor = (() => {
   async function loadLayers(ed, spec) {
     const c = ed.canvas;
     fitToContainer(ed);  // the section may have just become visible
+    ed.safeZones = null;
     ed.suspendHistory = true;
     c.clear();
     c.backgroundColor = '#101010';
@@ -378,6 +381,43 @@ const ThumbEditor = (() => {
     });
   }
 
+  // ---- safe-zone overlay -------------------------------------------------------
+  // Shows where YouTube's own UI sits on top of a thumbnail. Overlay objects are
+  // excludeFromExport, so exports, the mobile preview, and undo history never
+  // include them.
+
+  function toggleSafeZones(ed) {
+    const c = ed.canvas;
+    if (ed.safeZones) {
+      ed.safeZones.forEach(o => c.remove(o));
+      ed.safeZones = null;
+      c.renderAll();
+      return;
+    }
+    const zone = { selectable: false, evented: false, excludeFromExport: true };
+    const badge = new fabric.Rect({   // duration badge, bottom-right
+      left: W - 138, top: H - 52, width: 130, height: 44, rx: 6, ry: 6,
+      fill: 'rgba(239,68,68,0.45)', stroke: '#ef4444', strokeWidth: 2, ...zone,
+    });
+    const badgeLabel = new fabric.Text('12:34', {
+      left: W - 108, top: H - 44, fontSize: 26, fontFamily: 'Arial',
+      fill: '#fff', ...zone,
+    });
+    const watchBar = new fabric.Rect({  // watched-progress bar, bottom edge
+      left: 0, top: H - 8, width: W, height: 8,
+      fill: 'rgba(239,68,68,0.45)', ...zone,
+    });
+    const margin = new fabric.Rect({    // keep critical content inside this line
+      left: 40, top: 40, width: W - 80, height: H - 80,
+      fill: 'transparent', stroke: 'rgba(0,212,255,0.5)', strokeWidth: 2,
+      strokeDashArray: [10, 8], ...zone,
+    });
+    ed.safeZones = [margin, badge, badgeLabel, watchBar];
+    ed.safeZones.forEach(o => { c.add(o); c.bringToFront(o); });
+    c.renderAll();
+    status('Safe zones: red = covered by YouTube UI, dashed = keep text inside. Not exported.');
+  }
+
   // ---- history (undo/redo) ------------------------------------------------
 
   function wireHistory(ed) {
@@ -395,6 +435,7 @@ const ThumbEditor = (() => {
 
   function restore(ed, json) {
     ed.suspendHistory = true;
+    ed.safeZones = null;  // overlays are excludeFromExport, so they don't survive
     ed.canvas.loadFromJSON(json, () => {
       ed.canvas.renderAll();
       ed.suspendHistory = false;
@@ -546,6 +587,7 @@ const ThumbEditor = (() => {
       const obj = ed.canvas.getActiveObject();
       if (obj) { ed.canvas.remove(obj); refreshLayers(ed); }
     };
+    q('[data-act=safezones]').onclick = () => toggleSafeZones(ed);
     q('[data-act=export]').onclick = () => exportPNG(ed);
     q('[data-act=save-template]').onclick = () => saveTemplate(ed);
     q('[data-act=save-project]').onclick = async () => {
@@ -557,11 +599,18 @@ const ThumbEditor = (() => {
     };
     q('[data-act=projects]').onchange = async e => {
       if (!e.target.value) return;
-      const data = await (await fetch(`/projects/load?name=${encodeURIComponent(e.target.value)}`)).json();
-      restore(ed, JSON.stringify(data.state));
-      pushHistory(ed);
-      status(`Project "${e.target.value}" loaded.`);
+      await openProject(ed, e.target.value);
     };
+  }
+
+  async function openProject(ed, name) {
+    const resp = await fetch(`/projects/load?name=${encodeURIComponent(name)}`);
+    const data = await resp.json();
+    if (!resp.ok) { status(data.error, true); return; }
+    fitToContainer(ed);
+    restore(ed, JSON.stringify(data.state));
+    pushHistory(ed);
+    status(`Project "${name}" loaded.`);
   }
 
   async function refreshProjects(ed) {
@@ -806,6 +855,7 @@ const ThumbEditor = (() => {
   return {
     mount,
     loadLayers: (ed, spec) => loadLayers(ed, spec),
+    openProject: (ed, name) => openProject(ed, name),
     status,
     api,
   };

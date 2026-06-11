@@ -172,6 +172,50 @@ def t_zip_real_files():
     assert r.json()["file"].endswith(".zip")
 
 
+def t_brand_roundtrip():
+    r = requests.post(B + "/brand", json={"brand": {
+        "enabled": True, "font": "Anton", "headline_fill": "#FFEE00",
+        "stroke": "not-a-color", "accent": "#00D4FF"}})
+    assert r.status_code == 200, r.text
+    saved = r.json()["brand"]
+    assert saved["enabled"] is True
+    assert saved["headline_fill"] == "#FFEE00"
+    assert saved["stroke"].startswith("#") and len(saved["stroke"]) == 7  # bad hex -> default
+    r2 = requests.get(B + "/brand")
+    assert r2.json()["brand"]["headline_fill"] == "#FFEE00"
+    # brand actually changes composed output
+    _edge_bg()
+    r3 = requests.post(B + "/compose", json={"items": [{"brief": {
+        "style_id": "big_number", "text": "BRANDED", "focus_subject": "z"},
+        "chosen_file": "/outputs/edge_bg.png"}]})
+    assert r3.status_code == 200, r3.text[:200]
+    text_layer = [l for l in r3.json()["thumbnails"][0]["layers"]["layers"]
+                  if l["type"] == "text"][0]
+    assert text_layer["fill"] == "#FFEE00", text_layer
+    requests.post(B + "/brand", json={"brand": {"enabled": False}})  # reset
+
+
+def t_outputs_list():
+    _edge_bg()
+    r = requests.get(B + "/outputs/list")
+    assert r.status_code == 200
+    names = [f["name"] for f in r.json()["files"]]
+    assert "edge_bg.png" in names
+
+
+def t_outputs_delete_traversal():
+    r = requests.post(B + "/outputs/delete", json={"file": "../../server.py"})
+    assert r.status_code == 400, r.status_code  # basename -> not found in outputs/
+    assert os.path.exists("server.py")
+
+
+def t_compare_missing_files():
+    r = requests.post(B + "/compare", json={"file_a": "/outputs/ghost1.png",
+                                            "file_b": "/outputs/ghost2.png"})
+    assert r.status_code == 400, r.status_code
+    assert "error" in r.json(), r.text
+
+
 ALL = [v for k, v in sorted(globals().items()) if k.startswith("t_")]
 
 if __name__ == "__main__":

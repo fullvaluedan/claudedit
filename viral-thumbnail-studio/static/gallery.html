@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gallery · Viral Thumbnail Studio</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233b82f6'/><text x='50' y='68' font-size='52' text-anchor='middle'>🖼</text></svg>">
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .compare-bar {
+    position: sticky; bottom: 14px; z-index: 40;
+    display: none; align-items: center; gap: 10px;
+    background: var(--surface-2); border: 1px solid var(--border-strong);
+    border-radius: var(--radius); padding: 10px 16px; margin-top: 16px;
+    box-shadow: var(--shadow);
+  }
+  .compare-bar.show { display: flex; }
+  .card .meta { display: flex; justify-content: space-between; align-items: center;
+                margin: 8px 2px 2px; font-size: 12px; color: var(--text-dim); }
+  .card .pickbox { position: absolute; top: 14px; left: 14px; z-index: 2;
+                   width: 20px; height: 20px; accent-color: var(--accent); }
+  .ab { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 14px; }
+  .ab .side { background: var(--surface); border: 1px solid var(--border);
+              border-radius: var(--radius); padding: 14px; text-align: center; }
+  .ab .side.winner { border-color: var(--good); box-shadow: 0 0 0 1px var(--good); }
+  .ab .side img.mob { width: 168px; border-radius: 4px; border: 1px solid var(--border-strong); }
+  .ab .side .scorebig { font-size: 34px; font-weight: 800; margin: 8px 0 0; }
+  .ab .side .crown { font-size: 13px; font-weight: 700; color: var(--good); height: 18px; }
+  .ab-notes { margin-top: 14px; font-size: 13.5px; line-height: 1.55; }
+  .ab-notes .mob-note { color: var(--text-dim); margin-top: 6px; }
+</style>
+</head>
+<body>
+<header class="app">
+  <div class="brand"><span class="logo">🎬</span> Viral Thumbnail Studio</div>
+  <nav class="tabs">
+    <a href="/static/create.html">Create</a>
+    <a href="/static/analyze.html">Analyze</a>
+    <a href="/static/gallery.html" class="active">Gallery</a>
+  </nav>
+  <div class="spacer"></div>
+  <span class="kbd-hint">Tick any two thumbnails to A/B test them with Claude</span>
+</header>
+
+<main>
+<div id="status-bar"><span class="spinner"></span><span id="status-text"></span></div>
+
+<section id="projects-section" hidden>
+  <h2>Saved projects</h2>
+  <div id="projects-row" class="grid small"></div>
+</section>
+
+<section>
+  <div class="grid-tools">
+    <h2>All thumbnails</h2>
+    <span class="muted" id="count"></span>
+  </div>
+  <div id="gallery" class="grid"></div>
+  <div id="gallery-empty" class="empty" hidden>
+    Nothing here yet — go to <a href="/static/create.html" style="color:var(--accent)">Create</a>
+    and generate your first batch of thumbnails.
+  </div>
+</section>
+
+<div class="compare-bar" id="compare-bar">
+  <b id="compare-count">0/2 selected</b>
+  <input id="compare-title" placeholder="Video title (optional — sharpens the judgement)" size="42">
+  <button id="compare-go" class="primary" disabled>⚖ A/B test with Claude</button>
+  <button id="compare-clear" class="ghost">Clear</button>
+</div>
+
+<section id="ab-section" class="panel" hidden>
+  <h2>A/B result</h2>
+  <div class="ab">
+    <div class="side" id="side-a">
+      <div class="crown" id="crown-a"></div>
+      <img class="mob" id="ab-img-a"><div class="scorebig" id="ab-score-a"></div>
+    </div>
+    <div class="side" id="side-b">
+      <div class="crown" id="crown-b"></div>
+      <img class="mob" id="ab-img-b"><div class="scorebig" id="ab-score-b"></div>
+    </div>
+  </div>
+  <div class="ab-notes">
+    <div id="ab-reasoning"></div>
+    <div class="mob-note" id="ab-mobile"></div>
+  </div>
+</section>
+</main>
+
+<script>
+const $ = sel => document.querySelector(sel);
+
+function status(msg, isError = false, busy = false) {
+  const bar = $('#status-bar');
+  $('#status-text').textContent = msg;
+  bar.className = 'show' + (isError ? ' error' : '') + (busy ? ' busy' : '');
+  if (!msg) bar.className = '';
+}
+
+async function api(path, body) {
+  const resp = await fetch(path, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  const data = await resp.json();
+  if (!resp.ok) throw new Error(data.error || resp.statusText);
+  return data;
+}
+
+let picked = [];  // up to 2 file urls for the A/B test
+
+function fmtDate(mtime) {
+  return new Date(mtime * 1000).toLocaleString(undefined,
+    { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+async function loadGallery() {
+  const data = await (await fetch('/outputs/list')).json();
+  const box = $('#gallery');
+  box.innerHTML = '';
+  picked = [];
+  updateCompareBar();
+  $('#count').textContent = `${data.files.length} image${data.files.length === 1 ? '' : 's'}`;
+  $('#gallery-empty').hidden = data.files.length > 0;
+  $('#compare-bar').classList.toggle('show', data.files.length >= 2);
+  data.files.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <input type="checkbox" class="pickbox" title="Select for A/B test">
+      <img src="${f.file}" loading="lazy">
+      <div class="meta"><span>${f.name.replace(/_\d+\.png$/, '').replace(/\.(png|jpe?g)$/, '')}</span>
+        <span>${fmtDate(f.mtime)}</span></div>
+      <div class="actions">
+        <a class="btn" href="${f.file}" download>⬇ Download</a>
+        <button class="del ghost">🗑 Delete</button>
+      </div>`;
+    const box2 = card.querySelector('.pickbox');
+    box2.onchange = () => {
+      if (box2.checked) {
+        if (picked.length >= 2) { box2.checked = false; return; }
+        picked.push(f.file);
+        card.classList.add('picked');
+      } else {
+        picked = picked.filter(p => p !== f.file);
+        card.classList.remove('picked');
+      }
+      updateCompareBar();
+    };
+    card.querySelector('.del').onclick = async () => {
+      if (!confirm(`Delete ${f.name}?`)) return;
+      try {
+        await api('/outputs/delete', { file: f.file });
+        loadGallery();
+        status(`Deleted ${f.name}.`);
+      } catch (err) { status(err.message, true); }
+    };
+    box.append(card);
+  });
+}
+
+function updateCompareBar() {
+  $('#compare-count').textContent = `${picked.length}/2 selected`;
+  $('#compare-go').disabled = picked.length !== 2;
+}
+
+$('#compare-clear').onclick = () => loadGallery();
+
+$('#compare-go').onclick = async () => {
+  status('Claude is comparing both thumbnails at mobile size…', false, true);
+  $('#compare-go').disabled = true;
+  try {
+    const result = await api('/compare', {
+      file_a: picked[0], file_b: picked[1],
+      title: $('#compare-title').value.trim(),
+    });
+    $('#ab-img-a').src = picked[0];
+    $('#ab-img-b').src = picked[1];
+    $('#ab-score-a').textContent = result.score_a;
+    $('#ab-score-b').textContent = result.score_b;
+    const aWins = result.winner === 'A';
+    $('#side-a').classList.toggle('winner', aWins);
+    $('#side-b').classList.toggle('winner', !aWins);
+    $('#crown-a').textContent = aWins ? '👑 WINNER' : '';
+    $('#crown-b').textContent = aWins ? '' : '👑 WINNER';
+    $('#ab-reasoning').textContent = result.reasoning || '';
+    $('#ab-mobile').textContent = result.mobile_note || '';
+    $('#ab-section').hidden = false;
+    $('#ab-section').scrollIntoView({ behavior: 'smooth' });
+    status(`Winner: ${result.winner} (${aWins ? result.score_a : result.score_b}/100). Shown at real mobile size.`);
+  } catch (err) { status(err.message, true); }
+  $('#compare-go').disabled = false;
+};
+
+async function loadProjects() {
+  const data = await (await fetch('/projects/list')).json();
+  if (!data.projects.length) return;
+  const row = $('#projects-row');
+  row.innerHTML = '';
+  data.projects.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<div class="label" style="margin:4px 2px">📁 ${p}</div>
+      <div class="actions"><a class="btn" href="/static/create.html?project=${encodeURIComponent(p)}">Open in editor</a></div>`;
+    row.append(card);
+  });
+  $('#projects-section').hidden = false;
+}
+
+loadGallery().catch(err => status(err.message, true));
+loadProjects().catch(() => null);
+</script>
+</body>
+</html>
